@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g id="Icon/Minus" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <polygon id="24pt-Bounding-Box" opacity="0" fill-rule="nonzero" points="0 0 24 0 24 24 0 24"></polygon>
+        <path d="M19,13 L4.99999996,13 L4.99999996,13 C4.44771496,13 3.99999996,12.552285 3.99999996,12 C3.99999996,11.447715 4.44771496,11 4.99999996,11 L19,11 L19,11 C19.5522849,11 20,11.447715 20,12 C20,12.552285 19.5522849,13 19,13 L19,13 Z" id="Fill" fill="#2876D3"></path>
+    </g>
+</svg>

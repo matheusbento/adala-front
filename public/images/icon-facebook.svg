@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Icon/--Brand/Facebook</title>
+    <defs>
+        <path d="M13.821283,22 L13.821283,13 L16.553693,13 L17,9 L13.82128,9 L13.82128,7.052 C13.82128,6.022 13.847591,5 15.28688,5 L16.74469,5 L16.74469,2.14 C16.74469,2.097 15.4925,2 14.22569,2 C11.58001,2 9.92341,3.657 9.92341,6.7 L9.92341,9 L7,9 L7,13 L9.92341,13 L9.92341,22 L13.82128,22 L13.821283,22 Z" id="path-1"></path>
+    </defs>
+    <g id="Icon/--Brand/Facebook" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect id="24pt-Bounding-Box" x="0" y="0" width="24" height="24"></rect>
+        <mask id="mask-2" fill="white">
+            <use xlink:href="#path-1"></use>
+        </mask>
+        <use id="Fill" fill="#2876D3" xlink:href="#path-1"></use>
+    </g>
+</svg>
