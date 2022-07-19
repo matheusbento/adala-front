@@ -1,0 +1,25 @@
+{
+  "plugins": [
+    "@babel/plugin-proposal-object-rest-spread",
+    [
+      "module-resolver",
+      {
+        "root": ["../"],
+        "alias": {
+          "components": "./src/components",
+          "constants": "./src/constants",
+          "helpers": "./src/helpers",
+          "hooks": "./src/hooks",
+          "processes": "./src/processes",
+          "reducers": "./src/reducers",
+          "routers": "./src/routers",
+          "selectors": "./src/selectors",
+          "services": "./src/services",
+          "types": "./src/types",
+          "utils": "./src/utils",
+          "views": "./src/views"
+        }
+      }
+    ]
+  ]
+}
