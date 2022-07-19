@@ -1,0 +1,103 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "jest": true
+  },
+  "extends": [
+    "react-app",
+    "react-app/jest",
+    "airbnb",
+    "airbnb-typescript",
+    "plugin:import/typescript",
+    "plugin:import/warnings",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+    "plugin:react/recommended",
+    "plugin:jsx-a11y/recommended"
+    // "plugin:react/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "project": "./tsconfig.json"
+  },
+  "plugins": ["react", "@typescript-eslint", "prettier", "eslint-plugin-import-helpers"],
+  "rules": {
+    "max-len": "warn",
+    "react/react-in-jsx-scope": ["off"],
+    "react/jsx-uses-react": ["off"],
+    "prettier/prettier": "error",
+    "react/jsx-props-no-spreading": ["off"],
+    "react/no-unescaped-entities": ["off"],
+    "react-hooks/exhaustive-deps": ["off"],
+    "react/require-default-props": ["off"],
+    "react/function-component-definition": [
+      2,
+      {
+        "namedComponents": "arrow-function",
+        "unnamedComponents": "arrow-function"
+      }
+    ],
+    "testing-library/prefer-screen-queries": ["off"],
+    "testing-library/no-node-access": ["off"],
+    "testing-library/no-container": ["off"],
+    "react-hooks/rules-of-hooks": "error",
+    "implicit-arrow-linebreak": ["off"],
+    "import-helpers/order-imports": [
+      "warn",
+      {
+        "newlinesBetween": "always",
+        "groups": [
+          "/^react$/",
+          "module",
+          "/^components/",
+          "/^constants/",
+          "/^helpers/",
+          "/^hooks/",
+          "/^processes/",
+          "/^reducers/",
+          "/^routers/",
+          "/^selectors/",
+          "/^services/",
+          "/^types/",
+          "/^utils/",
+          "/^views/",
+          ["parent", "sibling", "index"]
+        ],
+        "alphabetize": {
+          "order": "asc",
+          "ignoreCase": true
+        }
+      }
+    ],
+    "jsx-a11y/label-has-associated-control": [
+      "warn",
+      {
+        "labelComponents": [],
+        "labelAttributes": [],
+        "controlComponents": ["Field"],
+        "assert": "either",
+        "depth": 3
+      }
+    ],
+    "no-underscore-dangle": [
+      "error",
+      {
+        "allow": ["__REDUX_DEVTOOLS_EXTENSION__"]
+      }
+    ],
+    "no-unused-expressions": [
+      "error",
+      {
+        "allowShortCircuit": true
+      }
+    ],
+    "object-curly-newline": "off"
+  }
+}
