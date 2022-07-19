@@ -43,14 +43,15 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "sass src/:public/css && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
-    "postinstall": "semantic-ui-css-patch"
+    "postinstall": "semantic-ui-css-patch",
+    "sass": "sass --watch src/*"
   },
   "eslintConfig": {
     "extends": [
@@ -119,6 +120,7 @@
     "eslint-plugin-unused-imports": "^2.0.0",
     "prettier": "^2.7.1",
     "prop-types": "^15.8.1",
+    "sass": "^1.53.0",
     "webpack": "^5.73.0"
   }
 }

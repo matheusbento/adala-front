@@ -1,5 +1,5 @@
 import logo from './logo.svg';
-import './App.css';
+import './App.scss';
 import 'semantic-ui-css/semantic.min.css';
 
 const App = () => (
