@@ -707,4 +707,5 @@ export const input = {
     lineHeight: '40px',
     ...fontSizes.sm,
   },
+  select: {},
 };

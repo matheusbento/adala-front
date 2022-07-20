@@ -1,9 +1,12 @@
+/* eslint-disable react/display-name */
 import { useMemo, useRef, useImperativeHandle, forwardRef } from 'react';
 
 import { css } from 'glamor';
 import { When } from 'react-if';
 import NumberFormat from 'react-number-format';
 import { Ref, Checkbox, TextArea } from 'semantic-ui-react';
+
+import { ErrorTypeMultiple, ErrorTypeSingle } from 'types/ErrorType';
 
 import FormLabel from '../components/Library/FormLabel';
 import Text from '../components/Library/Text';
@@ -17,7 +20,17 @@ export interface BuildFormFieldProps {
   error?: any;
   label?: string;
   required?: boolean;
-  disabled?: string;
+  multiple?: boolean;
+  options?: any;
+  selection?: boolean;
+  disabled?: boolean;
+  onChange?: any;
+  checked?: boolean;
+  toggle?: boolean;
+  slider?: boolean;
+  value?: any;
+  text?: string;
+  placeholder?: string;
 }
 
 export interface Rest {
@@ -57,7 +70,9 @@ const BuildFormField = (InputComponent: any, selectProps: any) => {
 
       const hasError = useMemo(
         () =>
-          typeof error === TypeOf.string ? error.length === 0 || !!error : null,
+          typeof error === TypeOf.string
+            ? error?.length === 0 || !!error
+            : null,
         [error]
       );
 
