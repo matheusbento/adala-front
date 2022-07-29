@@ -2,7 +2,7 @@ import React from 'react';
 
 import { render, fireEvent } from '@testing-library/react';
 
-import Form from 'components/Library/Form';
+import Form from '@components/Library/Form';
 
 import InputText from './InputText';
 

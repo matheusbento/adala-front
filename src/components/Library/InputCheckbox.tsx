@@ -5,8 +5,8 @@ import { get, isNaN } from 'lodash';
 import { useFormContext } from 'react-hook-form';
 import { Checkbox } from 'semantic-ui-react';
 
-import buildFormField from 'utils/buildFormField';
-import { display, flex } from 'utils/themeConstants';
+import buildFormField from '@utils/buildFormField';
+import { display, flex } from '@utils/themeConstants';
 
 import {
   colors,
@@ -111,6 +111,7 @@ export interface InputCheckboxProps {
   formProps?: any;
   toggle?: boolean;
   slider?: boolean;
+  input?: any;
 }
 
 const InputCheckbox = ({

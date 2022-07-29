@@ -8,7 +8,7 @@ import {
   SemanticSIZES,
 } from 'semantic-ui-react';
 
-import { margin, padding, border, colors } from 'utils/theme';
+import { margin, padding, border, colors } from '@utils/theme';
 
 import Pill from './Pill';
 
@@ -21,7 +21,12 @@ export interface ButtonProps {
   size?: any;
   color?: any;
   id?: any;
+  circular?: boolean;
+  icon?: any;
   onClick?: any;
+  basic?: boolean;
+  outline?: boolean;
+  disabled?: boolean;
 }
 
 const linkCss = css(margin.none, padding.none, border.none, {

@@ -4,10 +4,10 @@ import { useLayoutEffect, useState } from 'react';
 import { isArray, isNaN } from 'lodash';
 import moment from 'moment-timezone';
 
-import * as fileTypes from 'constants/fileTypesConstants';
-import { toasterTypes } from 'constants/toasterConstants';
-import TypeOf from 'constants/typeOfConstants';
-import usStates from 'constants/usStatesConstants';
+import * as fileTypes from '@constants/fileTypesConstants';
+import { toasterTypes } from '@constants/toasterConstants';
+import TypeOf from '@constants/typeOfConstants';
+import usStates from '@constants/usStatesConstants';
 
 export const plural = (
   singularString: string,

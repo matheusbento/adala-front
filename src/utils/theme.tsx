@@ -1,4 +1,4 @@
-import * as ThemeConstants from 'utils/themeConstants';
+import * as ThemeConstants from './themeConstants';
 
 export const {
   display,
@@ -184,7 +184,7 @@ export const tables = {
       borderTop: `1px solid ${colors.greyLighter}`,
     },
   },
-  vms: {
+  baslake: {
     ...border.roundedSm,
     border: `1px solid ${colors.greyLighter}`,
     overflow: 'hidden',

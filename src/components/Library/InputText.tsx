@@ -6,8 +6,8 @@ import { get, NumericDictionary, String } from 'lodash';
 import { useFormContext } from 'react-hook-form';
 import { Input } from 'semantic-ui-react';
 
-import buildFormField from 'utils/buildFormField';
-import { spacing } from 'utils/theme';
+import buildFormField from '@utils/buildFormField';
+import { spacing } from '@utils/theme';
 import { ErrorTypeMultiple, ErrorTypeSingle } from 'types/ErrorType';
 
 const styleSpaced = css({

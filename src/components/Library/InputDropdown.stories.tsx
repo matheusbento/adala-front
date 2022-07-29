@@ -4,9 +4,9 @@ import React from 'react';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { Button } from 'semantic-ui-react';
 
-import Form from 'components/Library/Form';
+import Form from '@components/Library/Form';
 
-import states from 'constants/usStatesConstants';
+import states from '@constants/usStatesConstants';
 
 import InputDropdown from './InputDropdown';
 

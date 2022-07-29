@@ -2,7 +2,7 @@ import React, { ReactNode, useMemo } from 'react';
 
 import { css } from 'glamor';
 
-import { spacing, fontSizes } from 'utils/theme';
+import { spacing, fontSizes } from '@utils/theme';
 
 import Item from './Item';
 

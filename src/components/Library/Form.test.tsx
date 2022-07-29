@@ -5,7 +5,7 @@ import React from 'react';
 import { render, fireEvent, act, waitFor } from '@testing-library/react';
 import { Button } from 'semantic-ui-react';
 
-import Form from 'components/Library/Form';
+import Form from '@components/Library/Form';
 
 import InputText from './InputText';
 

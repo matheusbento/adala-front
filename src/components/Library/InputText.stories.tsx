@@ -4,7 +4,7 @@ import React from 'react';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { Button } from 'semantic-ui-react';
 
-import Form from 'components/Library/Form';
+import Form from '@components/Library/Form';
 
 import InputText from './InputText';
 

@@ -5,8 +5,13 @@ import { get } from 'lodash';
 import { useFormContext } from 'react-hook-form';
 import { TextArea as SemanticTextArea } from 'semantic-ui-react';
 
-import buildFormField from 'utils/buildFormField';
-import { spacing, input as InputStyles, padding, fontSizes } from 'utils/theme';
+import buildFormField from '@utils/buildFormField';
+import {
+  spacing,
+  input as InputStyles,
+  padding,
+  fontSizes,
+} from '@utils/theme';
 
 const styleTextarea = css(InputStyles.select);
 const styleSpaced = css({
