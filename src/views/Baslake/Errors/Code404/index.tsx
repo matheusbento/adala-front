@@ -40,7 +40,7 @@ const Code404 = () => {
   const { canAccess } = useBaslakePolicy();
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const canAccessVms = useMemo(() => canAccess(), [session]);
+  const canAccessBaslake = useMemo(() => canAccess(), [session]);
 
   return (
     <div className={`${styleContainer}`}>
@@ -49,7 +49,7 @@ const Code404 = () => {
         <p className={`${styleSubtitle}`}>
           We couldn&lsquo;t find the page you&lsquo;re looking for!
         </p>
-        <PolicyCheck policy={canAccessVms}>
+        <PolicyCheck policy={canAccessBaslake}>
           <Link
             className={`${css(buttons.pill, buttons.primary, buttons.lg)}`}
             to="/"

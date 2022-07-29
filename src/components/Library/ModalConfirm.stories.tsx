@@ -6,11 +6,11 @@ import Button from './Button';
 import ModalConfirm from './ModalConfirm';
 
 export default {
-  title: 'Vms/ModalConfirm',
+  title: 'Baslake/ModalConfirm',
   parameters: {
     docs: {
       description: {
-        component: 'Modal Confirm, extends VmsModal.',
+        component: 'Modal Confirm, extends BaslakeModal.',
       },
     },
   },

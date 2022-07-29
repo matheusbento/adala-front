@@ -7,7 +7,7 @@ import { ComponentMeta, ComponentStory } from '@storybook/react';
 import BaslakeModal from './BaslakeModal';
 
 export default {
-  title: 'Vms/Vms Modal',
+  title: 'Baslake/Baslake Modal',
   parameters: {
     docs: {
       description: {
