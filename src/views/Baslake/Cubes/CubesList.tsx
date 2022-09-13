@@ -8,6 +8,7 @@ import Text from '@components/Library/Text';
 import { useCubes } from '@hooks/Cubes';
 import { css } from 'glamor';
 import moment from 'moment';
+import { useTranslation } from 'react-i18next';
 import { If, Then, Else, When } from 'react-if';
 import { List, Loader } from 'semantic-ui-react';
 
@@ -59,6 +60,8 @@ const CubesList = () => {
     showCubeModelHandler,
   } = useCubes();
 
+  const { t } = useTranslation();
+
   // eslint-disable-next-line no-console
   console.log(cubes);
 
@@ -75,7 +78,7 @@ const CubesList = () => {
               color="primary"
               className={`${css(margin.none)} ${styleCubes}`}
             >
-              {`${cubes?.length} Cubes`}
+              {t('cube_amount', { count: cubes?.length })}
             </Header>
           </div>
         )}
@@ -193,7 +196,7 @@ const CubesList = () => {
                       color="primary"
                       outline
                     >
-                      View
+                      {t('Data visualize')}
                     </Button>
                   </div>
                 </List.Content>

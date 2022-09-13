@@ -8,12 +8,14 @@ import { padding, display, colors, buttons } from '@utils/theme';
 import { flex } from '@utils/themeConstants';
 import BaslakePageTitle from '@views/Layout/BaslakePageTitle';
 import { css } from 'glamor';
+import { useTranslation } from 'react-i18next';
 import { When } from 'react-if';
 import { useLocation } from 'react-router-dom';
 
 import CubesDetailsContainer from './CubesDetailsContainer';
 import CubesListContainer from './CubesListContainer';
 import CubeViewerModalContainer from './CubeViewerModalContainer';
+import '@translations/i18n';
 
 // import CubesDetailsContainer from './CubesDetailsContainer';
 // import CubesFilters from './CubesFilters';
@@ -62,6 +64,7 @@ const CubesOverview = ({ context }: { context: string }) => {
 
   const { getAppliedFiltersByContext } = useFilter();
   const { loadingOverview, showCube, cube, showCubeModelHandler } = useCubes();
+  const { t } = useTranslation();
 
   const appliedFilters = getAppliedFiltersByContext();
 
@@ -105,7 +108,7 @@ const CubesOverview = ({ context }: { context: string }) => {
     <div className={`${styleRow}`}>
       {filtersVisible && (
         <div className={`${styleFilters}`}>
-          Filters
+          {t('Filters')}
           {/* <CubesFilters context={context} /> */}
         </div>
       )}
@@ -119,7 +122,7 @@ const CubesOverview = ({ context }: { context: string }) => {
                 clickIconActive={appliedFilters.length > 0}
                 visible={filtersVisible}
               >
-                Cubes Summary
+                {t('Cubes Summary')}
               </BaslakePageTitle>
             </Segment>
 
@@ -156,7 +159,7 @@ const CubesOverview = ({ context }: { context: string }) => {
                 clickIconActive={appliedFilters.length > 0}
                 visible={filtersVisible}
               >
-                {`Cube ${cube?.label}`}
+                {t(`Cube {{cube.label}}`, { cube })}
               </BaslakePageTitle>
             </Segment>
             <CubesDetailsContainer />

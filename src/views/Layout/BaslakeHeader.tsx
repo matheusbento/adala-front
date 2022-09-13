@@ -1,6 +1,7 @@
 import BadgeCounter from '@components/Library/BadgeCounter';
 import Button from '@components/Library/Button';
 import iconUser from '@components/Library/img/icon-user.svg';
+import Segment from '@components/Library/Segment';
 import SvgIcon from '@components/Library/SvgIcon';
 import { useSystem } from '@hooks/System';
 import {
@@ -18,7 +19,7 @@ import SearchBoxContainer from '@views/Baslake/Search/SearchBoxContainer';
 import { css } from 'glamor';
 import { When } from 'react-if';
 import { useLocation } from 'react-router-dom';
-import { Icon, Dropdown } from 'semantic-ui-react';
+import { Icon, Dropdown, Flag } from 'semantic-ui-react';
 
 import { SessionType } from 'types/SessionType';
 
@@ -80,6 +81,8 @@ const styleButtonNotifications = css(
   padding.xXs
 );
 
+const styleFlags = css(padding.sm);
+
 const styleNotificationsBadge = css(position.absolute, {
   top: 0,
   right: 0,
@@ -108,11 +111,9 @@ const BaslakeHeader = ({
   isBarVisible,
 }: BaslakeHeaderProps) => {
   const location = useLocation();
+  const { setLocale, locales } = useSystem();
   // const location: any = null;
-  const disableSearchPaths = ['/'];
-
-  // eslint-disable-next-line no-console
-  console.log(isBarVisible);
+  const disableSearchPaths = ['/', '/login'];
 
   return (
     <header className={`${styleNavbar}`}>
@@ -137,6 +138,15 @@ const BaslakeHeader = ({
       <When condition={session && !!session.user}>
         {() => (
           <div className={`${styleRightItems}`}>
+            <Segment className={`${styleFlags}`}>
+              {Object.values(locales).map((loc: any) => (
+                <Flag
+                  key={loc.flag}
+                  name={loc.flag}
+                  onClick={() => setLocale(loc.flag)}
+                />
+              ))}
+            </Segment>
             {/* // TODO NOTIFICATIONS */}
             <Button
               className={`${styleButtonNotifications}`}

@@ -55,20 +55,22 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
     setIsLoadingSession(true);
 
-    setSession({
-      user: {
-        id: '1',
-        login: '123',
-        password: '123',
-        name: 'Fake User',
-        avatar: null,
-      },
-      permissions: [
-        'baslake_access',
-        'baslake_cubes_access',
-        'baslake_cubes_manage',
-      ],
-    });
+    // setSession({
+    //   user: {
+    //     id: '1',
+    //     login: '123',
+    //     password: '123',
+    //     name: 'Fake User',
+    //     avatar: null,
+    //   },
+    //   permissions: [
+    //     'baslake_access',
+    //     'baslake_cubes_access',
+    //     'baslake_cubes_manage',
+    //     'baslake_datasets_access',
+    //     'baslake_datasets_manage',
+    //   ],
+    // });
 
     setIsLoadingSession(false);
 
@@ -80,12 +82,14 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     //   .finally(() => setIsLoadingSession(false));
   }, []);
 
-  const logoutHandler = () => () => {
+  const logoutHandler = () => {
+    // eslint-disable-next-line no-console
+    console.log('aaaaaa');
     setIsLoadingLogout(true);
 
     api.post('/user/logout', {}).then(() => {
       setIsLoadingLogout(true);
-      window.location.href = '/auth';
+      window.location.href = '/login';
     });
   };
 

@@ -2,24 +2,26 @@
 import { useCallback, useState, useMemo, useEffect } from 'react';
 
 import BaslakeModal from '@components/Library/Baslake/BaslakeModal/BaslakeModal';
+import ButtonLibrary from '@components/Library/Button';
 import ContentGroup from '@components/Library/ContentGroup';
 import Text from '@components/Library/Text';
 import { useCubes } from '@hooks/Cubes';
 import { padding } from '@utils/theme';
 import BaslakeTable from '@views/Layout/BaslakeTable';
 import { css } from 'glamor';
+import { useTranslation } from 'react-i18next';
 import { Else, If, Then, When } from 'react-if';
 import { useLocation } from 'react-router-dom';
 import { Breadcrumb, Button, Dimmer, Loader, Segment } from 'semantic-ui-react';
 
 import { DimensionType } from 'types/DimensionType';
 import { LevelType } from 'types/LevelType';
-import ButtonLibrary from '@components/Library/Button';
 
 const CubeViewerModal = () => {
   const [params, setParams] = useState<Record<string, any>>({});
   const [dimension, setDimension] = useState<string | undefined>(undefined);
   const location = useLocation();
+  const { t } = useTranslation();
 
   const {
     cube,
@@ -36,7 +38,10 @@ const CubeViewerModal = () => {
     setIsOpenCubeViewerModal(false);
   }, [location.search]);
 
-  const modalTitle = useMemo(() => `Viewer Cube ${cube?.label}`, [cube]);
+  const modalTitle = useMemo(
+    () => t(`Viewing Cube {{cube.label}}`, { cube }),
+    [cube]
+  );
 
   useEffect(() => {
     setParams({});
@@ -54,8 +59,8 @@ const CubeViewerModal = () => {
         ? [
             {
               key: `${dimension}-${nextLevel?.key}`,
-              label: 'All',
-              name: 'All',
+              label: t('All'),
+              name: t('All'),
               link: false,
             },
           ]
@@ -152,7 +157,7 @@ const CubeViewerModal = () => {
                 <Loader inline="centered" />
               </Dimmer>
               <Segment>
-                <ContentGroup caption="Dimensions">
+                <ContentGroup caption={t('Dimensions')}>
                   <Button.Group className={`${css(padding.topXs)}`}>
                     {cubeView?.dimensions?.map((dim: DimensionType) => (
                       <>
@@ -176,7 +181,7 @@ const CubeViewerModal = () => {
               </Segment>
               <When condition={dimension && cubeView?.levels}>
                 <Segment>
-                  <ContentGroup caption="Path">
+                  <ContentGroup caption={t('Path')}>
                     <Breadcrumb
                       icon="right angle"
                       sections={sections}
@@ -187,7 +192,7 @@ const CubeViewerModal = () => {
               </When>
               <When condition={dimension && cubeView?.levels}>
                 <Segment>
-                  <ContentGroup caption="Values">
+                  <ContentGroup caption={t('Values')}>
                     <BaslakeTable
                       className={`${css(padding.topXs)}`}
                       headers={headers}

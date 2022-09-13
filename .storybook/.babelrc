@@ -2,6 +2,10 @@
   "plugins": [
     "@babel/plugin-proposal-object-rest-spread",
     [
+      "react-intl",
+      {
+        "messagesDir": "./build/messages"
+      },
       "module-resolver",
       {
         "root": ["../"],

@@ -12,6 +12,9 @@ import { AxiosResponse } from 'axios';
 export type SystemContextType = {
   isBarVisible: boolean;
   setIsBarVisible: (val: boolean) => void;
+  setLocale: (val: string) => void;
+  locales: Record<string, string>;
+  locale: string;
 };
 
 export const SystemContext = createContext<SystemContextType | null>(null);
@@ -30,14 +33,31 @@ interface SystemProviderProps {
 }
 
 const SystemProvider = ({ children }: SystemProviderProps) => {
+  const locales: Record<string, any> = {
+    en: {
+      id: 'en',
+      flag: 'us',
+      label: 'English',
+    },
+    br: {
+      id: 'pt-BR',
+      flag: 'br',
+      label: 'Portuguese (Brasil)',
+    },
+  };
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [locale, setLocale] = useState('en');
   const [isBarVisible, setIsBarVisible] = useState(false);
 
   const providerValue = useMemo(
     () => ({
       isBarVisible,
       setIsBarVisible,
+      setLocale,
+      locales,
+      locale,
     }),
-    [isBarVisible, setIsBarVisible]
+    [isBarVisible, locales, locale, setLocale, setIsBarVisible]
   );
 
   return (

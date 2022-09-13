@@ -6,12 +6,13 @@ import Header from '@components/Library/Header';
 import { useWindowWidth } from '@helpers/index';
 import { useCubes } from '@hooks/Cubes';
 import { css } from 'glamor';
-import moment from 'moment';
-import { If, Then, Else, When } from 'react-if';
-import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { List, Divider, Grid, Table, Icon, Loader } from 'semantic-ui-react';
 
+import '@translations/i18n';
 import { useAuth } from 'hooks/Auth';
+
+import { DimensionType } from 'types/DimensionType';
 
 import { formatMoney } from 'utils/formatting';
 import {
@@ -22,6 +23,10 @@ import {
   colors,
   text,
 } from 'utils/themeConstants';
+
+import TextEllipsis from '@components/Library/TextEllipsis';
+import { flatten } from 'lodash';
+import { When } from 'react-if';
 
 import CubesDetailsHeader from './CubesDetailsHeader';
 
@@ -83,6 +88,8 @@ const CubesDetails = () => {
 
   const windowSize = useWindowWidth();
 
+  const { t } = useTranslation();
+
   // const handleEditJobOrder = useCallback(
   //   (entity) => {
   //     editJobOrderModalHandler(entity, notes, jobTitlesGroupsOptions);
@@ -117,17 +124,36 @@ const CubesDetails = () => {
               color="primary"
               outline
             >
-              View
+              {t('Data visualize')}
             </Button>
           </List.Item>
 
           <Divider />
 
           <Header as="h4" className={`${styleSubHeaders}`}>
-            Cube Details
+            {t('Cube Details')}
           </Header>
           <Grid>
             <Grid.Row columns={windowSize >= 1200 ? 2 : 1}>
+              <When condition={cube.details.length}>
+                <Grid.Column className={`${styleDetailColumn}`}>
+                  <Header
+                    as="p"
+                    color="primary"
+                    line
+                    lineMargin={`${marginBlueHeaders}`}
+                  >
+                    {t('Details')}
+                  </Header>
+                  {cube.details.map((detail: any) => (
+                    <DetailsList
+                      key={`mapping-${detail.label}`}
+                      title="Name"
+                      description={detail?.label}
+                    />
+                  ))}
+                </Grid.Column>
+              </When>
               <Grid.Column className={`${styleDetailColumn}`}>
                 <Header
                   as="p"
@@ -135,11 +161,100 @@ const CubesDetails = () => {
                   line
                   lineMargin={`${marginBlueHeaders}`}
                 >
-                  Cube Type
+                  {t('Infos')}
                 </Header>
-                <DetailsList title="Type" description="Description" />
+                {Object.keys(cube.info).map((key: string) => (
+                  <DetailsList
+                    key={`info-${key}`}
+                    title={key}
+                    description={cube.info[key]}
+                  />
+                ))}
               </Grid.Column>
               <Grid.Column className={`${styleDetailColumn}`}>
+                <Header
+                  as="p"
+                  color="primary"
+                  line
+                  lineMargin={`${marginBlueHeaders}`}
+                >
+                  {t('Dimensions')}
+                </Header>
+                {cube.dimensions.map((dim: DimensionType) => (
+                  <>
+                    <DetailsList
+                      key={`${dim?.name}-name`}
+                      title={t('Name')}
+                      description={dim?.name}
+                    />
+                    <DetailsList
+                      key={`${dim?.name}-details`}
+                      title={t('Has details')}
+                      description={dim?.has_details ? t('True') : t('False')}
+                    />
+                    <DetailsList
+                      key={`${dim?.name}-flat`}
+                      title={t('Is flat')}
+                      description={dim?.is_flat ? t('True') : t('False')}
+                    />
+                    <DetailsList
+                      key={`${dim?.name}-lvl`}
+                      title={t('Hierarchies')}
+                      description={
+                        <TextEllipsis count={dim.hierarchies?.length}>
+                          {flatten(
+                            dim.hierarchies?.map((e: any) => e.levels)
+                          ).join(', ')}
+                        </TextEllipsis>
+                      }
+                    />
+                    <Divider />
+                  </>
+                ))}
+              </Grid.Column>
+              <Grid.Column className={`${styleDetailColumn}`}>
+                <Header
+                  as="p"
+                  color="primary"
+                  line
+                  lineMargin={`${marginBlueHeaders}`}
+                >
+                  {t('Aggregations')}
+                </Header>
+                {cube.aggregates.map((agg: any) => (
+                  <>
+                    <DetailsList
+                      key={`${agg?.label}-label`}
+                      title={t('Label')}
+                      description={agg?.label}
+                    />
+                    <DetailsList
+                      key={`${agg?.name}-field`}
+                      title={t('Field Name')}
+                      description={agg?.name}
+                    />
+                    <Divider />
+                  </>
+                ))}
+              </Grid.Column>
+              <Grid.Column className={`${styleDetailColumn}`}>
+                <Header
+                  as="p"
+                  color="primary"
+                  line
+                  lineMargin={`${marginBlueHeaders}`}
+                >
+                  {t('Mappings')}
+                </Header>
+                {Object.keys(cube.mappings).map((key: string) => (
+                  <DetailsList
+                    key={`mapping-${key}`}
+                    title={key}
+                    description={cube.mappings[key]}
+                  />
+                ))}
+              </Grid.Column>
+              {/* <Grid.Column className={`${styleDetailColumn}`}>
                 <Header
                   as="p"
                   color="primary"
@@ -195,11 +310,11 @@ const CubesDetails = () => {
                 <DetailsList title="Base Rate" description="Base Rate" />
                 <DetailsList title="Estimate" description="Estimate" />
                 <DetailsList title="Bonus" description="Bonus" />
-              </Grid.Column>
+              </Grid.Column> */}
             </Grid.Row>
           </Grid>
 
-          <Header as="h4" className={`${styleSubHeaders}`}>
+          {/* <Header as="h4" className={`${styleSubHeaders}`}>
             Order Description
           </Header>
           <p>[description]</p>
@@ -275,12 +390,12 @@ const CubesDetails = () => {
 
           <Header as="h4" className={`${styleSubHeaders}`}>
             History
-          </Header>
+          </Header> */}
 
-          <div className={`${styleHistory}`}>
-            All Histories aqui
-            {/* <JobOrderHistoryContainer cubeId={showCube?.id} /> */}
-          </div>
+          {/* <div className={`${styleHistory}`}>
+            All Histories aqui */}
+          {/* <JobOrderHistoryContainer cubeId={showCube?.id} /> */}
+          {/* </div> */}
 
           {/* <CubesNotesModalContainer order={showCube} /> */}
         </List>

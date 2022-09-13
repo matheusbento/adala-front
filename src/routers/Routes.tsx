@@ -1,5 +1,6 @@
 import { useCubesPolicy } from '@hooks/Policies/CubesPolicy';
 import CubesContainer from '@views/Baslake/Cubes/CubesContainer';
+import LoginContainer from '@views/Baslake/Login/LoginContainer';
 import { If, Then, Else } from 'react-if';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
@@ -16,6 +17,9 @@ const BaslakeRoutes = (props: any) => {
 
   return (
     <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<LoginContainer />} />
+      </Routes>
       <BaslakePage {...props}>
         <If condition={BaslakePolicy.canAccess()}>
           <Then>

@@ -1,18 +1,21 @@
 import React from 'react';
 
+import Button from '@components/Library/Button';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { Menu } from 'semantic-ui-react';
 
-import Button from '../Library/Button';
-import VmsTitle from './VmsTitle';
+import BaslakeTitle from './BaslakeTitle';
 
 export default {
-  title: 'VMS/VMS Title',
+  title: 'Baslake/Baslake Title',
   argTypes: {
     title: { type: { name: 'string' }, required: true, description: '' },
   },
-};
+} as ComponentMeta<typeof BaslakeTitle>;
 
-const Template = (args) => <VmsTitle {...args} />;
+const Template: ComponentStory<typeof BaslakeTitle> = (args) => (
+  <BaslakeTitle {...args} />
+);
 
 export const Default = Template.bind({});
 Default.args = {

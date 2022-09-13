@@ -1,9 +1,11 @@
+import { useEffect } from 'react';
+
 import BaslakeTitle from '@components/Library/BaslakeTitle';
 import Button from '@components/Library/Button';
 import { useCubes } from '@hooks/Cubes';
 import { useCubesPolicy } from '@hooks/Policies/CubesPolicy';
 import { css } from 'glamor';
-import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { When } from 'react-if';
 // import { Element } from 'react-scroll';
 import { Menu } from 'semantic-ui-react';
@@ -19,13 +21,15 @@ const Cubes = () => {
 
   const { setShowModal, fetchCubesHandler } = useCubes();
 
+  const { t } = useTranslation();
+
   useEffect(() => {
     fetchCubesHandler();
   }, []);
 
   return (
     <div className={`${styleContainer}`}>
-      <BaslakeTitle title="Data Cubes">
+      <BaslakeTitle title={t('Data Cubes')}>
         <When condition={canCreate()}>
           {() => (
             <Menu.Item position="right">

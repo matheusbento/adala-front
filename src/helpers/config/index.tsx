@@ -1,5 +1,5 @@
 const Config = {
-  SERVER_URL: 'http://127.0.0.1:3000/v1',
+  SERVER_URL: 'http://127.0.0.1:3000/api/v1',
   CUBES_URL: 'http://127.0.0.1:8000/',
 };
 
