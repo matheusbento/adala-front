@@ -1,7 +1,8 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
-import { useState, useMemo, ReactNode } from 'react';
+import { useState, useMemo, ReactNode, useEffect } from 'react';
 
 import PolicyCheck from '@components/Library/PolicyCheck';
+import { useOrganizations } from '@hooks/Organizations';
 import { useBaslakePolicy } from '@hooks/Policies/BaslakePolicy';
 import { colors, utils, display } from '@utils/theme';
 import { css } from 'glamor';
@@ -29,6 +30,8 @@ const BaslakePage = ({ children }: BaslakePageProps) => {
   const [visible, setVisible] = useState(window.innerWidth >= 1200);
 
   const { canAccess } = useBaslakePolicy();
+
+  const { fetchAllOrganizationsHandler } = useOrganizations();
 
   const canAccessBaslake = canAccess();
 
@@ -78,6 +81,10 @@ const BaslakePage = ({ children }: BaslakePageProps) => {
       }),
     [visible]
   );
+
+  useEffect(() => {
+    fetchAllOrganizationsHandler();
+  }, []);
 
   return (
     <div className={`page ${style100vh}`}>

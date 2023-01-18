@@ -1,8 +1,11 @@
+import { useCallback, useEffect, useMemo } from 'react';
+
 import BadgeCounter from '@components/Library/BadgeCounter';
 import Button from '@components/Library/Button';
 import iconUser from '@components/Library/img/icon-user.svg';
 import Segment from '@components/Library/Segment';
 import SvgIcon from '@components/Library/SvgIcon';
+import { useOrganizations } from '@hooks/Organizations';
 import { useSystem } from '@hooks/System';
 import {
   colors,
@@ -21,6 +24,7 @@ import { When } from 'react-if';
 import { useLocation } from 'react-router-dom';
 import { Icon, Dropdown, Flag } from 'semantic-ui-react';
 
+import { OrganizationType } from 'types/OrganizationType';
 import { SessionType } from 'types/SessionType';
 
 const styleNavbar = css(display.flex, padding.xSm, {
@@ -61,7 +65,6 @@ const styleButton = css(buttons.plain, text.left, {
 
 const styleRightItems = css({
   ...display.flex,
-  marginLeft: 'auto',
 });
 
 const styleUserMenu = css(display.flex, {
@@ -82,6 +85,12 @@ const styleButtonNotifications = css(
 );
 
 const styleFlags = css(padding.sm);
+
+const styleOrganizations = css({
+  width: 250,
+  ...display.flex,
+  marginLeft: 'auto',
+});
 
 const styleNotificationsBadge = css(position.absolute, {
   top: 0,
@@ -112,8 +121,36 @@ const BaslakeHeader = ({
 }: BaslakeHeaderProps) => {
   const location = useLocation();
   const { setLocale, locales } = useSystem();
+  const {
+    organizations,
+    organization,
+    handleSetOrganization,
+    initOrganization,
+  } = useOrganizations();
   // const location: any = null;
   const disableSearchPaths = ['/', '/login'];
+
+  useEffect(() => {
+    initOrganization();
+  }, [organizations]);
+
+  // eslint-disable-next-line no-console
+  console.log('dasdasd', organizations, organization);
+
+  const organizationOptions = useMemo(
+    () =>
+      organizations?.map((e) => ({
+        key: e.id,
+        text: e.name,
+        value: e.id,
+      })),
+    [organizations]
+  );
+
+  const setOrganizationHandle = useCallback((_: any, d: any) => {
+    const org = organizations?.find((e) => e.id === d.value);
+    handleSetOrganization(org as OrganizationType);
+  }, []);
 
   return (
     <header className={`${styleNavbar}`}>
@@ -135,6 +172,16 @@ const BaslakeHeader = ({
           />
         )}
       </When>
+      <Segment className={`${styleFlags} ${styleOrganizations}`}>
+        <Dropdown
+          fluid
+          placeholder="Select a Organization"
+          selection
+          options={organizationOptions}
+          onChange={setOrganizationHandle}
+          value={organization?.id}
+        />
+      </Segment>
       <When condition={session && !!session.user}>
         {() => (
           <div className={`${styleRightItems}`}>

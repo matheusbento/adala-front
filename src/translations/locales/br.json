@@ -1,6 +1,6 @@
 {
     "Data visualize": "Visualizar dados",
-    "Cube {{cube.label}}": "Cubo {{cube.label}}",
+    "Cube {{cube.name}}": "Cubo {{cube.name}}",
     "Cubes": "Cubos",
     "Settings": "Configurações",
     "Infos": "Informações",
@@ -19,7 +19,7 @@
     "cube_amount_other": "{{count}} Cubos",
     "Cubes Summary": "Resumo dos cubos",
     "Data Cubes": "Cubos de dados",
-    "Viewing Cube {{cube.label}}": "Visualizando Cubo {{cube.label}}",
+    "Viewing Cube {{cube.name}}": "Visualizando Cubo {{cube.name}}",
     "Path": "Caminho",
     "Values": "Valores",
     "All": "Tudo"

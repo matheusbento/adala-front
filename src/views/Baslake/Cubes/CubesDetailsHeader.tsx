@@ -20,9 +20,11 @@ import {
 const CubeDetailsHeader = ({
   titleSize = 'lg',
   cube = null,
+  title = null,
 }: {
   titleSize?: string;
   cube?: any;
+  title?: string | null;
 }) => {
   const styleHeader = useMemo(
     () =>
@@ -40,6 +42,19 @@ const CubeDetailsHeader = ({
     [titleSize]
   );
 
+  // eslint-disable-next-line no-console
+  console.log({ cube });
+
+  const startDate = useMemo(
+    () => cube?.metadata?.find((e: any) => e.field === 'start_date'),
+    [cube]
+  );
+
+  const endDate = useMemo(
+    () => cube?.metadata?.find((e: any) => e.field === 'end_date'),
+    [cube]
+  );
+
   return (
     <>
       <List.Header className={`${styleHeader}`}>
@@ -51,7 +66,7 @@ const CubeDetailsHeader = ({
             weight="medium"
             as="p"
           >
-            {cube.label}
+            {title ?? cube?.name}
           </Text>
         </div>
       </List.Header>
@@ -59,7 +74,7 @@ const CubeDetailsHeader = ({
         <IconList.Item
           size="xs"
           icon="icon-star-line"
-          label={cube?.category ?? 'No category'}
+          label={cube?.category?.name ?? 'No category'}
         />
 
         <IconList.Item
@@ -72,14 +87,14 @@ const CubeDetailsHeader = ({
                 lineHeight: 1,
               })}`}
             >
-              <When condition={cube?.info?.min_date}>
+              <When condition={startDate}>
                 {() => (
                   <>
-                    {cube?.info?.min_date
-                      ? moment(cube?.info?.min_date).format('MMM DD, YYYY')
+                    {startDate
+                      ? moment(startDate?.value).format('MMM DD, YYYY')
                       : 'n/a'}
 
-                    {cube?.info?.max_date ? (
+                    {endDate ? (
                       <>
                         <SvgIcon
                           className={`${css(margin.leftXxs, margin.rightXxs)}`}
@@ -87,7 +102,7 @@ const CubeDetailsHeader = ({
                           size="xs"
                           color={colors.grey}
                         />
-                        {moment(cube?.info?.max_date).format('MMM DD, YYYY')}
+                        {moment(endDate?.value).format('MMM DD, YYYY')}
                       </>
                     ) : (
                       ''

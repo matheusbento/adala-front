@@ -68,10 +68,10 @@ const BaslakeSidebar = () => {
             <PolicyCheck policy={DatasetPolicy.canAccess()}>
               <BaslakeSidebarMenuItem
                 subItem
-                active={!!matchPath(pathname, '/datasets')}
-                to="/datasets"
+                active={!!matchPath(pathname, '/silos')}
+                to="/silos"
                 icon="icon-file-csv"
-                label={t('Datasets')}
+                label={t('Silos')}
               />
             </PolicyCheck>
           </Menu.Menu>

@@ -63,6 +63,8 @@ export interface InputTextProps {
   inputIcon?: string | null;
   required?: boolean;
   formProps?: Record<string, any>;
+  type?: string;
+  min?: number;
 }
 
 const InputText = ({

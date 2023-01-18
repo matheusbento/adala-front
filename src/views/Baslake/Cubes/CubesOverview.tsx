@@ -63,7 +63,8 @@ const CubesOverview = ({ context }: { context: string }) => {
   const { search, state }: any = useLocation();
 
   const { getAppliedFiltersByContext } = useFilter();
-  const { loadingOverview, showCube, cube, showCubeModelHandler } = useCubes();
+  const { loadingOverview, showCube, cubeModel, cube, showCubeModelHandler } =
+    useCubes();
   const { t } = useTranslation();
 
   const appliedFilters = getAppliedFiltersByContext();
@@ -103,6 +104,9 @@ const CubesOverview = ({ context }: { context: string }) => {
       minWidth: filtersVisible ? '290px' : '360px',
     },
   });
+
+  // eslint-disable-next-line no-console
+  console.log({ cube, cubeModel });
 
   return (
     <div className={`${styleRow}`}>
@@ -159,7 +163,7 @@ const CubesOverview = ({ context }: { context: string }) => {
                 clickIconActive={appliedFilters.length > 0}
                 visible={filtersVisible}
               >
-                {t(`Cube {{cube.label}}`, { cube })}
+                {t(`Cube {{cube.name}}`, { cube })}
               </BaslakePageTitle>
             </Segment>
             <CubesDetailsContainer />
@@ -171,7 +175,7 @@ const CubesOverview = ({ context }: { context: string }) => {
           <CubesListContainer />
         </div>
       )}
-      <When condition={!!cube}>
+      <When condition={!!cubeModel}>
         <CubeViewerModalContainer />
       </When>
     </div>

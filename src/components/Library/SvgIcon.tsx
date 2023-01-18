@@ -13,6 +13,9 @@ const sizes: any = {
   xxl: '50px',
 };
 
+export interface RestProps {
+  display?: string;
+}
 export interface SvgIconProps {
   path: string;
   size?: string;
@@ -27,7 +30,7 @@ const SvgIcon = ({
   size = 'sm',
   className,
   wrapper = 'span',
-}: SvgIconProps) => {
+}: SvgIconProps & Partial<RestProps>) => {
   const styleIcon = css({
     '&, & > span': {
       display: 'inline-block',

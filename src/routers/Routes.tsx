@@ -1,6 +1,7 @@
+import { OrganizationsProvider } from '@hooks/Organizations';
 import { useCubesPolicy } from '@hooks/Policies/CubesPolicy';
 import CubesContainer from '@views/Baslake/Cubes/CubesContainer';
-import LoginContainer from '@views/Baslake/Login/LoginContainer';
+// import LoginContainer from '@views/Baslake/Login/LoginContainer';
 import { If, Then, Else } from 'react-if';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
@@ -17,37 +18,42 @@ const BaslakeRoutes = (props: any) => {
 
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<LoginContainer />} />
-      </Routes>
-      <BaslakePage {...props}>
-        <If condition={BaslakePolicy.canAccess()}>
-          <Then>
-            {() => (
-              <>
-                <PolicyProtectedRoute
-                  policy={BaslakePolicy.canAccess()}
-                  exact
-                  path="/"
-                  element={BaslakeDashboardContainer}
-                />
+      <OrganizationsProvider {...props}>
+        <BaslakePage {...props}>
+          <If condition={BaslakePolicy.canAccess()}>
+            <Then>
+              {() => (
+                <>
+                  <PolicyProtectedRoute
+                    policy={BaslakePolicy.canAccess()}
+                    exact
+                    path="/"
+                    element={BaslakeDashboardContainer}
+                  />
 
-                <PolicyProtectedRoute
-                  policy={CubesPolicy.canAccess()}
-                  exact
-                  path="/cubes"
-                  element={CubesContainer}
-                />
+                  <PolicyProtectedRoute
+                    policy={CubesPolicy.canAccess()}
+                    exact
+                    path="/cubes"
+                    element={CubesContainer}
+                  />
 
+                  <Routes>
+                    <Route element={<Code404 />} />
+                  </Routes>
+                </>
+              )}
+            </Then>
+            <Else>
+              {() => (
                 <Routes>
                   <Route element={<Code404 />} />
                 </Routes>
-              </>
-            )}
-          </Then>
-          <Else>{() => <Route element={<Code404 />} />}</Else>
-        </If>
-      </BaslakePage>
+              )}
+            </Else>
+          </If>
+        </BaslakePage>
+      </OrganizationsProvider>
     </BrowserRouter>
   );
 };

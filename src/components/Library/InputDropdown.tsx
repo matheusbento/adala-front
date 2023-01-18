@@ -29,7 +29,7 @@ const FieldForm = buildFormField(
 export interface InputDropdownProps {
   spaced?: boolean;
   options?: Record<any, any>;
-  laravelOptions?: Record<any, any>;
+  laravelOptions?: any;
   arrayOptions?: string[];
   placeholder?: string;
   value?: any;

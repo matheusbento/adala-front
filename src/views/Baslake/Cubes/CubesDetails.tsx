@@ -12,9 +12,10 @@ import { List, Divider, Grid, Table, Icon, Loader } from 'semantic-ui-react';
 import '@translations/i18n';
 import { useAuth } from 'hooks/Auth';
 
+import { CubeMetadataType } from 'types/CubeMetadataType';
 import { DimensionType } from 'types/DimensionType';
 
-import { formatMoney } from 'utils/formatting';
+import { beautifyJson, formatMoney } from 'utils/formatting';
 import {
   fontWeight,
   spacing,
@@ -83,8 +84,16 @@ const styleDetailColumn = css({
 const CubesDetails = () => {
   const { session } = useAuth();
 
-  const { isLoadingCube, isUpdating, cube, setIsOpenCubeViewerModal } =
-    useCubes();
+  const {
+    isLoadingCube,
+    isUpdating,
+    cube,
+    cubeModel,
+    setIsOpenCubeViewerModal,
+    setShowModal,
+    fetchCubeViewerHandler,
+    setInitialValues,
+  } = useCubes();
 
   const windowSize = useWindowWidth();
 
@@ -97,18 +106,47 @@ const CubesDetails = () => {
   //   [editJobOrderModalHandler, notes, jobTitlesGroupsOptions]
   // );
 
+  const cubeInfos = useMemo(() => cube?.metadata ?? [], [cube]);
+
+  const cubeMappings = useMemo(
+    () => (cubeModel?.mappings ? Object.keys(cubeModel?.mappings) : []),
+    [cubeModel]
+  );
+
+  const handleEditCube = useCallback(() => {
+    setShowModal('edit');
+    setInitialValues({
+      ...cube,
+      start_date: cube?.metadata?.find(
+        (e: CubeMetadataType) => e.field === 'start_date'
+      ).value,
+      end_date: cube?.metadata?.find(
+        (e: CubeMetadataType) => e.field === 'end_date'
+      ).value,
+      model: beautifyJson(JSON.stringify(cube.model)),
+      metadata: cube?.metadata?.filter(
+        (e: CubeMetadataType) => !['start_date', 'end_date'].includes(e.field)
+      ),
+    });
+  }, []);
+
+  const handleDataVisualize = useCallback(() => {
+    fetchCubeViewerHandler();
+    setIsOpenCubeViewerModal(true);
+  }, []);
+
   return (
     <>
       {(isLoadingCube || isUpdating) && <Loader active>Loading cube</Loader>}
       {!isLoadingCube && (
         <List>
-          {/* <When condition={cube.actionErrors}>
+          {/* <When condition={cubeModel?.actionErrors}>
             {() => (
               <FormMessage
                 error
                 header="Error"
-                list={[cube.actionErrors]}
-                visible={!!cube.actionErrors}
+                list={[cubeModel?.actionErrors]}
+                visible={!!cubeModel?.actionErrors}
               />
             )}
           </When> */}
@@ -120,11 +158,21 @@ const CubesDetails = () => {
               pill
               className={`${styleButton}`}
               size="xs"
-              onClick={() => setIsOpenCubeViewerModal(true)}
+              onClick={handleDataVisualize}
               color="primary"
               outline
             >
               {t('Data visualize')}
+            </Button>
+            <Button
+              pill
+              className={`${styleButton}`}
+              size="xs"
+              onClick={() => handleEditCube()}
+              color="primary"
+              outline
+            >
+              {t('Edit')}
             </Button>
           </List.Item>
 
@@ -135,7 +183,7 @@ const CubesDetails = () => {
           </Header>
           <Grid>
             <Grid.Row columns={windowSize >= 1200 ? 2 : 1}>
-              <When condition={cube.details.length}>
+              <When condition={cubeModel?.details.length}>
                 <Grid.Column className={`${styleDetailColumn}`}>
                   <Header
                     as="p"
@@ -145,7 +193,7 @@ const CubesDetails = () => {
                   >
                     {t('Details')}
                   </Header>
-                  {cube.details.map((detail: any) => (
+                  {cubeModel?.details.map((detail: any) => (
                     <DetailsList
                       key={`mapping-${detail.label}`}
                       title="Name"
@@ -163,11 +211,11 @@ const CubesDetails = () => {
                 >
                   {t('Infos')}
                 </Header>
-                {Object.keys(cube.info).map((key: string) => (
+                {cubeInfos.map((val: CubeMetadataType) => (
                   <DetailsList
-                    key={`info-${key}`}
-                    title={key}
-                    description={cube.info[key]}
+                    key={`info-${val.id}`}
+                    title={val.field}
+                    description={val.value}
                   />
                 ))}
               </Grid.Column>
@@ -180,7 +228,7 @@ const CubesDetails = () => {
                 >
                   {t('Dimensions')}
                 </Header>
-                {cube.dimensions.map((dim: DimensionType) => (
+                {cubeModel?.dimensions.map((dim: DimensionType) => (
                   <>
                     <DetailsList
                       key={`${dim?.name}-name`}
@@ -221,7 +269,7 @@ const CubesDetails = () => {
                 >
                   {t('Aggregations')}
                 </Header>
-                {cube.aggregates.map((agg: any) => (
+                {cubeModel?.aggregates.map((agg: any) => (
                   <>
                     <DetailsList
                       key={`${agg?.label}-label`}
@@ -246,11 +294,11 @@ const CubesDetails = () => {
                 >
                   {t('Mappings')}
                 </Header>
-                {Object.keys(cube.mappings).map((key: string) => (
+                {cubeMappings.map((key: string) => (
                   <DetailsList
                     key={`mapping-${key}`}
                     title={key}
-                    description={cube.mappings[key]}
+                    description={cubeModel?.mappings[key]}
                   />
                 ))}
               </Grid.Column>

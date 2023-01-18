@@ -53,6 +53,7 @@ export interface InputTextAreaProps {
   inputIcon?: string | null;
   required?: boolean;
   formProps?: Record<string, any>;
+  onChange?: any;
 }
 
 const InputTextArea = ({
@@ -63,6 +64,7 @@ const InputTextArea = ({
   name,
   required,
   formProps,
+  onChange,
   ...childProps
 }: InputTextAreaProps & RestProps) => {
   const styleField = css(
@@ -101,6 +103,7 @@ const InputTextArea = ({
         setValue(inputName, val, {
           shouldDirty: true,
         });
+        onChange(val);
       }}
       error={message}
       value={watch(name)}

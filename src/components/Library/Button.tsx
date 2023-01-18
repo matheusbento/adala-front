@@ -5,6 +5,7 @@ import { css } from 'glamor';
 import {
   Button as SemanticButton,
   SemanticCOLORS,
+  SemanticFLOATS,
   SemanticSIZES,
 } from 'semantic-ui-react';
 
@@ -27,6 +28,9 @@ export interface ButtonProps {
   basic?: boolean;
   outline?: boolean;
   disabled?: boolean;
+  fluid?: boolean;
+  floated?: SemanticFLOATS;
+  loading?: boolean;
 }
 
 const linkCss = css(margin.none, padding.none, border.none, {

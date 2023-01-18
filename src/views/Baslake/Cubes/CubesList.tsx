@@ -22,6 +22,7 @@ import {
   tables,
   fontSizes,
 } from 'utils/theme';
+import { CubeType } from 'types/CubeType';
 
 const styleCubes = css({
   '&.ui.header': {
@@ -58,12 +59,18 @@ const CubesList = () => {
     showCube,
     setIsOpenCubeViewerModal,
     showCubeModelHandler,
+    fetchCubeHandler,
   } = useCubes();
 
   const { t } = useTranslation();
 
   // eslint-disable-next-line no-console
   console.log(cubes);
+
+  const handleShowCube = useCallback((item: CubeType) => {
+    fetchCubeHandler(item.id);
+    showCubeModelHandler(item.identifier);
+  }, []);
 
   return (
     <If condition={loadingOverview}>
@@ -100,9 +107,9 @@ const CubesList = () => {
               <List.Item
                 key={item.id ? `cube-id-${item.id}` : `cube-index-${index}`}
                 className={`${styleListItem} ${
-                  showCube === item.name ? 'active' : ''
+                  showCube === item.id ? 'active' : ''
                 }`}
-                onClick={() => showCubeModelHandler(item.name)}
+                onClick={() => handleShowCube(item)}
               >
                 <List.Content className={`${css(utils.w100)}`}>
                   <div
@@ -111,7 +118,7 @@ const CubesList = () => {
                     })}`}
                   >
                     <Text size="xxs" color="dark" weight="regular">
-                      {item?.info?.id ?? 'No ID'}
+                      {item?.id ?? 'No ID'}
                     </Text>
                     <Text size="xs" weight="medium">
                       {item?.category ?? 'No category'}
@@ -135,24 +142,25 @@ const CubesList = () => {
                     )}`}
                     size="xs"
                   >
-                    {/* <IconList.Item
+                    <IconList.Item
                       size="xs"
-                      icon="icon-person-line"
+                      icon="icon-cube"
                       label={
                         <Text size="xs" weight="bold">
-                          Persona
+                          {item.name}
                         </Text>
                       }
                     />
                     <IconList.Item
                       size="xs"
-                      icon="icon-home"
+                      icon="icon-book"
+                      textAlign="left"
                       label={
                         <Text size="xs" weight="bold">
-                          Location
+                          {item.description}
                         </Text>
                       }
-                    /> */}
+                    />
                     <IconList.Item
                       size="xs"
                       icon="icon-calendar-line"

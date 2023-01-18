@@ -1,31 +1,37 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import PoliciesProvider from 'hooks/Policies';
 import { useEffect } from 'react';
 
-import { If, Then } from 'react-if';
-import {
-  AppearanceTypes,
-  ToastProvider,
-  useToasts,
-} from 'react-toast-notifications';
+import LoginContainer from '@views/Baslake/Login/LoginContainer';
+import { Else, If, Then } from 'react-if';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { AppearanceTypes, useToasts } from 'react-toast-notifications';
 
-import { AuthProvider, useAuth } from '../hooks/Auth';
-import { ToasterProvider, useToaster } from '../hooks/Toaster/Toaster';
-
+import { useAuth } from '../hooks/Auth';
+import { useToaster } from '../hooks/Toaster/Toaster';
 import Loading from '../views/Baslake/Auth/Loading/Loading';
-
 import LoadingGate from '../views/Baslake/LoadingGate/LoadingGate';
 import BaslakeRoutes from './Routes';
 
 const RoutesContainer = () => {
   const { addToast } = useToasts();
-  const { getAuthenticationHandler, wasFetched, loggedIn } = useAuth();
+  const { getAuthenticationHandler, wasFetched, session, loggedIn } = useAuth();
 
   const { toaster } = useToaster();
 
   useEffect(() => {
-    getAuthenticationHandler();
-  }, [getAuthenticationHandler]);
+    const { pathname } = window.location;
+    // console.log({ pathname });
+    if (pathname !== '/login' && loggedIn) {
+      getAuthenticationHandler();
+    }
+  }, [loggedIn]);
+
+  useEffect(() => {
+    const { pathname } = window.location;
+    if (pathname !== '/login' && wasFetched && !loggedIn) {
+      window.location.href = '/login';
+    }
+  }, [wasFetched, loggedIn]);
 
   useEffect(() => {
     if (toaster.trigger) {
@@ -36,10 +42,21 @@ const RoutesContainer = () => {
     }
   }, [addToast, toaster.message, toaster.status, toaster.trigger]);
 
+  // console.log({ wasFetched, loggedIn });
+
   return (
     <LoadingGate waitFor={wasFetched} meanwhile={<Loading />}>
       <If condition={loggedIn}>
         <Then>{() => <BaslakeRoutes />}</Then>
+        <Else>
+          {() => (
+            <BrowserRouter>
+              <Routes>
+                <Route path="/login" element={<LoginContainer />} />
+              </Routes>
+            </BrowserRouter>
+          )}
+        </Else>
       </If>
     </LoadingGate>
   );

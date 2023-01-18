@@ -7,7 +7,7 @@ import {
   ReactNode,
 } from 'react';
 
-import { AxiosResponse } from 'axios';
+import { AxiosError, AxiosResponse } from 'axios';
 import Cookies from 'js-cookie';
 
 import api from 'helpers/api';
@@ -26,6 +26,7 @@ export type AuthContextType = {
   headers: undefined;
   loggedIn: boolean;
   wasFetched: boolean;
+  loginHandler: (email: string, password: string) => void;
 };
 
 export const Auth = createContext<AuthContextType | null>(null);
@@ -48,6 +49,16 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   const [isLoadingLogout, setIsLoadingLogout] = useState(false);
   const [session, setSession] = useState<SessionType | null>(null);
   const [headers, setHeaders] = useState();
+  const [wasFetched, setWasFetched] = useState(true);
+
+  const logout = () => {
+    Cookies.remove('userToken');
+    window.sessionStorage.removeItem('isLogged');
+    window.sessionStorage.removeItem('organization');
+    // eslint-disable-next-line no-console
+    console.log('Logout');
+    window.location.href = '/login';
+  };
 
   const getAuthenticationHandler = useCallback(async () => {
     const userToken = await Cookies.get('userToken');
@@ -55,31 +66,19 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
     setIsLoadingSession(true);
 
-    // setSession({
-    //   user: {
-    //     id: '1',
-    //     login: '123',
-    //     password: '123',
-    //     name: 'Fake User',
-    //     avatar: null,
-    //   },
-    //   permissions: [
-    //     'baslake_access',
-    //     'baslake_cubes_access',
-    //     'baslake_cubes_manage',
-    //     'baslake_datasets_access',
-    //     'baslake_datasets_manage',
-    //   ],
-    // });
-
-    setIsLoadingSession(false);
-
-    // api
-    //   .get('/user/details')
-    //   .then((response: AxiosResponse) => {
-    //     setSession(response.data);
-    //   })
-    //   .finally(() => setIsLoadingSession(false));
+    api
+      .get('/user/me')
+      .then((response: AxiosResponse) => {
+        setSession(response.data);
+        Cookies.set('userToken', JSON.stringify(response.data.authorization));
+        setIsLoadingSession(false);
+      })
+      .catch((e: AxiosError<any>) => {
+        if (e?.response?.data?.message === 'Unauthenticated.') {
+          logout();
+        }
+      })
+      .finally(() => setIsLoadingSession(false));
   }, []);
 
   const logoutHandler = () => {
@@ -89,23 +88,52 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
     api.post('/user/logout', {}).then(() => {
       setIsLoadingLogout(true);
-      window.location.href = '/login';
+      logout();
     });
   };
 
-  const loggedIn = useMemo(() => !!session?.user?.id, [session]);
+  const loginHandler = (email: string, password: string) => {
+    // eslint-disable-next-line no-console
+    console.log('aaaaaa');
+    setIsLoadingSession(true);
+    setWasFetched(false);
 
-  const wasFetched = true;
+    api
+      .post('/user/login', { email, password })
+      .then((response: AxiosResponse) => {
+        // eslint-disable-next-line no-console
+        console.log(response.data);
+        setSession(response.data);
+        Cookies.set('userToken', JSON.stringify(response.data.authorization));
+        sessionStorage.setItem('isLogged', JSON.stringify(response.data));
+        setIsLoadingSession(true);
+        setWasFetched(true);
+        window.location.href = '/';
+      });
+  };
+
+  const loggedSession = useMemo(
+    () => sessionStorage.getItem('isLogged'),
+    [Cookies]
+  );
+
+  const loggedIn = useMemo(
+    () => !!session?.user?.id || !!loggedSession,
+    [session, loggedSession]
+  );
+
+  console.log({ session });
 
   const isUserId = useCallback(
     (userId: string) => session?.user?.id === userId,
     [session]
   );
   const hasPermission = useCallback(
-    (permission: string) => (session?.permissions || []).includes(permission),
+    (permission: string) =>
+      (session?.user?.permissions || []).includes(permission),
     [session]
   );
-  const hasSession = useCallback(() => session?.permissions, [session]);
+  const hasSession = useCallback(() => session?.user?.permissions, [session]);
 
   const providerValue = useMemo(
     () => ({
@@ -120,8 +148,10 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
       hasSession,
       isLoadingLogout,
       headers,
+      loginHandler,
     }),
     [
+      loginHandler,
       loggedIn,
       wasFetched,
       session,

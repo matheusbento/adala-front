@@ -42,6 +42,7 @@ export interface ItemProps {
   label?: string | ReactNode;
   color?: string;
   children?: ReactNode;
+  textAlign?: string;
 }
 
 const Item = ({
@@ -49,6 +50,7 @@ const Item = ({
   label,
   size = 'sm',
   color = 'greyIcon',
+  textAlign = 'center',
   className,
   children,
 }: ItemProps) => {
@@ -66,7 +68,7 @@ const Item = ({
 
   return (
     <li className={`${styleTab} ${className}`}>
-      <div className={`${css(display.flex, { alignItems: 'center' })}`}>
+      <div className={`${css(display.flex)}`}>
         {!!icon && (
           <SvgIcon
             className={label || children ? `${css(margin.rightXs)}` : undefined}
@@ -76,7 +78,9 @@ const Item = ({
           />
         )}
 
-        {!!label && typeof label === TypeOf.string && <div>{label}</div>}
+        {!!label && typeof label === TypeOf.string && (
+          <div className={`${css({ textAlign })}`}>{label}</div>
+        )}
         {!!label && typeof label !== TypeOf.string && <div>{label}</div>}
         {!!children && children}
       </div>

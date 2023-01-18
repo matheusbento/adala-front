@@ -9,6 +9,7 @@ import { useCubes } from '@hooks/Cubes';
 import { padding } from '@utils/theme';
 import BaslakeTable from '@views/Layout/BaslakeTable';
 import { css } from 'glamor';
+import { first } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import { Else, If, Then, When } from 'react-if';
 import { useLocation } from 'react-router-dom';
@@ -16,6 +17,8 @@ import { Breadcrumb, Button, Dimmer, Loader, Segment } from 'semantic-ui-react';
 
 import { DimensionType } from 'types/DimensionType';
 import { LevelType } from 'types/LevelType';
+
+import { arrayUnique } from '../../../helpers';
 
 const CubeViewerModal = () => {
   const [params, setParams] = useState<Record<string, any>>({});
@@ -39,12 +42,16 @@ const CubeViewerModal = () => {
   }, [location.search]);
 
   const modalTitle = useMemo(
-    () => t(`Viewing Cube {{cube.label}}`, { cube }),
+    () => t(`Viewing Cube {{cube.name}}`, { cube }),
     [cube]
   );
 
   useEffect(() => {
     setParams({});
+  }, []);
+
+  useEffect(() => {
+    fetchCubeViewerHandler();
   }, []);
 
   useEffect(() => {
@@ -100,15 +107,51 @@ const CubeViewerModal = () => {
     }));
   }, [dimension, nextLevel, cubeView]);
 
+  const additionalHeader = useMemo(() => {
+    const firstRow = first(cubeView?.result) as any;
+    const record = firstRow?.record;
+
+    const keys = record ? (Object.keys(record) as string[]) : [];
+
+    if (keys?.length === 0) {
+      return [];
+    }
+    // eslint-disable-next-line no-console
+    console.log({ firstRow, record, keys });
+    const prefixes = dimension?.split(':') as string[];
+    // eslint-disable-next-line no-console
+    console.log({ firstRow, record, prefixes, keys });
+    const addHeaders = keys
+      .filter((e: string) =>
+        first(prefixes) ? !e.includes(first(prefixes) as string) : true
+      )
+      .map((e) => ({
+        label: e,
+        key: e,
+        sortable: false,
+      }));
+    return addHeaders;
+  }, [cubeView?.result]);
+
+  const prettifyLabel = (label: string) =>
+    Array.isArray(label) ? arrayUnique(label).join(', ') : label;
+
+  // eslint-disable-next-line no-console
+  console.log({ additionalHeader });
+
   const headers = useMemo(
     () => [
       {
         label: nextLevel?.label ?? nextLevel?.name,
         key: 'next_level',
         sortable: false,
+        style: `${css({
+          minWidth: 300,
+          maxWidth: 0,
+          wordBreak: 'break-word',
+        })}`,
       },
-      { label: 'Count', key: 'count', sortable: false },
-      { label: 'Amount', key: 'amount', sortable: false },
+      ...additionalHeader,
     ],
     [cubeView, baseLevel, nextLevel]
   );
@@ -117,7 +160,7 @@ const CubeViewerModal = () => {
     () =>
       cubeView?.result?.map((row: any) => [
         cubeView?.is_last ? (
-          row.label
+          prettifyLabel(row.label)
         ) : (
           <ButtonLibrary
             link
@@ -128,14 +171,16 @@ const CubeViewerModal = () => {
               }));
             }}
           >
-            {row.label}
+            {prettifyLabel(row.label)}
           </ButtonLibrary>
         ),
-        row.record.record_count,
-        row.record.amount_sum,
+        ...(additionalHeader?.map((e) => row.record[e.key]) ?? []),
       ]),
     [cubeView]
   );
+
+  // eslint-disable-next-line no-console
+  console.log({ headers, rows });
 
   return (
     <BaslakeModal

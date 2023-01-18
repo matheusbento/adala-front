@@ -34,10 +34,12 @@ api.interceptors.request.use(async (config: AxiosRequestConfig) => {
 
   const headers = await getSession();
 
+  console.log('inside', { headers });
+
   if (headers) {
     newConfig.headers = {
       ...(config.headers ? (config.headers.common as unknown as object) : {}),
-      Authorization: `${headers.token_type} ${headers.access_token}` as string,
+      Authorization: `${headers.type} ${headers.token}` as string,
     };
   }
 

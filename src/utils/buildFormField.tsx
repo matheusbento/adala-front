@@ -35,9 +35,15 @@ export interface BuildFormFieldProps {
 
 export interface Rest {
   className?: string;
+  block?: boolean;
+  displayFormat?: string;
+  noBorder?: boolean;
+  numberOfMonths?: number;
+  focused?: boolean;
+  onFocusChange?: any;
 }
 
-const BuildFormField = (InputComponent: any, selectProps: any) => {
+const BuildFormField: any = (InputComponent: any, selectProps: any) => {
   const buildFormField = forwardRef(
     (
       {

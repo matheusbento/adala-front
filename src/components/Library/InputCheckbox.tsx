@@ -112,6 +112,7 @@ export interface InputCheckboxProps {
   toggle?: boolean;
   slider?: boolean;
   input?: any;
+  id?: any;
 }
 
 const InputCheckbox = ({

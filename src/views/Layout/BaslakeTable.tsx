@@ -682,9 +682,9 @@ const BaslakeTable = ({
                   .map((field: any, index: any) => (
                     <td
                       className={`${
-                        headers[index].style ? headers[index].style : ''
+                        headers[index]?.style ? headers[index]?.style : ''
                       }`}
-                      key={`${headers[index].key}-${index}-${i}`}
+                      key={`${headers[index]?.key}-${index}-${i}`}
                     >
                       {field}
                     </td>
