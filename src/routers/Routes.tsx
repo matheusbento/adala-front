@@ -1,5 +1,6 @@
 import { OrganizationsProvider } from '@hooks/Organizations';
 import { useCubesPolicy } from '@hooks/Policies/CubesPolicy';
+import { useSilosPolicy } from '@hooks/Policies/SilosPolicy';
 import CubesContainer from '@views/Baslake/Cubes/CubesContainer';
 // import LoginContainer from '@views/Baslake/Login/LoginContainer';
 import { If, Then, Else } from 'react-if';
@@ -9,12 +10,15 @@ import PolicyProtectedRoute from '../components/Library/PolicyProtectedRoute';
 import { useBaslakePolicy } from '../hooks/Policies/BaslakePolicy';
 import BaslakeDashboardContainer from '../views/Baslake/Dashboard/BaslakeDashboardContainer';
 import Code404 from '../views/Baslake/Errors/Code404';
+import SilosContainer from '../views/Baslake/Silos/SilosContainer';
 import BaslakePage from '../views/Layout/BaslakePage';
 
 const BaslakeRoutes = (props: any) => {
   const BaslakePolicy = useBaslakePolicy();
 
   const CubesPolicy = useCubesPolicy();
+
+  const SilosPolicy = useSilosPolicy();
 
   return (
     <BrowserRouter>
@@ -36,6 +40,13 @@ const BaslakeRoutes = (props: any) => {
                     exact
                     path="/cubes"
                     element={CubesContainer}
+                  />
+
+                  <PolicyProtectedRoute
+                    policy={SilosPolicy.canAccess()}
+                    exact
+                    path="/silos"
+                    element={SilosContainer}
                   />
 
                   <Routes>

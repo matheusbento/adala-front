@@ -5,19 +5,23 @@ import BaslakeTitle from '@components/Library/BaslakeTitle';
 import Button from '@components/Library/Button';
 import FormMessage from '@components/Library/FormMessage';
 import Segment from '@components/Library/Segment';
-import { useCubes } from '@hooks/Cubes';
 import { useOrganizations } from '@hooks/Organizations';
-import { useCubesPolicy } from '@hooks/Policies/CubesPolicy';
+import { useSilosPolicy } from '@hooks/Policies/SilosPolicy';
+import { useSilos } from '@hooks/Silos';
 import { css } from 'glamor';
 import { useTranslation } from 'react-i18next';
 import { When } from 'react-if';
 import { Element } from 'react-scroll';
 import { Menu } from 'semantic-ui-react';
 
-import CubesModalContainer from './CubesModalContainer';
-import CubesOverviewContainer from './CubesOverviewContainer';
+import SiloFileModalContainer from './SiloFileModalContainer';
+import SiloFolderModalContainer from './SiloFolderModalContainer';
+import SiloFoldersContainer from './SiloFoldersContainer';
 
-// import CubesModalContainer from './CubesModalContainer';
+// import SilosModalContainer from './SilosModalContainer';
+// import SilosOverviewContainer from './SilosOverviewContainer';
+
+// import SilosModalContainer from './SilosModalContainer';
 
 const styleContainer = css({ minHeight: 'calc(100vh - 100px)' });
 
@@ -27,18 +31,24 @@ const styleSegment = css({
   marginTop: '0 !important',
 });
 
-const Cubes = () => {
-  const { canCreate } = useCubesPolicy();
+const Silos = () => {
+  const { canCreate } = useSilosPolicy();
 
-  const { showModal, setShowModal, fetchCubesHandler, formSuccess } =
-    useCubes();
+  const {
+    showModal,
+    showModalFile,
+    setShowModalFile,
+    setShowModal,
+    fetchSilosHandler,
+    formSuccess,
+  } = useSilos();
 
   const { organization } = useOrganizations();
 
   const { t } = useTranslation();
 
   useEffect(() => {
-    fetchCubesHandler();
+    fetchSilosHandler(null);
   }, [organization]);
 
   // eslint-disable-next-line no-console
@@ -46,7 +56,7 @@ const Cubes = () => {
 
   return (
     <div className={`${styleContainer}`}>
-      <BaslakeTitle title={t('Data Cubes')}>
+      <BaslakeTitle title={t('Data Silos')}>
         <When condition={canCreate()}>
           {() => (
             <Menu.Item position="right">
@@ -54,9 +64,10 @@ const Cubes = () => {
                 pill
                 outline
                 color="success"
+                icon="icon-folder-add"
                 onClick={() => setShowModal('new')}
               >
-                Create new Cube
+                Create new Silo
               </Button>
             </Menu.Item>
           )}
@@ -64,14 +75,27 @@ const Cubes = () => {
       </BaslakeTitle>
 
       <BaslakeModal
-        size="large"
-        title={`${showModal === 'new' ? 'Create' : 'Edit'} Cube`}
+        size="small"
+        title={`${showModal === 'new' ? 'Create' : 'Edit'} Silo`}
         open={!!showModal}
         closeHandler={() => setShowModal(null)}
       >
         <BaslakeModal.Content>
           <Element name="BaslakeModal">
-            <CubesModalContainer />
+            <SiloFolderModalContainer />
+          </Element>
+        </BaslakeModal.Content>
+      </BaslakeModal>
+
+      <BaslakeModal
+        size="small"
+        title={`${showModalFile === 'new' ? 'Upload' : 'Edit'} File`}
+        open={!!showModalFile}
+        closeHandler={() => setShowModalFile(null)}
+      >
+        <BaslakeModal.Content>
+          <Element name="BaslakeModalFile">
+            <SiloFileModalContainer />
           </Element>
         </BaslakeModal.Content>
       </BaslakeModal>
@@ -91,9 +115,9 @@ const Cubes = () => {
         )}
       </When>
 
-      <CubesOverviewContainer />
+      <SiloFoldersContainer />
     </div>
   );
 };
 
-export default Cubes;
+export default Silos;

@@ -21,7 +21,7 @@ const component = ({
   remove,
 }: FieldArrayTypeSingle) => {
   const add = () => {
-    push({ agency_id: 3 });
+    push({ record_id: 3 });
   };
 
   const rm = () => {
@@ -34,15 +34,15 @@ const component = ({
         <Grid.Row key={item} stretched>
           <Grid.Column mobile={10} tablet={10} computer={10} widescreen={10}>
             <InputText
-              name={`${name}[${index}].agency_id`}
-              label={`Agency ${index}`}
-              placeholder={`Enter Agency ${index}`}
+              name={`${name}[${index}].record_id`}
+              label={`record ${index}`}
+              placeholder={`Enter record ${index}`}
               fluid
               required
             />
             <InputCheckbox
               name={`${name}[${index}].check`}
-              required={!!watch(`${index}].agency_id`)}
+              required={!!watch(`${index}].record_id`)}
             />
           </Grid.Column>
         </Grid.Row>,
@@ -76,11 +76,11 @@ describe('FieldArray component', () => {
     expect(inputs).toHaveLength(2);
     expect(checkboxs).toHaveLength(2);
 
-    const element1 = queryByText('Agency 0 *');
+    const element1 = queryByText('record 0 *');
 
     expect(element1).toBeTruthy();
 
-    const element2 = queryByText('Agency 1 *');
+    const element2 = queryByText('record 1 *');
 
     expect(element2).toBeTruthy();
   });
@@ -97,9 +97,9 @@ describe('FieldArray component', () => {
     fireEvent.click(addElement as Element);
     fireEvent.click(addElement as Element);
 
-    const element1 = queryByText('Agency 0 *');
+    const element1 = queryByText('record 0 *');
 
-    const inputElement = queryByPlaceholderText('Enter Agency 0');
+    const inputElement = queryByPlaceholderText('Enter record 0');
 
     fireEvent.change(inputElement as Element, {
       target: { value: 'Test Text' },
@@ -107,18 +107,18 @@ describe('FieldArray component', () => {
 
     expect(element1).toBeTruthy();
 
-    const element2 = queryByText('Agency 1 *');
+    const element2 = queryByText('record 1 *');
 
     expect(element2).toBeTruthy();
 
     const removeElement = container.querySelector('button[id=remove]');
     fireEvent.click(removeElement as Element);
 
-    const element11 = queryByText('Agency 0 *');
+    const element11 = queryByText('record 0 *');
 
     expect(element11).toBeTruthy();
 
-    const element22 = queryByText('Agency 1 *');
+    const element22 = queryByText('record 1 *');
 
     expect(element22).toBeFalsy();
 

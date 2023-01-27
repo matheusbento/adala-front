@@ -2,15 +2,15 @@ import PolicyCheck from '@components/Library/PolicyCheck';
 import { useAuth } from '@hooks/Auth';
 import { useBaslakePolicy } from '@hooks/Policies/BaslakePolicy';
 import { useCubesPolicy } from '@hooks/Policies/CubesPolicy';
-import { useDatasetPolicy } from '@hooks/Policies/DatasetPolicy';
 import { useOrganizationPolicy } from '@hooks/Policies/OrganizationPolicy';
+import { useSilosPolicy } from '@hooks/Policies/SilosPolicy';
 import { display, padding, text } from '@utils/themeConstants';
 import { css } from 'glamor';
 import { useTranslation } from 'react-i18next';
 import { Link, Location, matchPath, useLocation } from 'react-router-dom';
 import { Menu } from 'semantic-ui-react';
 
-import { SessionType } from 'types/SessionType';
+// import { SessionType } from 'types/SessionType';
 
 import BaslakeSidebarMenuItem from './BaslakeSidebarMenuItem';
 
@@ -36,7 +36,7 @@ const BaslakeSidebar = () => {
   const BaslakePolicy = useBaslakePolicy();
   const CubesPolicy = useCubesPolicy();
   const OrganizationPolicy = useOrganizationPolicy();
-  const DatasetPolicy = useDatasetPolicy();
+  const SilosPolicy = useSilosPolicy();
   const { t } = useTranslation();
   return (
     <div className={`${styleMenu}`}>
@@ -65,7 +65,7 @@ const BaslakeSidebar = () => {
           </Menu.Menu>
 
           <Menu.Menu className={`${styleSubMenu}`}>
-            <PolicyCheck policy={DatasetPolicy.canAccess()}>
+            <PolicyCheck policy={SilosPolicy.canAccess()}>
               <BaslakeSidebarMenuItem
                 subItem
                 active={!!matchPath(pathname, '/silos')}

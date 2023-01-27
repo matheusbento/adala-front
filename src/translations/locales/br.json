@@ -17,9 +17,12 @@
     "Cube Details": "Detalhe do Cubo",
     "cube_amount_one": "{{count}} Cubo",
     "cube_amount_other": "{{count}} Cubos",
+    "silo_amount_one": "{{count}} Silo",
+    "silo_amount_other": "{{count}} Silos",
     "Cubes Summary": "Resumo dos cubos",
     "Data Cubes": "Cubos de dados",
     "Viewing Cube {{cube.name}}": "Visualizando Cubo {{cube.name}}",
+    "Silo {{silo.name}}": "Silo {{silo.name}}",
     "Path": "Caminho",
     "Values": "Valores",
     "All": "Tudo"

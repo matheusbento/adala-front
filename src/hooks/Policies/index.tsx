@@ -2,8 +2,8 @@ import React, { ReactNode } from 'react';
 
 import { BaslakePolicyProvider } from './BaslakePolicy';
 import { CubesPolicyProvider } from './CubesPolicy';
-import { DatasetPolicyProvider } from './DatasetPolicy';
 import { OrganizationPolicyProvider } from './OrganizationPolicy';
+import { SilosPolicyProvider } from './SilosPolicy';
 
 export interface PolicyProps {
   children: ReactNode;
@@ -12,9 +12,9 @@ export interface PolicyProps {
 const PoliciesProvider = ({ children }: PolicyProps) => (
   <BaslakePolicyProvider>
     <OrganizationPolicyProvider>
-      <DatasetPolicyProvider>
+      <SilosPolicyProvider>
         <CubesPolicyProvider>{children}</CubesPolicyProvider>
-      </DatasetPolicyProvider>
+      </SilosPolicyProvider>
     </OrganizationPolicyProvider>
   </BaslakePolicyProvider>
 );

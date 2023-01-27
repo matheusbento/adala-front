@@ -34,7 +34,7 @@ const styleBlock = css(padding.bottomXs);
 //   },
 // });
 
-const JobsOrderFormReview = () => {
+const SiloFormReview = () => {
   // eslint-disable-next-line no-console
   console.log('dasdasdasd');
 
@@ -42,7 +42,7 @@ const JobsOrderFormReview = () => {
     <div className={`${styleBlock}`}>
       REVIEW
       {/* <div className={`${styleHeader}`}>
-        <JobsOrderDetailsHeader
+        <SiloDetailsHeader
           showJobOrder={{
             ...formValues,
             end_date: endDate,
@@ -213,4 +213,4 @@ const JobsOrderFormReview = () => {
   );
 };
 
-export default JobsOrderFormReview;
+export default SiloFormReview;

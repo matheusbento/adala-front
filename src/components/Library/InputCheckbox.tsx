@@ -113,6 +113,7 @@ export interface InputCheckboxProps {
   slider?: boolean;
   input?: any;
   id?: any;
+  onChange?: any;
 }
 
 const InputCheckbox = ({
@@ -129,6 +130,7 @@ const InputCheckbox = ({
   className,
   slider,
   toggle = false,
+  onChange,
   ...rest
 }: InputCheckboxProps) => {
   const { register, setValue, formState, watch } = useFormContext();
@@ -176,6 +178,7 @@ const InputCheckbox = ({
         _: any,
         { name: inputName, value: val }: Record<string, any>
       ) => {
+        onChange?.(val);
         setValue(inputName, val ? 0 : 1, {
           shouldDirty: true,
         });

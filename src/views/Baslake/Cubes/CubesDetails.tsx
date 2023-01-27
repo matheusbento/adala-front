@@ -363,7 +363,7 @@ const CubesDetails = () => {
           </Grid>
 
           {/* <Header as="h4" className={`${styleSubHeaders}`}>
-            Order Description
+            Cubes Description
           </Header>
           <p>[description]</p>
 
@@ -445,7 +445,7 @@ const CubesDetails = () => {
           {/* <JobOrderHistoryContainer cubeId={showCube?.id} /> */}
           {/* </div> */}
 
-          {/* <CubesNotesModalContainer order={showCube} /> */}
+          {/* <CubesNotesModalContainer cube={showCube} /> */}
         </List>
       )}
 

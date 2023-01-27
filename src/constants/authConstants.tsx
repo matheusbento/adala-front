@@ -9,7 +9,7 @@ export const permissions: Record<string, any> = {
     see: 'baslake_cubes_access',
     manage: 'baslake_cubes_manage',
   },
-  dataset: {
+  silos: {
     see: 'baslake_datasets_access',
     manage: 'baslake_datasets_manage',
   },

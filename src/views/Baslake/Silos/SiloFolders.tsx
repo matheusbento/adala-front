@@ -2,8 +2,8 @@ import { useCallback, useEffect, useState } from 'react';
 
 import Segment from '@components/Library/Segment';
 import SvgIcon from '@components/Library/SvgIcon';
-import { useCubes } from '@hooks/Cubes';
 import { useFilter } from '@hooks/Filter';
+import { useSilos } from '@hooks/Silos';
 import { padding, display, colors, buttons } from '@utils/theme';
 import { flex } from '@utils/themeConstants';
 import BaslakePageTitle from '@views/Layout/BaslakePageTitle';
@@ -12,16 +12,16 @@ import { useTranslation } from 'react-i18next';
 import { When } from 'react-if';
 import { useLocation } from 'react-router-dom';
 
-import CubesDetailsContainer from './CubesDetailsContainer';
-import CubesListContainer from './CubesListContainer';
-import CubeViewerModalContainer from './CubeViewerModalContainer';
+import SiloDetailsContainer from './SiloDetailsContainer';
+import SilosListContainer from './SilosListContainer';
+// import SiloViewerModalContainer from './SiloViewerModalContainer';
 import '@translations/i18n';
 
-// import CubesDetailsContainer from './CubesDetailsContainer';
-// import CubesFilters from './CubesFilters';
-// import CubesListContainer from './CubesListContainer';
+// import SiloDetailsContainer from './SiloDetailsContainer';
+// import SilosFilters from './SilosFilters';
+// import SilosListContainer from './SilosListContainer';
 
-const styleCubesHeader = css(padding.bottomXs, {
+const styleSilosHeader = css(padding.bottomXs, {
   borderBottom: `solid 1px ${colors.greyLight} !important`,
 });
 
@@ -58,25 +58,21 @@ const styleCloseButton = css(buttons.plain, {
   float: 'right',
 });
 
-const CubesOverview = ({ context }: { context: string }) => {
+const SilosOverview = ({ context }: { context: string }) => {
   const [filtersVisible, setFiltersVisible] = useState(false);
   const { search, state }: any = useLocation();
 
   const { getAppliedFiltersByContext } = useFilter();
-  const { loadingOverview, showCube, cubeModel, cube, showCubeModelHandler } =
-    useCubes();
+  const { showSilo, isLoadingSilos } = useSilos();
   const { t } = useTranslation();
 
   const appliedFilters = getAppliedFiltersByContext();
 
-  const handleShowCube = useCallback(
-    (cubeId: number | string | null) => {
-      if (cubeId) {
-        showCubeModelHandler(cubeId);
-      }
-    },
-    [showCubeModelHandler]
-  );
+  const handleShowSilo = useCallback((siloId: number | string | null) => {
+    // if (siloId) {
+    //   showSiloModelHandler(siloId);
+    // }
+  }, []);
 
   const toggleVisibleHandler = useCallback(() => {
     setFiltersVisible(!filtersVisible);
@@ -105,19 +101,16 @@ const CubesOverview = ({ context }: { context: string }) => {
     },
   });
 
-  // eslint-disable-next-line no-console
-  console.log({ cube, cubeModel });
-
   return (
     <div className={`${styleRow}`}>
       {filtersVisible && (
         <div className={`${styleFilters}`}>
           {t('Filters')}
-          {/* <CubesFilters context={context} /> */}
+          {/* <SilosFilters context={context} /> */}
         </div>
       )}
       <div className={`${styleDetails}`}>
-        {!showCube && (
+        {!showSilo && (
           <>
             <Segment className={`${styleSegment}`}>
               <BaslakePageTitle
@@ -126,15 +119,15 @@ const CubesOverview = ({ context }: { context: string }) => {
                 clickIconActive={appliedFilters.length > 0}
                 visible={filtersVisible}
               >
-                {t('Cubes Summary')}
+                {t('Silos Summary')}
               </BaslakePageTitle>
             </Segment>
 
-            {/* <CubesSummary
+            {/* <SilosSummary
               summary={summary}
               loadingOverview={loadingOverview}
-              card="cubes"
-              stats={['cubes', 'tasks', 'filled', 'estimated']}
+              card="orders"
+              stats={['orders', 'tasks', 'filled', 'estimated']}
               dataToShowDefault={
                 isContextType()
                   ? 'byJobTitle'
@@ -147,39 +140,39 @@ const CubesOverview = ({ context }: { context: string }) => {
             /> */}
           </>
         )}
-        {showCube && (
+        {showSilo && (
           <>
             <button
               className={`${styleCloseButton}`}
               type="button"
-              onClick={() => handleShowCube(null)}
+              onClick={() => handleShowSilo(null)}
             >
               <SvgIcon path="icon-close" size="lg" color={colors.greyDark} />
             </button>
-            <Segment className={`${styleSegment} ${styleCubesHeader}`}>
+            <Segment className={`${styleSegment} ${styleSilosHeader}`}>
               <BaslakePageTitle
                 icon="icon-swap"
                 clickIconHandler={toggleVisibleHandler}
                 clickIconActive={appliedFilters.length > 0}
                 visible={filtersVisible}
               >
-                {t(`Cube {{cube.name}}`, { cube })}
+                {t(`Silo {{silo.name}}`, { silo: showSilo })}
               </BaslakePageTitle>
             </Segment>
-            <CubesDetailsContainer />
+            <SiloDetailsContainer />
           </>
         )}
       </div>
-      {!loadingOverview && (
+      {!isLoadingSilos && (
         <div className={`${styleList}`}>
-          <CubesListContainer />
+          <SilosListContainer />
         </div>
       )}
-      <When condition={!!cubeModel}>
-        <CubeViewerModalContainer />
-      </When>
+      {/* <When condition={!!siloModel}>
+        <SiloViewerModalContainer />
+      </When> */}
     </div>
   );
 };
 
-export default CubesOverview;
+export default SilosOverview;

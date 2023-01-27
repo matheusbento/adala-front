@@ -44,6 +44,10 @@ const FilterProvider = ({ children, context }: FilterProviderProps) => {
       keyword: '',
       suggestions: [],
     },
+    silos: {
+      keyword: '',
+      suggestions: [],
+    },
   });
 
   const [oldFilters, setOldFilters] = useState<Record<string, any>>({

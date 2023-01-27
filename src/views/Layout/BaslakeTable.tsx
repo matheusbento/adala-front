@@ -612,6 +612,7 @@ const BaslakeTable = ({
                                 name: `check${i}`,
                                 id: `check${i}`,
                               }}
+                              name={`check${i}`}
                               disabled={
                                 loading === BaslakeLoading.actions ||
                                 bulkDisabled ||
@@ -642,6 +643,7 @@ const BaslakeTable = ({
                                   name: `check${i}`,
                                   id: `check${i}`,
                                 }}
+                                name={`check${i}`}
                                 disabled={
                                   loading === BaslakeLoading.actions || disabled
                                 }
@@ -856,6 +858,7 @@ const BaslakeTable = ({
                             name: 'selectAll',
                             id: 'selectAll',
                           }}
+                          name="selectAll"
                           disabled={
                             loading === BaslakeLoading.actions ||
                             bulkDisabled ||

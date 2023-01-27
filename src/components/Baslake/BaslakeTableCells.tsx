@@ -39,6 +39,7 @@ export const SelectCell = ({ input, ...rest }: any) => (
     <InputCheckbox
       name={rest.name}
       input={{ ...input, value: input?.value ?? false }}
+      onChange={input?.onChange}
       {...rest}
     />
   </Segment>

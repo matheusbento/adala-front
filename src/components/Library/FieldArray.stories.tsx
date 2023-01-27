@@ -28,15 +28,15 @@ const initialValues = {
 const options = [
   {
     id: 1,
-    name: 'Agency Test 1',
+    name: 'Test 1',
   },
   {
     id: 2,
-    name: 'Agency Test 2',
+    name: 'Test 2',
   },
   {
     id: 3,
-    name: 'Agency Test 3',
+    name: 'Test 3',
   },
 ];
 
@@ -54,9 +54,9 @@ const component = ({ fields, name, push, remove }: FieldArrayTypeSingle) => {
           <Grid.Column mobile={10} tablet={10} computer={10} widescreen={10}>
             <InputDropdown
               name={`${name}[${index}].agency_id`}
-              label={`Agency ${index}`}
+              label={`record ${index}`}
               laravelOptions={options}
-              placeholder="Search agency"
+              placeholder="Search record"
               disabled={false}
               required
               fluid

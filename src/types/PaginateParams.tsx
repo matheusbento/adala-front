@@ -3,4 +3,6 @@ export type PaginateParams = {
   direction?: string;
   page?: number;
   q?: string | undefined;
+  all?: boolean | undefined;
+  status?: string | undefined;
 };

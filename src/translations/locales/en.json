@@ -1,4 +1,6 @@
 {
     "cube_amount_one": "{{count}} Cube",
-    "cube_amount_other": "{{count}} Cubes"
+    "cube_amount_other": "{{count}} Cubes",
+    "silo_amount_one": "{{count}} Silo",
+    "silo_amount_other": "{{count}} Silos"
 }
