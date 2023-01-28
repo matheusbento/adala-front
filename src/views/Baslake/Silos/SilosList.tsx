@@ -57,9 +57,6 @@ const SilosList = () => {
 
   const { t } = useTranslation();
 
-  // eslint-disable-next-line no-console
-  console.log(silos, showSilo);
-
   const handleShowSilo = useCallback((item: SiloType) => {
     fetchSiloHandler(item);
   }, []);

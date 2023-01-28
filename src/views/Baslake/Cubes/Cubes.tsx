@@ -12,7 +12,7 @@ import { css } from 'glamor';
 import { useTranslation } from 'react-i18next';
 import { When } from 'react-if';
 import { Element } from 'react-scroll';
-import { Menu } from 'semantic-ui-react';
+import { Menu, Dimmer, Loader } from 'semantic-ui-react';
 
 import CubesModalContainer from './CubesModalContainer';
 import CubesOverviewContainer from './CubesOverviewContainer';
@@ -41,57 +41,61 @@ const Cubes = () => {
     fetchCubesHandler();
   }, [organization]);
 
-  // eslint-disable-next-line no-console
-  console.log({ formSuccess });
-
   return (
     <div className={`${styleContainer}`}>
-      <BaslakeTitle title={t('Data Cubes')}>
-        <When condition={canCreate()}>
-          {() => (
-            <Menu.Item position="right">
-              <Button
-                pill
-                outline
-                color="success"
-                onClick={() => setShowModal('new')}
-              >
-                Create new Cube
-              </Button>
-            </Menu.Item>
-          )}
-        </When>
-      </BaslakeTitle>
+      <Dimmer active={!organization} inverted>
+        <Loader active />
+      </Dimmer>
+      <When condition={!!organization}>
+        <>
+          <BaslakeTitle title={t('Data Cubes')}>
+            <When condition={canCreate()}>
+              {() => (
+                <Menu.Item position="right">
+                  <Button
+                    pill
+                    outline
+                    color="success"
+                    onClick={() => setShowModal('new')}
+                  >
+                    Create new Cube
+                  </Button>
+                </Menu.Item>
+              )}
+            </When>
+          </BaslakeTitle>
 
-      <BaslakeModal
-        size="large"
-        title={`${showModal === 'new' ? 'Create' : 'Edit'} Cube`}
-        open={!!showModal}
-        closeHandler={() => setShowModal(null)}
-      >
-        <BaslakeModal.Content>
-          <Element name="BaslakeModal">
-            <CubesModalContainer />
-          </Element>
-        </BaslakeModal.Content>
-      </BaslakeModal>
+          <BaslakeModal
+            size="large"
+            title={`${showModal === 'new' ? 'Create' : 'Edit'} Cube`}
+            open={!!showModal}
+            closeHandler={() => setShowModal(null)}
+          >
+            <BaslakeModal.Content>
+              <Element name="BaslakeModal">
+                <CubesModalContainer />
+              </Element>
+            </BaslakeModal.Content>
+          </BaslakeModal>
 
-      <When condition={!!formSuccess}>
-        {() => (
-          <Segment basic className={`${styleSegment}`}>
-            <FormMessage
-              success
-              header="Success"
-              list={formSuccess as string[]}
-              visible={!!formSuccess}
-              timeout={5000}
-              type="success"
-            />
-          </Segment>
-        )}
+          <When condition={!!formSuccess}>
+            {() => (
+              <Segment basic className={`${styleSegment}`}>
+                <FormMessage
+                  success
+                  header="Success"
+                  list={formSuccess as string[]}
+                  visible={!!formSuccess}
+                  timeout={5000}
+                  type="success"
+                />
+              </Segment>
+            )}
+          </When>
+
+          <CubesOverviewContainer />
+        </>
       </When>
-
-      <CubesOverviewContainer />
     </div>
   );
 };

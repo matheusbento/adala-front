@@ -5,6 +5,7 @@ import {
   useState,
   ReactNode,
   useCallback,
+  useEffect,
 } from 'react';
 
 import api from '@helpers/api';
@@ -83,58 +84,6 @@ const OrganizationsProvider = ({ children }: OrganizationsProviderProps) => {
 
   // const [showCube, setShowCube] = useState<number | string | null>(null);
 
-  // const showCubeModelHandler = useCallback(
-  //   async (organizationId: number | string, params: any = null) => {
-  //     try {
-  //       setIsLoadingCube(true);
-  //       const response = await organizationsAPI.get(`organization/${organizationId}/model`, {
-  //         params,
-  //       });
-  //       setShowCube(organizationId);
-  //       setOrganization(response?.data);
-  //     } catch (e) {
-  //       setOrganization(null);
-  //       // [todo]
-  //       // toaster(
-  //       //   dispatch,
-  //       //   'Error while trying to load the departmentSources',
-  //       //   'error'
-  //       // );
-  //     } finally {
-  //       setIsLoadingCube(false);
-  //     }
-  //   },
-  //   [setLoadingOverview]
-  // );
-
-  // const fetchCubeViewerHandler = useCallback(
-  //   async (dimension?: string, params: any = {}) => {
-  //     try {
-  //       setIsLoadingCubeView(true);
-  //       const response = await organizationsAPI.get(
-  //         dimension
-  //           ? `organization/${organization?.name}/viewer/${dimension}`
-  //           : `organization/${organization?.name}/viewer`,
-  //         {
-  //           params,
-  //         }
-  //       );
-  //       setOrganizationView(response?.data);
-  //     } catch (e) {
-  //       setOrganizationView(null);
-  //       // [todo]
-  //       // toaster(
-  //       //   dispatch,
-  //       //   'Error while trying to load the departmentSources',
-  //       //   'error'
-  //       // );
-  //     } finally {
-  //       setIsLoadingCubeView(false);
-  //     }
-  //   },
-  //   [setLoadingOverview, organization]
-  // );
-
   // const fetchOrganizationsHandler = useCallback(
   //   async (
   //     search: string | undefined | null = null,
@@ -209,7 +158,7 @@ const OrganizationsProvider = ({ children }: OrganizationsProviderProps) => {
   );
 
   const initOrganization = useCallback(async () => {
-    const organizationId = getOrganizationId();
+    const organizationId = await getOrganizationId();
     if (organizationId) {
       const currentOrganization = organizations?.find(
         (e) => e.id === +organizationId
@@ -217,6 +166,10 @@ const OrganizationsProvider = ({ children }: OrganizationsProviderProps) => {
       setOrganization(currentOrganization as OrganizationType);
     }
   }, [organizations, getOrganizationId]);
+
+  useEffect(() => {
+    initOrganization();
+  }, []);
 
   const handleSetOrganization = useCallback((o: any) => {
     Cookies.set('organization', o.id);

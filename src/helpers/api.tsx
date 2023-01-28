@@ -34,8 +34,6 @@ api.interceptors.request.use(async (config: AxiosRequestConfig) => {
 
   const headers = await getSession();
 
-  console.log('inside', { headers });
-
   if (headers) {
     newConfig.headers = {
       ...(config.headers ? (config.headers.common as unknown as object) : {}),

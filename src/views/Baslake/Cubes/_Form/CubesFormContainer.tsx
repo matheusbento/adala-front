@@ -1,15 +1,16 @@
 import Form from '@components/Library/Form';
 import { useCubes } from '@hooks/Cubes';
-import { OrganizationsProvider } from '@hooks/Organizations';
+import { OrganizationsProvider, useOrganizations } from '@hooks/Organizations';
 import { SilosProvider } from '@hooks/Silos';
 
 import CubesForm from './CubesForm';
 
 const CubesFormContainer = (props: any) => {
   const { saveCubeHandler, initialValues } = useCubes();
+  const { organization } = useOrganizations();
   return (
     <OrganizationsProvider>
-      <SilosProvider>
+      <SilosProvider organizationId={organization?.id as unknown as number}>
         <Form
           onSubmit={saveCubeHandler}
           formArgs={{ defaultValues: initialValues }}

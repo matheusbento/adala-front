@@ -65,9 +65,10 @@ const useCubes = () => {
 
 interface CubesProviderProps {
   children: ReactNode;
+  organizationId: number;
 }
 
-const CubesProvider = ({ children }: CubesProviderProps) => {
+const CubesProvider = ({ children, organizationId }: CubesProviderProps) => {
   const [showModal, setShowModal] = useState<string | null>(null);
   const [order, setOrder] = useState<OrderType>();
   const [isLoadingCubes, setIsLoadingCubes] = useState(false);
@@ -100,12 +101,9 @@ const CubesProvider = ({ children }: CubesProviderProps) => {
   const [isLoadingSave, setIsLoadingSave] = useState(false);
   const [formState, setFormState] = useState('form');
 
-  const { getOrganizationId } = useOrganizations();
-
   const fetchCubeHandler = useCallback(
     async (cubeId: number | string, params: any = null) => {
       try {
-        const organizationId = await getOrganizationId();
         setIsLoadingCube(true);
         const response = await api.get(
           `organizations/${organizationId}/cubes/${cubeId}`,
@@ -127,7 +125,7 @@ const CubesProvider = ({ children }: CubesProviderProps) => {
         setIsLoadingCube(false);
       }
     },
-    [setLoadingOverview, getOrganizationId]
+    [setLoadingOverview, organizationId]
   );
 
   const showCubeModelHandler = useCallback(
@@ -150,14 +148,12 @@ const CubesProvider = ({ children }: CubesProviderProps) => {
         setIsLoadingCube(false);
       }
     },
-    [setLoadingOverview]
+    [setLoadingOverview, organizationId]
   );
 
   const fetchCubeViewerHandler = useCallback(
     async (dimension?: string, params: any = {}) => {
       try {
-        // eslint-disable-next-line no-console
-        console.log('CUBE ATUAL', cube);
         setIsLoadingCubeView(true);
         const response = await cubesAPI.get(
           dimension
@@ -186,10 +182,7 @@ const CubesProvider = ({ children }: CubesProviderProps) => {
   const saveCubeHandler = useCallback(
     async (data: CubeType) => {
       try {
-        // eslint-disable-next-line no-console
-        console.log({ data });
         setIsLoadingSave(true);
-        const organizationId = await getOrganizationId();
         const method = data?.id ? 'put' : 'post';
         const url = data?.id
           ? `organizations/${organizationId}/cubes/${data?.id}`
@@ -214,8 +207,6 @@ const CubesProvider = ({ children }: CubesProviderProps) => {
             // ],
           },
         });
-        // eslint-disable-next-line no-console
-        console.log(response?.data);
         setFormSuccess(['Cube created!']);
         // setCubeView(response?.data);
       } catch (e) {
@@ -230,7 +221,7 @@ const CubesProvider = ({ children }: CubesProviderProps) => {
         setIsLoadingSave(false);
       }
     },
-    [setLoadingOverview, cube]
+    [setLoadingOverview, organizationId, cube]
   );
 
   const fetchCubesHandler = useCallback(
@@ -239,7 +230,6 @@ const CubesProvider = ({ children }: CubesProviderProps) => {
       params: PaginateParams | null = null
       // eslint-disable-next-line consistent-return
     ) => {
-      const organizationId = await getOrganizationId();
       try {
         setIsLoadingCubes(true);
 
@@ -263,8 +253,6 @@ const CubesProvider = ({ children }: CubesProviderProps) => {
           };
         }
 
-        // eslint-disable-next-line no-console
-        console.log(organizationId);
         const response = await api.get(
           `organizations/${organizationId}/cubes/`,
           {
@@ -286,7 +274,7 @@ const CubesProvider = ({ children }: CubesProviderProps) => {
         setIsLoadingCubes(false);
       }
     },
-    [order, getOrganizationId]
+    [order, organizationId]
   );
 
   const providerValue = useMemo(

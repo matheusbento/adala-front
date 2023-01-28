@@ -64,153 +64,156 @@ const CubesList = () => {
 
   const { t } = useTranslation();
 
-  // eslint-disable-next-line no-console
-  console.log(cubes);
-
   const handleShowCube = useCallback((item: CubeType) => {
     fetchCubeHandler(item.id);
     showCubeModelHandler(item.identifier);
   }, []);
 
   return (
-    <If condition={loadingOverview}>
-      <Then>
-        <Loader inverted />
-      </Then>
+    <If condition={isLoadingCubes || loadingOverview}>
+      <Then>{() => <Loader />}</Then>
       <Else>
-        {cubes?.length && (
-          <div className={`${styleTitleContainer}`}>
-            <Header
-              as="h3"
-              color="primary"
-              className={`${css(margin.none)} ${styleCubes}`}
-            >
-              {t('cube_amount', { count: cubes?.length })}
-            </Header>
-          </div>
-        )}
+        {() => (
+          <>
+            {cubes?.length && (
+              <div className={`${styleTitleContainer}`}>
+                <Header
+                  as="h3"
+                  color="primary"
+                  className={`${css(margin.none)} ${styleCubes}`}
+                >
+                  {t('cube_amount', { count: cubes?.length })}
+                </Header>
+              </div>
+            )}
 
-        <List className={`${styleList}`}>
-          {!isLoadingCubes && !cubes?.length && (
-            <table className={`${noDataTable}`}>
-              <tbody>
-                <tr>
-                  <td className="no-data" colSpan={100}>
-                    No cubes found
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          )}
-          {cubes &&
-            cubes.map((item: any, index: number) => (
-              <List.Item
-                key={item.id ? `cube-id-${item.id}` : `cube-index-${index}`}
-                className={`${styleListItem} ${
-                  showCube === item.id ? 'active' : ''
-                }`}
-                onClick={() => handleShowCube(item)}
-              >
-                <List.Content className={`${css(utils.w100)}`}>
-                  <div
-                    className={`${css(display.flex, {
-                      justifyContent: 'space-between',
-                    })}`}
+            <List className={`${styleList}`}>
+              {!isLoadingCubes && !cubes?.length && (
+                <table className={`${noDataTable}`}>
+                  <tbody>
+                    <tr>
+                      <td className="no-data" colSpan={100}>
+                        No cubes found
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              )}
+              {cubes &&
+                cubes.map((item: any, index: number) => (
+                  <List.Item
+                    key={item.id ? `cube-id-${item.id}` : `cube-index-${index}`}
+                    className={`${styleListItem} ${
+                      showCube === item.id ? 'active' : ''
+                    }`}
+                    onClick={() => handleShowCube(item)}
                   >
-                    <Text size="xxs" color="dark" weight="regular">
-                      {item?.id ?? 'No ID'}
-                    </Text>
-                    <Text size="xs" weight="medium">
-                      {item?.category ?? 'No category'}
-                    </Text>
-                  </div>
+                    <List.Content className={`${css(utils.w100)}`}>
+                      <div
+                        className={`${css(display.flex, {
+                          justifyContent: 'space-between',
+                        })}`}
+                      >
+                        <Text size="xxs" color="dark" weight="regular">
+                          {item?.id ?? 'No ID'}
+                        </Text>
+                        <Text size="xs" weight="medium">
+                          {item?.category ?? 'No category'}
+                        </Text>
+                      </div>
 
-                  <div className={`${css(display.flex)}`}>
-                    <Text
-                      className={`${css(margin.bottomXs, display.flex)}`}
-                      size="md"
-                      color="primary"
-                      weight="medium"
-                      as="p"
-                    >
-                      {item.label}
-                    </Text>
-                  </div>
-                  <IconList
-                    className={`${css(
-                      item.secondary_status ? margin.bottomXxs : margin.bottomSm
-                    )}`}
-                    size="xs"
-                  >
-                    <IconList.Item
-                      size="xs"
-                      icon="icon-cube"
-                      label={
-                        <Text size="xs" weight="bold">
-                          {item.name}
-                        </Text>
-                      }
-                    />
-                    <IconList.Item
-                      size="xs"
-                      icon="icon-book"
-                      textAlign="left"
-                      label={
-                        <Text size="xs" weight="bold">
-                          {item.description}
-                        </Text>
-                      }
-                    />
-                    <IconList.Item
-                      size="xs"
-                      icon="icon-calendar-line"
-                      label={
-                        <div
-                          className={`${css(display.flex, {
-                            alignItems: 'center',
-                            lineHeight: 1,
-                          })}`}
+                      <div className={`${css(display.flex)}`}>
+                        <Text
+                          className={`${css(margin.bottomXs, display.flex)}`}
+                          size="md"
+                          color="primary"
+                          weight="medium"
+                          as="p"
                         >
-                          {item.info?.min_date
-                            ? moment(item.info?.min_date).format('MMM DD, YYYY')
-                            : 'n/a'}
-                          <When condition={item.info?.max_date}>
-                            {() => (
-                              <>
-                                <SvgIcon
-                                  className={`${css(margin.xXs)}`}
-                                  path="icon-arrow-forward"
-                                  size="xs"
-                                  color={colors.grey}
-                                />
-                                {item.info?.max_date
-                                  ? moment(item.info?.max_date).format(
-                                      'MMM DD, YYYY'
-                                    )
-                                  : 'n/a'}
-                              </>
-                            )}
-                          </When>
-                        </div>
-                      }
-                    />
-                  </IconList>
-                  <div>
-                    <Button
-                      pill
-                      className={`${styleButton}`}
-                      size="xs"
-                      onClick={() => setIsOpenCubeViewerModal(true)}
-                      color="primary"
-                      outline
-                    >
-                      {t('Data visualize')}
-                    </Button>
-                  </div>
-                </List.Content>
-              </List.Item>
-            ))}
-        </List>
+                          {item.label}
+                        </Text>
+                      </div>
+                      <IconList
+                        className={`${css(
+                          item.secondary_status
+                            ? margin.bottomXxs
+                            : margin.bottomSm
+                        )}`}
+                        size="xs"
+                      >
+                        <IconList.Item
+                          size="xs"
+                          icon="icon-cube"
+                          label={
+                            <Text size="xs" weight="bold">
+                              {item.name}
+                            </Text>
+                          }
+                        />
+                        <IconList.Item
+                          size="xs"
+                          icon="icon-book"
+                          textAlign="left"
+                          label={
+                            <Text size="xs" weight="bold">
+                              {item.description}
+                            </Text>
+                          }
+                        />
+                        <IconList.Item
+                          size="xs"
+                          icon="icon-calendar-line"
+                          label={
+                            <div
+                              className={`${css(display.flex, {
+                                alignItems: 'center',
+                                lineHeight: 1,
+                              })}`}
+                            >
+                              {item.info?.min_date
+                                ? moment(item.info?.min_date).format(
+                                    'MMM DD, YYYY'
+                                  )
+                                : 'n/a'}
+                              <When condition={item.info?.max_date}>
+                                {() => (
+                                  <>
+                                    <SvgIcon
+                                      className={`${css(margin.xXs)}`}
+                                      path="icon-arrow-forward"
+                                      size="xs"
+                                      color={colors.grey}
+                                    />
+                                    {item.info?.max_date
+                                      ? moment(item.info?.max_date).format(
+                                          'MMM DD, YYYY'
+                                        )
+                                      : 'n/a'}
+                                  </>
+                                )}
+                              </When>
+                            </div>
+                          }
+                        />
+                      </IconList>
+                      <div>
+                        <Button
+                          pill
+                          className={`${styleButton}`}
+                          size="xs"
+                          onClick={() => setIsOpenCubeViewerModal(true)}
+                          color="primary"
+                          outline
+                        >
+                          {t('Data visualize')}
+                        </Button>
+                      </div>
+                    </List.Content>
+                  </List.Item>
+                ))}
+            </List>
+          </>
+        )}
 
         {/* <Pagination
           isLoading={isLoadingCubes}

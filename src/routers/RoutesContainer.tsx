@@ -20,7 +20,6 @@ const RoutesContainer = () => {
 
   useEffect(() => {
     const { pathname } = window.location;
-    // console.log({ pathname });
     if (pathname !== '/login' && loggedIn) {
       getAuthenticationHandler();
     }
@@ -41,8 +40,6 @@ const RoutesContainer = () => {
       });
     }
   }, [addToast, toaster.message, toaster.status, toaster.trigger]);
-
-  // console.log({ wasFetched, loggedIn });
 
   return (
     <LoadingGate waitFor={wasFetched} meanwhile={<Loading />}>

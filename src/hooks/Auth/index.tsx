@@ -82,8 +82,6 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   }, []);
 
   const logoutHandler = () => {
-    // eslint-disable-next-line no-console
-    console.log('aaaaaa');
     setIsLoadingLogout(true);
 
     api.post('/user/logout', {}).then(() => {
@@ -101,8 +99,6 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     api
       .post('/user/login', { email, password })
       .then((response: AxiosResponse) => {
-        // eslint-disable-next-line no-console
-        console.log(response.data);
         setSession(response.data);
         Cookies.set('userToken', JSON.stringify(response.data.authorization));
         sessionStorage.setItem('isLogged', JSON.stringify(response.data));
@@ -121,8 +117,6 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     () => !!session?.user?.id || !!loggedSession,
     [session, loggedSession]
   );
-
-  console.log({ session });
 
   const isUserId = useCallback(
     (userId: string) => session?.user?.id === userId,

@@ -118,14 +118,6 @@ const InputFile = ({
           required: required ? 'This field is required' : false,
           ...formProps,
         })}
-        // onChange={(act: any, { name: inputName }: Record<string, any>) => {
-        //   console.log(inputName, act.target.files, {
-        //     shouldDirty: true,
-        //   });
-        //   setValue(inputName, act.target.files, {
-        //     shouldDirty: true,
-        //   });
-        // }}
         type="file"
         required={required}
         error={message}

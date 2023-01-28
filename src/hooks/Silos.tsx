@@ -64,9 +64,10 @@ const useSilos = () => {
 
 interface SilosProviderProps {
   children: ReactNode;
+  organizationId: number | null;
 }
 
-const SilosProvider = ({ children }: SilosProviderProps) => {
+const SilosProvider = ({ children, organizationId }: SilosProviderProps) => {
   const [showModal, setShowModal] = useState<string | null>(null);
   const [showModalFile, setShowModalFile] = useState<string | null>(null);
   const [order, setOrder] = useState<OrderType>();
@@ -89,12 +90,9 @@ const SilosProvider = ({ children }: SilosProviderProps) => {
   const [isLoadingSaveSiloFolder, setIsLoadingSaveSiloFolder] = useState(false);
   const [formState, setFormState] = useState('form');
 
-  const { getOrganizationId } = useOrganizations();
-
   const fetchSiloHandler = useCallback(
     async (sil: SiloType, params?: any) => {
       try {
-        const organizationId = await getOrganizationId();
         setIsLoadingSilo(true);
         const response = await api.get(
           `organizations/${organizationId}/folders/${sil.id}/files`,
@@ -116,16 +114,13 @@ const SilosProvider = ({ children }: SilosProviderProps) => {
         setIsLoadingSilo(false);
       }
     },
-    [getOrganizationId]
+    [organizationId]
   );
 
   const saveSiloHandler = useCallback(
     async (folderId: number, data: SiloFileType) => {
       try {
-        // eslint-disable-next-line no-console
-        console.log({ folderId, data });
         setIsLoadingSave(true);
-        const organizationId = await getOrganizationId();
         const method = data?.id ? 'put' : 'post';
         const url = data?.id
           ? `organizations/${organizationId}/folders/${folderId}/files/${data?.id}`
@@ -162,7 +157,6 @@ const SilosProvider = ({ children }: SilosProviderProps) => {
   );
 
   const downloadSiloFile = async (siloFile: SiloFileType) => {
-    const organizationId = await getOrganizationId();
     setIsLoadingDownload(true);
     const file = siloFile.file as FileType;
     api
@@ -188,7 +182,6 @@ const SilosProvider = ({ children }: SilosProviderProps) => {
       search: string | null = null,
       params: PaginateParams | null = null
     ) => {
-      const organizationId = await getOrganizationId();
       try {
         setIsLoadingSilos(true);
 
@@ -213,8 +206,6 @@ const SilosProvider = ({ children }: SilosProviderProps) => {
           };
         }
 
-        // eslint-disable-next-line no-console
-        console.log(organizationId);
         const response = await api.get(
           `organizations/${organizationId}/folders/`,
           {
@@ -236,15 +227,12 @@ const SilosProvider = ({ children }: SilosProviderProps) => {
         setIsLoadingSilos(false);
       }
     },
-    [order, getOrganizationId]
+    [order, organizationId]
   );
 
   const saveSiloFolderHandler = useCallback(async (data: SiloType) => {
     try {
-      // eslint-disable-next-line no-console
-      console.log({ data });
       setIsLoadingSaveSiloFolder(true);
-      const organizationId = await getOrganizationId();
       const method = data?.id ? 'put' : 'post';
       const url = data?.id
         ? `organizations/${organizationId}/folders/${data?.id}`

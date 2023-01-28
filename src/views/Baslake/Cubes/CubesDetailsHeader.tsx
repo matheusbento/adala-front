@@ -42,9 +42,6 @@ const CubeDetailsHeader = ({
     [titleSize]
   );
 
-  // eslint-disable-next-line no-console
-  console.log({ cube });
-
   const startDate = useMemo(
     () => cube?.metadata?.find((e: any) => e.field === 'start_date'),
     [cube]

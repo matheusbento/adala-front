@@ -105,9 +105,6 @@ const CubesOverview = ({ context }: { context: string }) => {
     },
   });
 
-  // eslint-disable-next-line no-console
-  console.log({ cube, cubeModel });
-
   return (
     <div className={`${styleRow}`}>
       {filtersVisible && (

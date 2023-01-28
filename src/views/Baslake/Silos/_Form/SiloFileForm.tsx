@@ -97,32 +97,6 @@ const SiloFileForm = () => {
 
           <SemanticForm.Field className={`${css(margin.bottomLg)}`}>
             <InputFile type="file" name="file" />
-            {/* <DragAndDropUploader
-              name="file"
-              subtitle={`jpg, png, gif, pdf, doc, docx, odt, txt or zip. Max size: ${parseFileSize(
-                uploadMaxSize
-              )}`}
-              uploadMaxSize={uploadMaxSize}
-              allowedTypes={acceptableFileTypes}
-              accept={acceptableExtensions.join(',')}
-              onFileSelected={(files: FileList) => {
-                // eslint-disable-next-line no-console
-                console.log({ files });
-                setFilesToUpload(files);
-              }}
-              isLoading={false}
-              errorMessage={null}
-              showFiles
-              icon={undefined}
-              label={undefined}
-              mobileLabel={undefined}
-              buttonText={undefined}
-              multiple={false}
-              maxSize={undefined}
-              previousFiles={[]}
-              input={undefined}
-              loaderLabel={undefined}
-            /> */}
           </SemanticForm.Field>
 
           <SemanticForm.Group>

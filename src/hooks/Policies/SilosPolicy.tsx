@@ -25,9 +25,6 @@ export interface SilosPolicyProps {
 const SilosPolicyProvider = ({ children }: SilosPolicyProps) => {
   const { hasPermission } = useAuth();
 
-  // eslint-disable-next-line no-console
-  console.log('PERMISSAO', AuthConstants.permissions.silos);
-
   const canAccess = useCallback(
     () => hasPermission(AuthConstants.permissions.silos.see),
     [hasPermission]

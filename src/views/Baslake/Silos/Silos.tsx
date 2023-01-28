@@ -51,9 +51,6 @@ const Silos = () => {
     fetchSilosHandler(null);
   }, [organization]);
 
-  // eslint-disable-next-line no-console
-  console.log({ formSuccess });
-
   return (
     <div className={`${styleContainer}`}>
       <BaslakeTitle title={t('Data Silos')}>

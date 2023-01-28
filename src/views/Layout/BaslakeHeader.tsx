@@ -134,9 +134,6 @@ const BaslakeHeader = ({
     initOrganization();
   }, [organizations]);
 
-  // eslint-disable-next-line no-console
-  console.log('dasdasd', organizations, organization);
-
   const organizationOptions = useMemo(
     () =>
       organizations?.map((e) => ({
