@@ -1,5 +1,6 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
 import React from 'react';
+
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import AddItem from './AddItem';
 
@@ -11,7 +12,8 @@ export default {
     addHandler: {
       action: 'onClick Action',
       type: { name: 'func' },
-      description: 'Callback used on click to Add something (When not disabled)',
+      description:
+        'Callback used on click to Add something (When not disabled)',
     },
     className: {
       type: { name: 'string' },

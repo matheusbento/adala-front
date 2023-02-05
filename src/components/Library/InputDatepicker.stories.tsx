@@ -1,12 +1,12 @@
 import React from 'react';
 
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import moment from 'moment';
 import { Button } from 'semantic-ui-react';
 
 import Form from 'components/Library/Form';
 
 import Datepicker from './InputDatepicker';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 export default {
   title: 'Form/Datepicker',

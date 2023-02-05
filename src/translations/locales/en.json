@@ -1,6 +1,8 @@
 {
-    "cube_amount_one": "{{count}} Cube",
-    "cube_amount_other": "{{count}} Cubes",
-    "silo_amount_one": "{{count}} Silo",
-    "silo_amount_other": "{{count}} Silos"
+  "cube_amount_one": "{{count}} Cube",
+  "cube_amount_other": "{{count}} Cubes",
+  "silo_amount_one": "{{count}} Silo",
+  "silo_amount_other": "{{count}} Silos",
+  "File {{file.name}}": "File {{file.name}}",
+  "Table {{attribute.name}}": "Table {{attribute.name}}"
 }

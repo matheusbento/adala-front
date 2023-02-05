@@ -13,4 +13,20 @@ export const steps = {
 
 export const lastStep = steps.mapping;
 
+export const filterAttributes: string[] = ['table'];
+
+export const statuses = {
+  creating: 'creating',
+  ready_to_analysis: 'ready_to_analysis',
+  creating_error: 'creating_error',
+  invalid: 'invalid',
+};
+
+export const statusLabel = {
+  [statuses.creating]: 'Creating',
+  [statuses.ready_to_analysis]: 'Ready to Analysis',
+  [statuses.creating_error]: 'Error on creation',
+  [statuses.invalid]: 'Invalid',
+};
+
 export default cubeActionLabel;

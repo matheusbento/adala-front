@@ -1,4 +1,5 @@
 import { FileType } from './FileType';
+import { SiloFileAttributeType } from './SiloFileAttributeType';
 import { TagType } from './TagType';
 import { UserType } from './UserType';
 
@@ -10,6 +11,7 @@ export type SiloFileType = {
   created_at: string;
   file: FileType | File;
   tags: TagType[];
+  attributes: SiloFileAttributeType[];
   owner: UserType;
 };
 
