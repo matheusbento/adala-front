@@ -1,10 +1,11 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 
 import Button from '@components/Library/Button';
 import Header from '@components/Library/Header';
 import IconList from '@components/Library/IconList/IconList';
 import SvgIcon from '@components/Library/SvgIcon';
 import Text from '@components/Library/Text';
+import { statusLabel } from '@constants/cubesConstants';
 import { useCubes } from '@hooks/Cubes';
 import { css } from 'glamor';
 import moment from 'moment';
@@ -12,17 +13,9 @@ import { useTranslation } from 'react-i18next';
 import { If, Then, Else, When } from 'react-if';
 import { List, Loader } from 'semantic-ui-react';
 
-import {
-  colors,
-  margin,
-  padding,
-  styles,
-  utils,
-  display,
-  tables,
-  fontSizes,
-} from 'utils/theme';
 import { CubeType } from 'types/CubeType';
+
+import { colors, margin, padding, styles, utils, display, tables, fontSizes } from 'utils/theme';
 
 const styleCubes = css({
   '&.ui.header': {
@@ -51,14 +44,13 @@ const styleListItem = css(styles.pointer, padding.sm, {
 
 const styleButton = css(margin.rightXxs, margin.bottomXxs);
 
-const CubesList = () => {
+function CubesList() {
   const {
     loadingOverview,
     isLoadingCubes,
     cubes,
     showCube,
     setIsOpenCubeViewerModal,
-    showCubeModelHandler,
     fetchCubeHandler,
   } = useCubes();
 
@@ -66,7 +58,6 @@ const CubesList = () => {
 
   const handleShowCube = useCallback((item: CubeType) => {
     fetchCubeHandler(item.id);
-    showCubeModelHandler(item.identifier);
   }, []);
 
   return (
@@ -77,11 +68,7 @@ const CubesList = () => {
           <>
             {cubes?.length && (
               <div className={`${styleTitleContainer}`}>
-                <Header
-                  as="h3"
-                  color="primary"
-                  className={`${css(margin.none)} ${styleCubes}`}
-                >
+                <Header as="h3" color="primary" className={`${css(margin.none)} ${styleCubes}`}>
                   {t('cube_amount', { count: cubes?.length })}
                 </Header>
               </div>
@@ -103,9 +90,7 @@ const CubesList = () => {
                 cubes.map((item: any, index: number) => (
                   <List.Item
                     key={item.id ? `cube-id-${item.id}` : `cube-index-${index}`}
-                    className={`${styleListItem} ${
-                      showCube === item.id ? 'active' : ''
-                    }`}
+                    className={`${styleListItem} ${showCube === item.id ? 'active' : ''}`}
                     onClick={() => handleShowCube(item)}
                   >
                     <List.Content className={`${css(utils.w100)}`}>
@@ -135,9 +120,7 @@ const CubesList = () => {
                       </div>
                       <IconList
                         className={`${css(
-                          item.secondary_status
-                            ? margin.bottomXxs
-                            : margin.bottomSm
+                          item.secondary_status ? margin.bottomXxs : margin.bottomSm,
                         )}`}
                         size="xs"
                       >
@@ -147,6 +130,15 @@ const CubesList = () => {
                           label={
                             <Text size="xs" weight="bold">
                               {item.name}
+                            </Text>
+                          }
+                        />
+                        <IconList.Item
+                          size="xs"
+                          icon="icon-clock"
+                          label={
+                            <Text size="xs" weight="bold">
+                              {statusLabel[item?.current_status]}
                             </Text>
                           }
                         />
@@ -171,9 +163,7 @@ const CubesList = () => {
                               })}`}
                             >
                               {item.info?.min_date
-                                ? moment(item.info?.min_date).format(
-                                    'MMM DD, YYYY'
-                                  )
+                                ? moment(item.info?.min_date).format('MMM DD, YYYY')
                                 : 'n/a'}
                               <When condition={item.info?.max_date}>
                                 {() => (
@@ -185,9 +175,7 @@ const CubesList = () => {
                                       color={colors.grey}
                                     />
                                     {item.info?.max_date
-                                      ? moment(item.info?.max_date).format(
-                                          'MMM DD, YYYY'
-                                        )
+                                      ? moment(item.info?.max_date).format('MMM DD, YYYY')
                                       : 'n/a'}
                                   </>
                                 )}
@@ -225,6 +213,6 @@ const CubesList = () => {
       </Else>
     </If>
   );
-};
+}
 
 export default CubesList;

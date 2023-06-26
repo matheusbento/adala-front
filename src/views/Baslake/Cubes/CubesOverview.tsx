@@ -25,15 +25,9 @@ const styleCubesHeader = css(padding.bottomXs, {
   borderBottom: `solid 1px ${colors.greyLight} !important`,
 });
 
-const styleSegment = css(
-  display.flex,
-  flex.alignItemsCenter,
-  padding.topNone,
-  padding.bottomXs,
-  {
-    borderBottom: `solid 1px ${colors.greyLight} !important`,
-  }
-);
+const styleSegment = css(display.flex, flex.alignItemsCenter, padding.topNone, padding.bottomXs, {
+  borderBottom: `solid 1px ${colors.greyLight} !important`,
+});
 
 const styleScroll = {
   height: 'calc(100vh - 154px)',
@@ -58,25 +52,23 @@ const styleCloseButton = css(buttons.plain, {
   float: 'right',
 });
 
-const CubesOverview = ({ context }: { context: string }) => {
+function CubesOverview({ context }: { context: string }) {
   const [filtersVisible, setFiltersVisible] = useState(false);
   const { search, state }: any = useLocation();
 
   const { getAppliedFiltersByContext } = useFilter();
-  const { loadingOverview, showCube, cubeModel, cube, showCubeModelHandler } =
-    useCubes();
+  const { loadingOverview, showCube, cubeModel, cube } = useCubes();
   const { t } = useTranslation();
 
   const appliedFilters = getAppliedFiltersByContext();
 
-  const handleShowCube = useCallback(
-    (cubeId: number | string | null) => {
-      if (cubeId) {
-        showCubeModelHandler(cubeId);
-      }
-    },
-    [showCubeModelHandler]
-  );
+  const handleShowCube = useCallback((cubeId: number | string | null) => {
+    if (cubeId) {
+      // showCubeModelHandler(cubeId);
+      // eslint-disable-next-line no-console
+      console.log('SHOW MODEL');
+    }
+  }, []);
 
   const toggleVisibleHandler = useCallback(() => {
     setFiltersVisible(!filtersVisible);
@@ -177,6 +169,6 @@ const CubesOverview = ({ context }: { context: string }) => {
       </When>
     </div>
   );
-};
+}
 
 export default CubesOverview;

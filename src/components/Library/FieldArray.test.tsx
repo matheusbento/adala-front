@@ -13,13 +13,7 @@ import InputText from './InputText';
 
 const fieldArrayName = 'test';
 
-const component = ({
-  fields,
-  name,
-  watch,
-  push,
-  remove,
-}: FieldArrayTypeSingle) => {
+const component = ({ fields, name, watch, push, remove }: FieldArrayTypeSingle) => {
   const add = () => {
     push({ record_id: 3 });
   };
@@ -62,7 +56,7 @@ describe('FieldArray component', () => {
     const { container, queryByText, queryAllByRole } = render(
       <Form onSubmit={() => {}}>
         <FieldArray name={fieldArrayName} component={component} />
-      </Form>
+      </Form>,
     );
 
     const addElement = container.querySelector('button[id=add]');
@@ -86,12 +80,11 @@ describe('FieldArray component', () => {
   });
 
   it('FieldArray should display a new row and delete it', () => {
-    const { container, queryByText, queryByPlaceholderText, queryAllByRole } =
-      render(
-        <Form onSubmit={() => {}}>
-          <FieldArray name={fieldArrayName} component={component} />
-        </Form>
-      );
+    const { container, queryByText, queryByPlaceholderText, queryAllByRole } = render(
+      <Form onSubmit={() => {}}>
+        <FieldArray name={fieldArrayName} component={component} />
+      </Form>,
+    );
 
     const addElement = container.querySelector('button[id=add]');
     fireEvent.click(addElement as Element);

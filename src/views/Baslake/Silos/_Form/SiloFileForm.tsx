@@ -7,21 +7,15 @@ import InputFile from '@components/Library/InputFile';
 import InputText from '@components/Library/InputText';
 import InputTextArea from '@components/Library/InputTextArea';
 import SvgIcon from '@components/Library/SvgIcon';
-import { useSilos } from '@hooks/Silos';
+import { useSilo } from '@hooks/Silos';
 import { css } from 'glamor';
 import { animateScroll } from 'react-scroll';
-import { Form as SemanticForm, Input } from 'semantic-ui-react';
+import { Form as SemanticForm } from 'semantic-ui-react';
 
 // import ReduxField from '@components/Library/ReduxField';
 // import ReduxInputCheckbox from '@components/Library/ReduxInputCheckbox';
 
-import {
-  acceptableExtensions,
-  acceptableFileTypes,
-  siloActionLabel,
-} from 'constants/silosConstants';
-
-import { parseFileSize } from 'helpers/index';
+import { siloActionLabel } from 'constants/silosConstants';
 
 import { fontWeight, margin } from 'utils/themeConstants';
 
@@ -42,11 +36,11 @@ const styleTitle = css(margin.topNone, {
 
 const uploadMaxSize = parseInt(
   (process.env.MIX_FILE_UPLOAD_TIMEOUT as string) || '2097152000', // Default: 2000MB
-  10
+  10,
 );
 
-const SiloFileForm = () => {
-  const { showModalFile, setFormState, isLoadingSave, formState } = useSilos();
+function SiloFileForm() {
+  const { showModalFile, setFormState, isLoadingSave, formState } = useSilo();
 
   const isNewOrder = useMemo(() => showModalFile === 'new', [showModalFile]);
 
@@ -109,9 +103,7 @@ const SiloFileForm = () => {
               disabled={isLoadingSave}
               type={!valid ? 'submit' : 'button'}
             >
-              {showModalFile
-                ? `${siloActionLabel[showModalFile]} Silo File`
-                : 'Loading'}
+              {showModalFile ? `${siloActionLabel[showModalFile]} Silo File` : 'Loading'}
             </Button>
           </SemanticForm.Group>
           {isNewOrder && (
@@ -125,11 +117,7 @@ const SiloFileForm = () => {
                 onClick={!valid ? null : submitAndSaveTemplate}
                 type={!valid ? 'submit' : 'button'}
               >
-                <SvgIcon
-                  path="icon-arrow-circle-right-line"
-                  size="md"
-                  className={`${styleMr}`}
-                />
+                <SvgIcon path="icon-arrow-circle-right-line" size="md" className={`${styleMr}`} />
                 Create File
               </Button>
             </SemanticForm.Group>
@@ -139,13 +127,7 @@ const SiloFileForm = () => {
         <>
           <SiloFormReviewContainer />
           <SemanticForm.Group>
-            <Button
-              color="success"
-              fluid
-              pill
-              loading={isLoadingSave}
-              type="submit"
-            >
+            <Button color="success" fluid pill loading={isLoadingSave} type="submit">
               Confirm and Create Silo
             </Button>
           </SemanticForm.Group>
@@ -180,6 +162,6 @@ const SiloFileForm = () => {
       </SemanticForm.Group>
     </>
   );
-};
+}
 
 export default SiloFileForm;

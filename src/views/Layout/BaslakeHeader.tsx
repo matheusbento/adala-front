@@ -1,28 +1,28 @@
 import { useCallback, useEffect, useMemo } from 'react';
 
+import { useOrganization } from '@/hooks/Organization';
 import BadgeCounter from '@components/Library/BadgeCounter';
 import Button from '@components/Library/Button';
-import iconUser from '@components/Library/img/icon-user.svg';
 import Segment from '@components/Library/Segment';
 import SvgIcon from '@components/Library/SvgIcon';
-import { useOrganizations } from '@hooks/Organizations';
+import iconUser from '@components/Library/img/icon-user.svg';
 import { useSystem } from '@hooks/System';
 import {
+  buttons,
   colors,
   display,
-  buttons,
-  text,
   fontSizes,
   margin,
   padding,
   position,
+  text,
   utils,
 } from '@utils/theme';
 import SearchBoxContainer from '@views/Baslake/Search/SearchBoxContainer';
 import { css } from 'glamor';
 import { When } from 'react-if';
 import { useLocation } from 'react-router-dom';
-import { Icon, Dropdown, Flag } from 'semantic-ui-react';
+import { Dropdown, Flag, Icon } from 'semantic-ui-react';
 
 import { OrganizationType } from 'types/OrganizationType';
 import { SessionType } from 'types/SessionType';
@@ -81,7 +81,7 @@ const styleButtonNotifications = css(
   display.inlineBlock,
   margin.rightMd,
   position.relative,
-  padding.xXs
+  padding.xXs,
 );
 
 const styleFlags = css(padding.sm);
@@ -97,12 +97,7 @@ const styleNotificationsBadge = css(position.absolute, {
   right: 0,
 });
 
-const styleUserName = css(
-  fontSizes.xs,
-  margin.rightSm,
-  display.none,
-  display.mdInline
-);
+const styleUserName = css(fontSizes.xs, margin.rightSm, display.none, display.mdInline);
 
 interface BaslakeHeaderProps {
   session: SessionType | null;
@@ -112,21 +107,17 @@ interface BaslakeHeaderProps {
   isBarVisible: boolean;
 }
 
-const BaslakeHeader = ({
+function BaslakeHeader({
   session,
   logoutHandler,
   searchContext,
   setIsBarVisible,
   isBarVisible,
-}: BaslakeHeaderProps) => {
+}: BaslakeHeaderProps) {
   const location = useLocation();
   const { setLocale, locales } = useSystem();
-  const {
-    organizations,
-    organization,
-    handleSetOrganization,
-    initOrganization,
-  } = useOrganizations();
+  const { organizations, organization, handleSetOrganization, initOrganization } =
+    useOrganization();
   // const location: any = null;
   const disableSearchPaths = ['/', '/login'];
 
@@ -141,7 +132,7 @@ const BaslakeHeader = ({
         text: e.name,
         value: e.id,
       })),
-    [organizations]
+    [organizations],
   );
 
   const setOrganizationHandle = useCallback((_: any, d: any) => {
@@ -162,18 +153,14 @@ const BaslakeHeader = ({
       </div>
 
       <When condition={!disableSearchPaths.includes(location?.pathname)}>
-        {() => (
-          <SearchBoxContainer
-            className={`${styleSearch}`}
-            context={searchContext}
-          />
-        )}
+        {() => <SearchBoxContainer className={`${styleSearch}`} context={searchContext} />}
       </When>
       <Segment className={`${styleFlags} ${styleOrganizations}`}>
         <Dropdown
           fluid
           placeholder="Select a Organization"
           selection
+          clearable
           options={organizationOptions}
           onChange={setOrganizationHandle}
           value={organization?.id}
@@ -184,24 +171,12 @@ const BaslakeHeader = ({
           <div className={`${styleRightItems}`}>
             <Segment className={`${styleFlags}`}>
               {Object.values(locales).map((loc: any) => (
-                <Flag
-                  key={loc.flag}
-                  name={loc.flag}
-                  onClick={() => setLocale(loc.flag)}
-                />
+                <Flag key={loc.flag} name={loc.flag} onClick={() => setLocale(loc.flag)} />
               ))}
             </Segment>
             {/* // TODO NOTIFICATIONS */}
-            <Button
-              className={`${styleButtonNotifications}`}
-              type="button"
-              onClick={() => {}}
-            >
-              <SvgIcon
-                color={colors.white}
-                size="lg"
-                path="icon-bell-notifications"
-              />
+            <Button className={`${styleButtonNotifications}`} type="button">
+              <SvgIcon color={colors.white} size="lg" path="icon-bell-notifications" />
               <When condition={!!1}>
                 {() => (
                   <BadgeCounter
@@ -235,9 +210,7 @@ const BaslakeHeader = ({
                 <When condition={!!session}>
                   {() => (
                     <>
-                      <span className={`${styleUserName}`}>
-                        {session?.user?.name}
-                      </span>
+                      <span className={`${styleUserName}`}>{session?.user?.name}</span>
                       <img
                         src={session?.user?.avatar || `${iconUser}`}
                         className={`${styleAvatarBg}`}
@@ -249,11 +222,7 @@ const BaslakeHeader = ({
               }
             >
               <Dropdown.Menu direction="left">
-                <Dropdown.Item
-                  icon="sign-out"
-                  text="Logout"
-                  onClick={logoutHandler}
-                />
+                <Dropdown.Item icon="sign-out" text="Logout" onClick={logoutHandler} />
               </Dropdown.Menu>
             </Dropdown>
           </div>
@@ -261,6 +230,6 @@ const BaslakeHeader = ({
       </When>
     </header>
   );
-};
+}
 
 export default BaslakeHeader;

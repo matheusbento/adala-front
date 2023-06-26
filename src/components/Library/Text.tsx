@@ -39,7 +39,7 @@ export interface TextProps {
   children: ReactNode;
 }
 
-const Text = ({
+function Text({
   as = 'span',
   size = 'sm',
   color = 'darker',
@@ -49,7 +49,7 @@ const Text = ({
   onClick = () => {},
   disabled,
   children,
-}: TextProps) => {
+}: TextProps) {
   const Component = as;
 
   const styleText = useMemo(
@@ -58,7 +58,7 @@ const Text = ({
         color: `${textColors[color]} !important`,
         fontWeight: textWeights[weight],
       }),
-    [size, color, weight]
+    [size, color, weight],
   );
 
   return (
@@ -80,6 +80,6 @@ const Text = ({
       </If>
     </Component>
   );
-};
+}
 
 export default Text;

@@ -6,11 +6,7 @@ import { Else, If, Then, When } from 'react-if';
 import { colors, display, text } from '../../utils/theme';
 import { flex } from '../../utils/themeConstants';
 
-const styleDefault = css(
-  display.flex,
-  flex.justifyContentAround,
-  flex.alignItemsStretch
-);
+const styleDefault = css(display.flex, flex.justifyContentAround, flex.alignItemsStretch);
 
 const styleContent = css({
   width: '100%',
@@ -39,26 +35,20 @@ export interface TextEllipsisProps {
   count?: number;
   minCount?: number;
 }
-const TextEllipsis = ({
+function TextEllipsis({
   children,
   as = 'span',
   className = '',
   paragraph = false,
   count = 0,
   minCount = 1,
-}: TextEllipsisProps) => {
+}: TextEllipsisProps) {
   const showOverflow = useMemo(() => count > minCount, [count, minCount]);
   const [visible, setVisible] = useState(!showOverflow);
-  const toggleVisible = useCallback(
-    () => setVisible(!visible),
-    [setVisible, visible]
-  );
+  const toggleVisible = useCallback(() => setVisible(!visible), [setVisible, visible]);
   const Component: any = useMemo(() => (paragraph ? 'p' : as), [paragraph, as]);
 
-  const styleContainer = css(
-    showOverflow && styleDefault,
-    visible && display.block
-  );
+  const styleContainer = css(showOverflow && styleDefault, visible && display.block);
   const styleText = css(styleContent, visible && styleVisible);
 
   return (
@@ -69,11 +59,7 @@ const TextEllipsis = ({
             <span className={`${styleText}`}>{children}</span>
             <When condition={showOverflow}>
               {() => (
-                <span
-                  className={`${styleMoreButton}`}
-                  onClick={toggleVisible}
-                  aria-hidden="true"
-                >
+                <span className={`${styleMoreButton}`} onClick={toggleVisible} aria-hidden="true">
                   <If condition={!visible}>
                     <Then>View All</Then>
                     <Else>View less</Else>
@@ -87,6 +73,6 @@ const TextEllipsis = ({
       </When>
     </Component>
   );
-};
+}
 
 export default TextEllipsis;

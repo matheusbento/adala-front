@@ -1,23 +1,16 @@
-import {
-  createContext,
-  useContext,
-  useMemo,
-  useState,
-  ReactNode,
-  useCallback,
-} from 'react';
+import { createContext, useContext, useMemo, useState, ReactNode, useCallback } from 'react';
 
 import { cubesAPI } from '@helpers/api';
 
+import { CubeTemplateType } from 'types/CubeTemplateType';
+import { CubeType } from 'types/CubeType';
 import { OrderType } from 'types/OrderType';
 import { PaginateParams } from 'types/PaginateParams';
-import { CubeType } from 'types/CubeType';
-import { CubeTemplateType } from 'types/CubeTemplateType';
 
 export type CubesTemplateType = {
   fetchCubesTemplateHandler: (
     search?: string | undefined | null,
-    params?: PaginateParams | null
+    params?: PaginateParams | null,
   ) => void;
   setSelectedTemplate: (template: CubeTemplateType | null | boolean) => void;
   saveCubeTemplatesHandler: (data: CubeType) => void;
@@ -27,9 +20,7 @@ export type CubesTemplateType = {
   cubesTemplates: any;
 };
 
-export const CubesTemplateContext = createContext<CubesTemplateType | null>(
-  null
-);
+export const CubesTemplateContext = createContext<CubesTemplateType | null>(null);
 
 const useCubesTemplate = () => {
   const context = useContext(CubesTemplateContext);
@@ -44,14 +35,12 @@ interface CubesTemplateProviderProps {
   children: ReactNode;
 }
 
-const CubesTemplateProvider = ({ children }: CubesTemplateProviderProps) => {
+function CubesTemplateProvider({ children }: CubesTemplateProviderProps) {
   const [showModal, setShowModal] = useState<string | null>(null);
   const [order, setOrder] = useState<OrderType>();
   const [isLoadingCubesTemplate, setIsLoadingCubesTemplate] = useState(false);
   const [cubesTemplates, setCubesTemplates] = useState([]);
-  const [selectedTemplate, setSelectedTemplate] = useState<
-    CubeTemplateType | null | boolean
-  >(null);
+  const [selectedTemplate, setSelectedTemplate] = useState<CubeTemplateType | null | boolean>(null);
   const [isLoadingSave, setIsLoadingSave] = useState(false);
 
   const saveCubeTemplatesHandler = useCallback(async (data: CubeType) => {
@@ -80,10 +69,7 @@ const CubesTemplateProvider = ({ children }: CubesTemplateProviderProps) => {
   }, []);
 
   const fetchCubesTemplateHandler = useCallback(
-    async (
-      search: string | undefined | null = null,
-      params: PaginateParams | null = null
-    ) => {
+    async (search: string | undefined | null = null, params: PaginateParams | null = null) => {
       try {
         setIsLoadingCubesTemplate(true);
 
@@ -123,7 +109,7 @@ const CubesTemplateProvider = ({ children }: CubesTemplateProviderProps) => {
         setIsLoadingCubesTemplate(false);
       }
     },
-    [order]
+    [order],
   );
 
   const providerValue = useMemo(
@@ -153,14 +139,12 @@ const CubesTemplateProvider = ({ children }: CubesTemplateProviderProps) => {
       setShowModal,
 
       fetchCubesTemplateHandler,
-    ]
+    ],
   );
 
   return (
-    <CubesTemplateContext.Provider value={providerValue}>
-      {children}
-    </CubesTemplateContext.Provider>
+    <CubesTemplateContext.Provider value={providerValue}>{children}</CubesTemplateContext.Provider>
   );
-};
+}
 
 export { CubesTemplateProvider, useCubesTemplate };

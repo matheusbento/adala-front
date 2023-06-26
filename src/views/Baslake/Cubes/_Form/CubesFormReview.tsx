@@ -34,7 +34,7 @@ const styleBlock = css(padding.bottomXs);
 //   },
 // });
 
-const JobsOrderFormReview = () => {
+function JobsOrderFormReview() {
   // eslint-disable-next-line no-console
   console.log('dasdasdasd');
 
@@ -211,6 +211,6 @@ const JobsOrderFormReview = () => {
       )} */}
     </div>
   );
-};
+}
 
 export default JobsOrderFormReview;

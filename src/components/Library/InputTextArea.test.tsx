@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { render } from '@testing-library/react';
-
 import Form from '@components/Library/Form';
+import { render } from '@testing-library/react';
 
 import InputTextArea from './InputTextArea';
 
@@ -10,13 +9,8 @@ describe('InputTextArea component', () => {
   it('should be able to display a placeholder.', () => {
     const { queryByPlaceholderText } = render(
       <Form onSubmit={() => {}}>
-        <InputTextArea
-          name="test"
-          spaced
-          rounded
-          placeholder="Test placeholder"
-        />
-      </Form>
+        <InputTextArea name="test" spaced rounded placeholder="Test placeholder" />
+      </Form>,
     );
 
     const textAreaElement = queryByPlaceholderText('Test placeholder');
@@ -28,7 +22,7 @@ describe('InputTextArea component', () => {
     const { queryByPlaceholderText } = render(
       <Form onSubmit={() => {}}>
         <InputTextArea name="test" />
-      </Form>
+      </Form>,
     );
 
     const textAreaElement = queryByPlaceholderText('Enter text');
@@ -40,7 +34,7 @@ describe('InputTextArea component', () => {
     const { queryByPlaceholderText } = render(
       <Form onSubmit={() => {}}>
         <InputTextArea name="test" label="Test Label" />
-      </Form>
+      </Form>,
     );
 
     const textAreaElement = queryByPlaceholderText('Enter test label');

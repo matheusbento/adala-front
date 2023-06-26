@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { render, fireEvent } from '@testing-library/react';
-
 import Form from '@components/Library/Form';
+import { render, fireEvent } from '@testing-library/react';
 
 import InputDropdown from './InputDropdown';
 
@@ -46,7 +45,7 @@ describe('InputDropdown component', () => {
     const { queryByRole } = render(
       <Form onSubmit={() => {}}>
         <InputDropdown name="test" spaced />
-      </Form>
+      </Form>,
     );
 
     const dropdownElement = queryByRole('listbox');
@@ -58,7 +57,7 @@ describe('InputDropdown component', () => {
     const { queryByText } = render(
       <Form onSubmit={() => {}}>
         <InputDropdown placeholder="Test placeholder" name="test" />
-      </Form>
+      </Form>,
     );
 
     const textElement = queryByText('Test placeholder');
@@ -70,7 +69,7 @@ describe('InputDropdown component', () => {
     const { queryByText } = render(
       <Form onSubmit={() => {}}>
         <InputDropdown name="test" />
-      </Form>
+      </Form>,
     );
 
     const textElement = queryByText('Select item');
@@ -82,7 +81,7 @@ describe('InputDropdown component', () => {
     const { queryByText } = render(
       <Form onSubmit={() => {}}>
         <InputDropdown label="Test Label" name="test" />
-      </Form>
+      </Form>,
     );
 
     const textElement = queryByText('Select test label');
@@ -94,7 +93,7 @@ describe('InputDropdown component', () => {
     const { queryByText } = render(
       <Form onSubmit={() => {}}>
         <InputDropdown name="test" options={options} />
-      </Form>
+      </Form>,
     );
 
     options.forEach((option) => {
@@ -108,13 +107,11 @@ describe('InputDropdown component', () => {
     const { queryByText } = render(
       <Form onSubmit={() => {}}>
         <InputDropdown name="test" laravelOptions={laravelOptions} />
-      </Form>
+      </Form>,
     );
 
     laravelOptions.forEach((option) => {
-      const textElement = queryByText(
-        option?.description || option?.name || ''
-      );
+      const textElement = queryByText(option?.description || option?.name || '');
 
       expect(textElement).toBeTruthy();
     });
@@ -124,7 +121,7 @@ describe('InputDropdown component', () => {
     const { queryByRole } = render(
       <Form onSubmit={() => {}}>
         <InputDropdown name="test" laravelOptions={[]} />
-      </Form>
+      </Form>,
     );
 
     const dropdownElement = queryByRole('listbox');
@@ -136,7 +133,7 @@ describe('InputDropdown component', () => {
     const { queryByText } = render(
       <Form onSubmit={() => {}}>
         <InputDropdown name="test" arrayOptions={arrayOptions} />
-      </Form>
+      </Form>,
     );
 
     arrayOptions.forEach((option) => {
@@ -150,7 +147,7 @@ describe('InputDropdown component', () => {
     const { queryByRole } = render(
       <Form onSubmit={() => {}}>
         <InputDropdown name="test" arrayOptions={[]} />
-      </Form>
+      </Form>,
     );
 
     const dropdownElement = queryByRole('listbox');
@@ -161,12 +158,8 @@ describe('InputDropdown component', () => {
   it('should be able to select an option.', () => {
     const { queryByText, queryAllByText } = render(
       <Form onSubmit={() => {}}>
-        <InputDropdown
-          name="test"
-          useDescriptionAsValue
-          laravelOptions={laravelOptions}
-        />
-      </Form>
+        <InputDropdown name="test" useDescriptionAsValue laravelOptions={laravelOptions} />
+      </Form>,
     );
 
     const textElement = queryByText(laravelOptions[0].description ?? '');
@@ -184,7 +177,7 @@ describe('InputDropdown component', () => {
     const { queryByText, queryAllByText } = render(
       <Form onSubmit={() => {}}>
         <InputDropdown name="test" multiple arrayOptions={arrayOptions} />
-      </Form>
+      </Form>,
     );
 
     const textElement1 = queryByText(arrayOptions[0]);
@@ -205,18 +198,11 @@ describe('InputDropdown component', () => {
   it('should be able to set the input autocomplete attribute.', () => {
     const { container } = render(
       <Form onSubmit={() => {}}>
-        <InputDropdown
-          name="test"
-          id="test-id"
-          autoComplete="test-autocomplete"
-          search
-        />
-      </Form>
+        <InputDropdown name="test" id="test-id" autoComplete="test-autocomplete" search />
+      </Form>,
     );
 
-    const inputElement = container.querySelector(
-      'input[autocomplete="test-autocomplete"]'
-    );
+    const inputElement = container.querySelector('input[autocomplete="test-autocomplete"]');
     fireEvent.blur(inputElement as Element);
 
     expect(inputElement).toBeTruthy();
@@ -226,7 +212,7 @@ describe('InputDropdown component', () => {
     const { queryByText } = render(
       <Form onSubmit={() => {}}>
         <InputDropdown name="test" label="Test Label" required />
-      </Form>
+      </Form>,
     );
 
     const textElement = queryByText('Test Label *');

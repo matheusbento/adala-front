@@ -3,13 +3,12 @@ import { useCallback, useEffect, useState } from 'react';
 import Segment from '@components/Library/Segment';
 import SvgIcon from '@components/Library/SvgIcon';
 import { useFilter } from '@hooks/Filter';
-import { useSilos } from '@hooks/Silos';
-import { padding, display, colors, buttons } from '@utils/theme';
+import { useSilo } from '@hooks/Silos';
+import { buttons, colors, display, padding } from '@utils/theme';
 import { flex } from '@utils/themeConstants';
 import BaslakePageTitle from '@views/Layout/BaslakePageTitle';
 import { css } from 'glamor';
 import { useTranslation } from 'react-i18next';
-import { When } from 'react-if';
 import { useLocation } from 'react-router-dom';
 
 import SiloDetailsContainer from './SiloDetailsContainer';
@@ -25,15 +24,9 @@ const styleSilosHeader = css(padding.bottomXs, {
   borderBottom: `solid 1px ${colors.greyLight} !important`,
 });
 
-const styleSegment = css(
-  display.flex,
-  flex.alignItemsCenter,
-  padding.topNone,
-  padding.bottomXs,
-  {
-    borderBottom: `solid 1px ${colors.greyLight} !important`,
-  }
-);
+const styleSegment = css(display.flex, flex.alignItemsCenter, padding.topNone, padding.bottomXs, {
+  borderBottom: `solid 1px ${colors.greyLight} !important`,
+});
 
 const styleScroll = {
   height: 'calc(100vh - 154px)',
@@ -58,12 +51,12 @@ const styleCloseButton = css(buttons.plain, {
   float: 'right',
 });
 
-const SilosOverview = ({ context }: { context: string }) => {
+function SilosOverview({ context }: { context: string }) {
   const [filtersVisible, setFiltersVisible] = useState(false);
   const { search, state }: any = useLocation();
 
   const { getAppliedFiltersByContext } = useFilter();
-  const { showSilo, isLoadingSilos } = useSilos();
+  const { showSilo, isLoadingSilos } = useSilo();
   const { t } = useTranslation();
 
   const appliedFilters = getAppliedFiltersByContext();
@@ -173,6 +166,6 @@ const SilosOverview = ({ context }: { context: string }) => {
       </When> */}
     </div>
   );
-};
+}
 
 export default SilosOverview;

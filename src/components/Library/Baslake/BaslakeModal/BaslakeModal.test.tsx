@@ -20,7 +20,7 @@ describe('BaslakeModal component', () => {
         closeHandler={mockedCloseHandler}
       >
         <div>Test Children</div>
-      </BaslakeModal>
+      </BaslakeModal>,
     );
 
     const textElement1 = queryByText('Test Children');
@@ -32,7 +32,7 @@ describe('BaslakeModal component', () => {
     const { queryByText } = render(
       <BaslakeModal closeHandler={mockedCloseHandler}>
         <div>Test Children</div>
-      </BaslakeModal>
+      </BaslakeModal>,
     );
 
     const textElement1 = queryByText('Test Children');
@@ -50,7 +50,7 @@ describe('BaslakeModal component', () => {
         closeHandler={mockedCloseHandler}
       >
         <div>Test Children</div>
-      </BaslakeModal>
+      </BaslakeModal>,
     );
 
     const textElement1 = queryByText('test title');

@@ -1,13 +1,4 @@
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useMemo,
-  useState,
-  ReactNode,
-} from 'react';
-
-import { AxiosResponse } from 'axios';
+import { createContext, useContext, useMemo, useState, ReactNode } from 'react';
 
 export type SystemContextType = {
   isBarVisible: boolean;
@@ -32,7 +23,7 @@ interface SystemProviderProps {
   children: ReactNode;
 }
 
-const SystemProvider = ({ children }: SystemProviderProps) => {
+function SystemProvider({ children }: SystemProviderProps) {
   const locales: Record<string, any> = {
     en: {
       id: 'en',
@@ -57,14 +48,10 @@ const SystemProvider = ({ children }: SystemProviderProps) => {
       locales,
       locale,
     }),
-    [isBarVisible, locales, locale, setLocale, setIsBarVisible]
+    [isBarVisible, locales, locale, setLocale, setIsBarVisible],
   );
 
-  return (
-    <SystemContext.Provider value={providerValue}>
-      {children}
-    </SystemContext.Provider>
-  );
-};
+  return <SystemContext.Provider value={providerValue}>{children}</SystemContext.Provider>;
+}
 
 export { SystemProvider, useSystem };

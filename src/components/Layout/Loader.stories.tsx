@@ -6,6 +6,8 @@ export default {
   title: 'Loader',
 };
 
-const Template = (args: any) => <Loader {...args} />;
+function Template(args: any) {
+  return <Loader {...args} />;
+}
 
 export const Default = Template.bind({});

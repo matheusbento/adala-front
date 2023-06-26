@@ -1,24 +1,25 @@
-import { useMemo, useState } from 'react';
-
 import { CubesProvider } from '@hooks/Cubes';
 import { CubesTemplateProvider } from '@hooks/CubesTemplate';
 import { FilterProvider } from '@hooks/Filter';
-import { useOrganizations } from '@hooks/Organizations';
+import { SiloProvider } from '@hooks/Silos';
+import { useOrganization } from '@/hooks/Organization';
 
 import Cubes from './Cubes';
 
-const CubesContainer = (props: any) => {
-  const { organization } = useOrganizations();
+function CubesContainer(props: any) {
+  const { organization } = useOrganization();
 
   return (
     <FilterProvider context="cubes">
       <CubesTemplateProvider>
-        <CubesProvider organizationId={organization?.id as unknown as number}>
-          <Cubes {...props} />
-        </CubesProvider>
+        <SiloProvider organizationId={organization?.id as unknown as number}>
+          <CubesProvider organizationId={organization?.id as unknown as number}>
+            <Cubes {...props} />
+          </CubesProvider>
+        </SiloProvider>
       </CubesTemplateProvider>
     </FilterProvider>
   );
-};
+}
 
 export default CubesContainer;

@@ -16,8 +16,7 @@ export const types: any = {
   'image/png': availableTypes.png,
   'image/gif': availableTypes.gif,
   'application/msword': availableTypes.doc,
-  'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
-    availableTypes.docx,
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document': availableTypes.docx,
   'application/zip': availableTypes.zip,
 };
 

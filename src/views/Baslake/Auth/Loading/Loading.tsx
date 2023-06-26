@@ -8,13 +8,15 @@ const styleContainer = css(
   display.flex,
   flex.justifyContentCenter,
   flex.alignItemsCenter,
-  utils.mvh100
+  utils.mvh100,
 );
 
-const Loading = () => (
-  <div className={`${styleContainer}`}>
-    <Loader active inline="centered" />
-  </div>
-);
+function Loading() {
+  return (
+    <div className={`${styleContainer}`}>
+      <Loader active inline="centered" />
+    </div>
+  );
+}
 
 export default Loading;

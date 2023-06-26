@@ -1,52 +1,57 @@
-import { useCallback, useEffect, useMemo, useState, ReactNode } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
+import { useOrganization } from '@/hooks/Organization';
 import Button from '@components/Library/Button';
 import FieldArray from '@components/Library/FieldArray';
 import FileIcon from '@components/Library/FileIcon';
 import Header from '@components/Library/Header';
-import IconList from '@components/Library/IconList/IconList';
 import InputDatepicker from '@components/Library/InputDatepicker';
 import InputText from '@components/Library/InputText';
 import InputTextArea from '@components/Library/InputTextArea';
-import Segment from '@components/Library/Segment';
 import SvgIcon from '@components/Library/SvgIcon';
-import Text from '@components/Library/Text';
-import {
-  fileStatus,
-  statusColor,
-  statusLabel,
-} from '@constants/silosConstants';
+import { fileStatus } from '@constants/silosConstants';
 import { useCubes } from '@hooks/Cubes';
-import { useOrganizations } from '@hooks/Organizations';
-import { useSilos } from '@hooks/Silos';
-import { beautifyJson } from '@utils/formatting';
+import { useSilo } from '@hooks/Silos';
 import { display } from '@utils/themeConstants';
 import BaslakeTable from '@views/Layout/BaslakeTable';
 import { css } from 'glamor';
+import { map } from 'lodash';
 import moment from 'moment';
 import { useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Else, When, Then, If } from 'react-if';
+import { When } from 'react-if';
 import { animateScroll } from 'react-scroll';
-import { Dropdown, Form as SemanticForm, Step } from 'semantic-ui-react';
+import {
+  Divider,
+  Dropdown,
+  Form as SemanticForm,
+  Step,
+} from 'semantic-ui-react';
 
 // import ReduxField from '@components/Library/ReduxField';
 // import ReduxInputCheckbox from '@components/Library/ReduxInputCheckbox';
 
 import TextEllipsis from 'components/Library/TextEllipsis';
 
-import { cubeActionLabel, lastStep, steps } from 'constants/cubesConstants';
+import {
+  cubeActionLabel,
+  filterAttributes,
+  lastStep,
+  steps,
+} from 'constants/cubesConstants';
 
 import { parseFileSize, toggleValueInArray } from 'helpers/index';
 
 import FileType from 'types/FileType';
+import SiloFileAttributeType, {
+  SiloFileInnerAttributeType,
+} from 'types/SiloFileAttributeType';
 import SiloFileType from 'types/SiloFileType';
 import { SiloType } from 'types/SiloType';
 import TagType from 'types/TagType';
 
 import { fontWeight, margin, padding } from 'utils/themeConstants';
 
-import { statusIcon } from '../../../../constants/silosConstants';
 import { colors } from '../../../../utils/themeConstants';
 import CubesFormReviewContainer from './CubesFormReviewContainer';
 import CubeMetadataItemBulkForm from './Metadatas/CubeMetadataItemBulkForm';
@@ -75,31 +80,39 @@ const styleFiles = css(margin.topMd, {
   },
 });
 
-const CubesForm = () => {
-  const { cube, showModal, setFormState, isLoadingSave, formState } =
-    useCubes();
+function CubesForm() {
+  const { cube, showModal, setFormState, isLoadingSave, formState } = useCubes();
 
-  const { organization } = useOrganizations();
+  const { organization } = useOrganization();
 
-  const { fetchSilosHandler, silos, files, fetchSiloHandler } = useSilos();
+  const {
+    fetchSilosHandler,
+    silos,
+    files,
+    fetchSiloHandler,
+    fetchSiloFilesAttributesHandler,
+    siloFilesAttributes,
+    selectedColumns,
+    handleBulkSelectColumn,
+    setFolder,
+    folder,
+  } = useSilo();
 
   const { t } = useTranslation();
 
-  const { watch, setValue } = useFormContext();
+  const { watch } = useFormContext();
 
   const isNewOrder = useMemo(() => showModal === 'new', [showModal]);
 
-  const isEditOrder = useMemo(() => showModal === 'edit', [showModal]);
+  // const isEditOrder = useMemo(() => showModal === 'edit', [showModal]);
 
   const [selectedFiles, setSelectedFiles] = useState([]);
 
-  const [folder, setFolder] = useState(null);
-
   useEffect(() => {
-    fetchSiloHandler(
-      silos.find((e: SiloType) => e.id === folder) as unknown as SiloType,
-      { all: true, status: fileStatus.ready_for_use }
-    );
+    fetchSiloHandler(silos.find((e: SiloType) => e.id === folder) as unknown as SiloType, {
+      all: true,
+      status: fileStatus.ready_for_use,
+    });
   }, [folder]);
 
   const rows = useMemo(
@@ -131,7 +144,7 @@ const CubesForm = () => {
           </div>,
         ];
       }),
-    [files]
+    [files],
   );
 
   const [formStep, setFormStep] = useState<number>(0);
@@ -140,13 +153,45 @@ const CubesForm = () => {
     fetchSilosHandler(null, { all: true });
   }, [organization]);
 
+  const canNext = useCallback(
+    (step: number) => {
+      const can = {
+        [steps.details]: () => true,
+        [steps.files]: () => !!folder && selectedFiles.length,
+        [steps.mapping]: () => true,
+        [steps.confirm]: () => true,
+      };
+
+      return can[step]();
+    },
+    [selectedFiles, folder],
+  );
+
   const foldersOptions = useMemo(
     () =>
       silos.map((e: SiloType) => ({
         text: e.name,
         value: e.id,
       })),
-    [silos]
+    [silos],
+  );
+
+  const setStepHandler = useCallback(
+    (step: number) => {
+      const functions = {
+        [steps.details]: () => {},
+        [steps.files]: () => {},
+        [steps.mapping]: () => {
+          fetchSiloFilesAttributesHandler(folder as number, {
+            files: selectedFiles,
+          });
+        },
+        [steps.confirm]: () => {},
+      };
+      functions[step]();
+      setFormStep(step);
+    },
+    [folder, selectedFiles, fetchSiloFilesAttributesHandler],
   );
 
   // todo
@@ -163,16 +208,30 @@ const CubesForm = () => {
     setFormState('preview');
   }, [setFormState]);
 
-  const submitAndDontSaveTemplate = useCallback(() => {
-    // change('should_save_template', false);
-    setFormState('preview');
-  }, [setFormState]);
+  // const submitAndDontSaveTemplate = useCallback(() => {
+  //   // change('should_save_template', false);
+  //   setFormState('preview');
+  // }, [setFormState]);
 
   const onCancel = useCallback(() => {
+    // eslint-disable-next-line no-console
     console.log('äsdasdasdasd');
   }, []);
 
-  const values = useMemo(() => watch(), [watch()]);
+  // const values = useMemo(() => watch(), [watch()]);
+
+  const getValues = useCallback(
+    (file: any, attribute: any) => {
+      if (!selectedColumns[file?.id]) {
+        return [];
+      }
+      if (!selectedColumns[file?.id][attribute?.name]) {
+        return [];
+      }
+      return selectedColumns[file?.id][attribute?.name];
+    },
+    [selectedColumns],
+  );
 
   const headers = useMemo(
     () => [
@@ -180,11 +239,6 @@ const CubesForm = () => {
         label: 'Name',
         key: 'name',
         sortable: false,
-        // style: `${css({
-        //   minWidth: 300,
-        //   maxWidth: 0,
-        //   wordBreak: 'break-word',
-        // })}`,
       },
       {
         label: 'Description',
@@ -209,16 +263,34 @@ const CubesForm = () => {
       },
       { label: '', key: 'actions', sortable: false },
     ],
-    []
+    [],
   );
 
-  const onChangeJson = useCallback(
-    (model: string) => {
-      if (model) {
-        setValue('model', beautifyJson(model));
-      }
-    },
-    [values, watch('model')]
+  const headerTableType = useMemo(
+    () => [
+      {
+        label: t('Auto-increment'),
+        key: 'auto_increment',
+        sortable: false,
+        style: `${css({ minWidth: 50 })}`,
+      },
+      {
+        label: 'Name',
+        key: 'name',
+        sortable: false,
+      },
+      {
+        label: 'Size',
+        key: 'size',
+        sortable: false,
+      },
+      {
+        label: 'Type',
+        key: 'type',
+        sortable: false,
+      },
+    ],
+    [],
   );
 
   const renderSubmitControls = useCallback<any>(
@@ -254,9 +326,9 @@ const CubesForm = () => {
             fluid
             pill
             loading={isLoadingSave}
-            onClick={!valid ? null : submitAndDontSaveTemplate}
-            disabled={isLoadingSave}
-            type={!valid ? 'submit' : 'button'}
+            // onClick={!valid ? null : submitAndDontSaveTemplate}
+            disabled={isLoadingSave && !selectedColumns}
+            type={valid ? 'submit' : 'button'}
           >
             {showModal ? `${cubeActionLabel[showModal]} Cube` : 'Loading'}
           </Button>
@@ -273,11 +345,7 @@ const CubesForm = () => {
                 onClick={!valid ? null : submitAndSaveTemplate}
                 type={!valid ? 'submit' : 'button'}
               >
-                <SvgIcon
-                  path="icon-arrow-circle-right-line"
-                  size="md"
-                  className={`${styleMr}`}
-                />
+                <SvgIcon path="icon-arrow-circle-right-line" size="md" className={`${styleMr}`} />
                 Create Cube and Save as Template
               </Button>
             </SemanticForm.Group>
@@ -289,7 +357,7 @@ const CubesForm = () => {
             fluid
             pill
             loading={isLoadingSave}
-            onClick={() => setFormStep(formStep - 1)}
+            onClick={() => setStepHandler(formStep - 1)}
             disabled={isLoadingSave}
             type={!valid ? 'submit' : 'button'}
           >
@@ -298,7 +366,7 @@ const CubesForm = () => {
         </SemanticForm.Group>
       </>
     ),
-    [isLoadingSave, valid, showModal, isNewOrder]
+    [isLoadingSave, valid, showModal, isNewOrder],
   );
 
   const renderControls = useCallback<any>(
@@ -310,8 +378,8 @@ const CubesForm = () => {
             fluid
             pill
             loading={isLoadingSave}
-            onClick={() => setFormStep(formStep + 1)}
-            disabled={isLoadingSave}
+            onClick={() => setStepHandler(formStep + 1)}
+            disabled={isLoadingSave || !canNext(formStep)}
             type={!valid ? 'submit' : 'button'}
           >
             {showModal ? `Next` : 'Loading'}
@@ -324,7 +392,7 @@ const CubesForm = () => {
               fluid
               pill
               loading={isLoadingSave}
-              onClick={() => setFormStep(formStep - 1)}
+              onClick={() => setStepHandler(formStep - 1)}
               disabled={isLoadingSave}
               type={!valid ? 'submit' : 'button'}
             >
@@ -334,27 +402,28 @@ const CubesForm = () => {
         </When>
       </>
     ),
-    [isLoadingSave, valid, formStep, showModal]
+    [isLoadingSave, valid, formStep, canNext, showModal],
   );
 
-  const handleBulkAction = useCallback((key: any) => {
-    setSelectedFiles(
-      Array.isArray(key) ? key : toggleValueInArray(selectedFiles, key)
-    );
-  }, []);
+  const handleBulkAction = useCallback(
+    (key: any) => {
+      const vals = toggleValueInArray(selectedFiles, key);
+      // eslint-disable-next-line no-console
+      console.log({ key, selectedFiles, vals });
+      setSelectedFiles(Array.isArray(key) ? key : toggleValueInArray(selectedFiles, key));
+    },
+    [selectedFiles],
+  );
 
   // eslint-disable-next-line no-console
-  console.log(selectedFiles);
+  console.log({ formStep, formState, lastStep });
 
   return (
     <>
       {formState === 'form' && (
         <>
           <Step.Group ordered stackable="tablet" className={`${styleSteps}`}>
-            <Step
-              active={formStep === steps.details}
-              completed={formStep > steps.details}
-            >
+            <Step active={formStep === steps.details} completed={formStep > steps.details}>
               <Step.Content>
                 <Step.Title>Details</Step.Title>
                 <Step.Description>Set your cube details</Step.Description>
@@ -408,10 +477,7 @@ const CubesForm = () => {
                     Description
                   </Header>
 
-                  <InputTextArea
-                    name="description"
-                    placeholder="Enter Description"
-                  />
+                  <InputTextArea name="description" placeholder="Enter Description" />
                 </SemanticForm.Field>
                 <SemanticForm.Field className={`${css(margin.bottomLg)}`}>
                   <Header as="h5" className={`${styleTitle}`}>
@@ -451,10 +517,7 @@ const CubesForm = () => {
                     Metadata
                   </Header>
 
-                  <FieldArray
-                    name="metadata"
-                    component={CubeMetadataItemBulkForm}
-                  />
+                  <FieldArray name="metadata" component={CubeMetadataItemBulkForm} />
                 </SemanticForm.Field>
               </>
             )}
@@ -473,6 +536,7 @@ const CubesForm = () => {
                   placeholder="Select folders name"
                   options={foldersOptions}
                   onChange={(_: any, vals: any) => {
+                    setSelectedFiles([]);
                     setFolder(vals.value);
                   }}
                 />
@@ -502,17 +566,77 @@ const CubesForm = () => {
               </SemanticForm.Field>
             )}
           </When>
-          <When condition={formStep === lastStep}>
-            {() => <CubesFormReviewContainer />}
+          <When condition={formStep === steps.mapping}>
+            {() => (
+              <SemanticForm.Field className={`${css(margin.bottomLg)}`}>
+                <Header as="h5" className={`${styleTitle}`}>
+                  {t('Mappings')}
+                </Header>
+
+                <When condition={siloFilesAttributes && siloFilesAttributes?.length}>
+                  {siloFilesAttributes?.map((file: SiloFileType) => (
+                    <>
+                      <Header as="h5" className={`${styleFiles}`}>
+                        {t('File {{file.name}}', { file })}
+                      </Header>
+                      {file?.attributes
+                        ?.filter((e) => filterAttributes.includes(e.type))
+                        .map((attribute: SiloFileAttributeType) => {
+                          const body = attribute.attributes?.map(
+                            (item: SiloFileInnerAttributeType) => [
+                              {
+                                id: item.name,
+                              },
+                              item?.auto_increment ? t('True') : '',
+                              item.name,
+                              item.size,
+                              item.type,
+                            ],
+                          );
+                          const hide = map(
+                            attribute.attributes?.filter((e) => e.auto_increment || e.foreign_key),
+                            'name',
+                          );
+                          return (
+                            <>
+                              <Header as="h5" className={`${styleFiles}`}>
+                                {t('Table {{attribute.name}}', { attribute })}
+                              </Header>
+                              <BaslakeTable
+                                bulk
+                                key={`${attribute?.name}-${attribute?.type}`}
+                                className={`${css(padding.topXs)}`}
+                                headers={headerTableType}
+                                rows={body}
+                                alignNested="left"
+                                highlightNested
+                                highlightParentRow
+                                hideBulkForValues={hide}
+                                condensed
+                                selectedRows={getValues(file, attribute)}
+                                bulkActionsHandler={(items: any) => {
+                                  // eslint-disable-next-line no-console
+                                  console.log({ items });
+                                  handleBulkSelectColumn(file, attribute, items);
+                                }}
+                              />
+                            </>
+                          );
+                        })}
+                      <Divider />
+                    </>
+                  ))}
+                </When>
+              </SemanticForm.Field>
+            )}
           </When>
-          <When condition={formStep === lastStep}>
-            {() => renderSubmitControls()}
-          </When>
-          <When condition={formStep !== lastStep}>
-            {() => renderControls()}
-          </When>
+          <When condition={formStep === lastStep}>{() => renderSubmitControls()}</When>
+          <When condition={formStep !== lastStep}>{() => renderControls()}</When>
         </>
       )}
+      <When condition={formStep === lastStep && formState === 'preview'}>
+        {() => <CubesFormReviewContainer />}
+      </When>
       <SemanticForm.Group>
         <Button
           outline
@@ -529,6 +653,6 @@ const CubesForm = () => {
       </SemanticForm.Group>
     </>
   );
-};
+}
 
 export default CubesForm;

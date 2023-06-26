@@ -20,9 +20,7 @@ describe('BadgeCounter component', () => {
   });
 
   it('should execute the onClick function on click.', () => {
-    const { queryByText } = render(
-      <BadgeCounter count="1" onClick={mockedOnClick} />
-    );
+    const { queryByText } = render(<BadgeCounter count="1" onClick={mockedOnClick} />);
 
     const textElement = queryByText('1');
 

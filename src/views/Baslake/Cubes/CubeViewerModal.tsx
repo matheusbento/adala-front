@@ -4,7 +4,6 @@ import { useCallback, useState, useMemo, useEffect } from 'react';
 import BaslakeModal from '@components/Library/Baslake/BaslakeModal/BaslakeModal';
 import ButtonLibrary from '@components/Library/Button';
 import ContentGroup from '@components/Library/ContentGroup';
-import Text from '@components/Library/Text';
 import { useCubes } from '@hooks/Cubes';
 import { padding } from '@utils/theme';
 import BaslakeTable from '@views/Layout/BaslakeTable';
@@ -20,7 +19,7 @@ import { LevelType } from 'types/LevelType';
 
 import { arrayUnique } from '../../../helpers';
 
-const CubeViewerModal = () => {
+function CubeViewerModal() {
   const [params, setParams] = useState<Record<string, any>>({});
   const [dimension, setDimension] = useState<string | undefined>(undefined);
   const location = useLocation();
@@ -41,10 +40,7 @@ const CubeViewerModal = () => {
     setIsOpenCubeViewerModal(false);
   }, [location.search]);
 
-  const modalTitle = useMemo(
-    () => t(`Viewing Cube {{cube.name}}`, { cube }),
-    [cube]
-  );
+  const modalTitle = useMemo(() => t(`Viewing Cube {{cube.name}}`, { cube }), [cube]);
 
   useEffect(() => {
     setParams({});
@@ -72,7 +68,7 @@ const CubeViewerModal = () => {
             },
           ]
         : [{}],
-    [dimension]
+    [dimension],
   );
 
   const sections = useMemo(() => {
@@ -88,8 +84,7 @@ const CubeViewerModal = () => {
       : [];
     const levels = [
       ...baseLevel,
-      ...(cubeView?.levels?.map((e: LevelType) => ({ ...e, link: true })) ??
-        []),
+      ...(cubeView?.levels?.map((e: LevelType) => ({ ...e, link: true })) ?? []),
       ...end,
     ];
     return levels?.map((level: LevelType, index: number) => ({
@@ -122,9 +117,7 @@ const CubeViewerModal = () => {
     // eslint-disable-next-line no-console
     console.log({ firstRow, record, prefixes, keys });
     const addHeaders = keys
-      .filter((e: string) =>
-        first(prefixes) ? !e.includes(first(prefixes) as string) : true
-      )
+      .filter((e: string) => (first(prefixes) ? !e.includes(first(prefixes) as string) : true))
       .map((e) => ({
         label: e,
         key: e,
@@ -153,7 +146,7 @@ const CubeViewerModal = () => {
       },
       ...additionalHeader,
     ],
-    [cubeView, baseLevel, nextLevel]
+    [cubeView, baseLevel, nextLevel],
   );
 
   const rows = useMemo(
@@ -176,7 +169,7 @@ const CubeViewerModal = () => {
         ),
         ...(additionalHeader?.map((e) => row.record[e.key]) ?? []),
       ]),
-    [cubeView]
+    [cubeView],
   );
 
   // eslint-disable-next-line no-console
@@ -218,9 +211,7 @@ const CubeViewerModal = () => {
                         <Button.Or />
                       </>
                     ))}
-                    <Button onClick={() => setDimension(undefined)}>
-                      Clear
-                    </Button>
+                    <Button onClick={() => setDimension(undefined)}>Clear</Button>
                   </Button.Group>
                 </ContentGroup>
               </Segment>
@@ -256,6 +247,6 @@ const CubeViewerModal = () => {
       </BaslakeModal.Content>
     </BaslakeModal>
   );
-};
+}
 
 export default CubeViewerModal;

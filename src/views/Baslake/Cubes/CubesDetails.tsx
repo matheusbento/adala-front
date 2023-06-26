@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import Button from '@components/Library/Button';
 import DetailsList from '@components/Library/DetailsList';
@@ -7,7 +7,7 @@ import { useWindowWidth } from '@helpers/index';
 import { useCubes } from '@hooks/Cubes';
 import { css } from 'glamor';
 import { useTranslation } from 'react-i18next';
-import { List, Divider, Grid, Table, Icon, Loader } from 'semantic-ui-react';
+import { List, Divider, Grid, Loader } from 'semantic-ui-react';
 
 import '@translations/i18n';
 import { useAuth } from 'hooks/Auth';
@@ -15,15 +15,8 @@ import { useAuth } from 'hooks/Auth';
 import { CubeMetadataType } from 'types/CubeMetadataType';
 import { DimensionType } from 'types/DimensionType';
 
-import { beautifyJson, formatMoney } from 'utils/formatting';
-import {
-  fontWeight,
-  spacing,
-  margin,
-  padding,
-  colors,
-  text,
-} from 'utils/themeConstants';
+import { beautifyJson } from 'utils/formatting';
+import { fontWeight, spacing, margin, padding, colors } from 'utils/themeConstants';
 
 import TextEllipsis from '@components/Library/TextEllipsis';
 import { flatten } from 'lodash';
@@ -81,7 +74,7 @@ const styleDetailColumn = css({
   },
 });
 
-const CubesDetails = () => {
+function CubesDetails() {
   const { session } = useAuth();
 
   const {
@@ -110,22 +103,18 @@ const CubesDetails = () => {
 
   const cubeMappings = useMemo(
     () => (cubeModel?.mappings ? Object.keys(cubeModel?.mappings) : []),
-    [cubeModel]
+    [cubeModel],
   );
 
   const handleEditCube = useCallback(() => {
     setShowModal('edit');
     setInitialValues({
       ...cube,
-      start_date: cube?.metadata?.find(
-        (e: CubeMetadataType) => e.field === 'start_date'
-      ).value,
-      end_date: cube?.metadata?.find(
-        (e: CubeMetadataType) => e.field === 'end_date'
-      ).value,
+      start_date: cube?.metadata?.find((e: CubeMetadataType) => e.field === 'start_date').value,
+      end_date: cube?.metadata?.find((e: CubeMetadataType) => e.field === 'end_date').value,
       model: beautifyJson(JSON.stringify(cube.model)),
       metadata: cube?.metadata?.filter(
-        (e: CubeMetadataType) => !['start_date', 'end_date'].includes(e.field)
+        (e: CubeMetadataType) => !['start_date', 'end_date'].includes(e.field),
       ),
     });
   }, []);
@@ -185,12 +174,7 @@ const CubesDetails = () => {
             <Grid.Row columns={windowSize >= 1200 ? 2 : 1}>
               <When condition={cubeModel?.details.length}>
                 <Grid.Column className={`${styleDetailColumn}`}>
-                  <Header
-                    as="p"
-                    color="primary"
-                    line
-                    lineMargin={`${marginBlueHeaders}`}
-                  >
+                  <Header as="p" color="primary" line lineMargin={`${marginBlueHeaders}`}>
                     {t('Details')}
                   </Header>
                   {cubeModel?.details.map((detail: any) => (
@@ -203,29 +187,15 @@ const CubesDetails = () => {
                 </Grid.Column>
               </When>
               <Grid.Column className={`${styleDetailColumn}`}>
-                <Header
-                  as="p"
-                  color="primary"
-                  line
-                  lineMargin={`${marginBlueHeaders}`}
-                >
+                <Header as="p" color="primary" line lineMargin={`${marginBlueHeaders}`}>
                   {t('Infos')}
                 </Header>
                 {cubeInfos.map((val: CubeMetadataType) => (
-                  <DetailsList
-                    key={`info-${val.id}`}
-                    title={val.field}
-                    description={val.value}
-                  />
+                  <DetailsList key={`info-${val.id}`} title={val.field} description={val.value} />
                 ))}
               </Grid.Column>
               <Grid.Column className={`${styleDetailColumn}`}>
-                <Header
-                  as="p"
-                  color="primary"
-                  line
-                  lineMargin={`${marginBlueHeaders}`}
-                >
+                <Header as="p" color="primary" line lineMargin={`${marginBlueHeaders}`}>
                   {t('Dimensions')}
                 </Header>
                 {cubeModel?.dimensions.map((dim: DimensionType) => (
@@ -250,9 +220,7 @@ const CubesDetails = () => {
                       title={t('Hierarchies')}
                       description={
                         <TextEllipsis count={dim.hierarchies?.length}>
-                          {flatten(
-                            dim.hierarchies?.map((e: any) => e.levels)
-                          ).join(', ')}
+                          {flatten(dim.hierarchies?.map((e: any) => e.levels)).join(', ')}
                         </TextEllipsis>
                       }
                     />
@@ -261,12 +229,7 @@ const CubesDetails = () => {
                 ))}
               </Grid.Column>
               <Grid.Column className={`${styleDetailColumn}`}>
-                <Header
-                  as="p"
-                  color="primary"
-                  line
-                  lineMargin={`${marginBlueHeaders}`}
-                >
+                <Header as="p" color="primary" line lineMargin={`${marginBlueHeaders}`}>
                   {t('Aggregations')}
                 </Header>
                 {cubeModel?.aggregates.map((agg: any) => (
@@ -286,12 +249,7 @@ const CubesDetails = () => {
                 ))}
               </Grid.Column>
               <Grid.Column className={`${styleDetailColumn}`}>
-                <Header
-                  as="p"
-                  color="primary"
-                  line
-                  lineMargin={`${marginBlueHeaders}`}
-                >
+                <Header as="p" color="primary" line lineMargin={`${marginBlueHeaders}`}>
                   {t('Mappings')}
                 </Header>
                 {cubeMappings.map((key: string) => (
@@ -459,5 +417,5 @@ const CubesDetails = () => {
       /> */}
     </>
   );
-};
+}
 export default CubesDetails;

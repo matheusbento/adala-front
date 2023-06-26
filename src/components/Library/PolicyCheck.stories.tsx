@@ -1,5 +1,5 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
 import React from 'react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import PolicyCheck from './PolicyCheck';
 
@@ -11,9 +11,7 @@ export default {
   },
 } as ComponentMeta<typeof PolicyCheck>;
 
-const Template: ComponentStory<typeof PolicyCheck> = (args) => (
-  <PolicyCheck {...args} />
-);
+const Template: ComponentStory<typeof PolicyCheck> = (args) => <PolicyCheck {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {

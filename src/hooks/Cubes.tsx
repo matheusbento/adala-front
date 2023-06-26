@@ -1,37 +1,26 @@
-import {
-  createContext,
-  useContext,
-  useMemo,
-  useState,
-  ReactNode,
-  useCallback,
-} from 'react';
+import { ReactNode, createContext, useCallback, useContext, useMemo, useState } from 'react';
 
 import { cubesAPI } from '@helpers/api';
 
 import { CubeTemplateType } from 'types/CubeTemplateType';
-import { CubeType } from 'types/CubeType';
 import { MetaType } from 'types/MetaType';
 import { OrderType } from 'types/OrderType';
 import { PaginateParams } from 'types/PaginateParams';
+import SiloFileType from 'types/SiloFileType';
 
 import api from '../helpers/api';
-import { useOrganizations } from './Organizations';
 
 export type CubesType = {
   showModal: string | null;
   setFormState: (val: string) => void;
   setShowModal: (val: string | null) => void;
   setIsOpenCubeViewerModal: (val: boolean) => void;
+  setSiloFilesAttributes: (val: any) => void;
   fetchCubeHandler: (cubeId: number | string, params?: any) => void;
-  showCubeModelHandler: (cubeId: number | string, params?: any) => void;
   fetchCubeViewerHandler: (dimension?: string, params?: any) => void;
-  fetchCubesHandler: (
-    search?: string | undefined | null,
-    params?: PaginateParams | null
-  ) => void;
+  fetchCubesHandler: (search?: string | undefined | null, params?: PaginateParams | null) => void;
   setSelectedTemplate: (template: CubeTemplateType | null) => void;
-  saveCubeHandler: (data: CubeType) => void;
+  saveCubeHandler: (data: any) => void;
   loadingOverview: boolean;
   showCube: number | string | null;
   selectedTemplate: CubeTemplateType | null;
@@ -44,6 +33,7 @@ export type CubesType = {
   isLoadingCubeView: boolean;
   formSuccess: string[] | null;
   isOpenCubeViewerModal: boolean;
+  siloFilesAttributes: SiloFileType[] | null;
   cubes: any;
   cube: any;
   cubeModel: any;
@@ -68,7 +58,7 @@ interface CubesProviderProps {
   organizationId: number;
 }
 
-const CubesProvider = ({ children, organizationId }: CubesProviderProps) => {
+function CubesProvider({ children, organizationId }: CubesProviderProps) {
   const [showModal, setShowModal] = useState<string | null>(null);
   const [order, setOrder] = useState<OrderType>();
   const [isLoadingCubes, setIsLoadingCubes] = useState(false);
@@ -80,6 +70,8 @@ const CubesProvider = ({ children, organizationId }: CubesProviderProps) => {
   const [cubeModel, setCubeModel] = useState<any>(null);
   const [cubeView, setCubeView] = useState<Record<string, any> | null>({});
   const [cubesMeta, setCubesMeta] = useState<MetaType | null>(null);
+
+  const [siloFilesAttributes, setSiloFilesAttributes] = useState<SiloFileType[] | null>(null);
 
   const [initialValues, setInitialValues] = useState({});
 
@@ -94,8 +86,7 @@ const CubesProvider = ({ children, organizationId }: CubesProviderProps) => {
   // templates
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isLoadingCubeTemplates, setIsLoadingCubeTemplates] = useState(false);
-  const [selectedTemplate, setSelectedTemplate] =
-    useState<CubeTemplateType | null>(null);
+  const [selectedTemplate, setSelectedTemplate] = useState<CubeTemplateType | null>(null);
 
   // cube save handler
   const [isLoadingSave, setIsLoadingSave] = useState(false);
@@ -105,12 +96,9 @@ const CubesProvider = ({ children, organizationId }: CubesProviderProps) => {
     async (cubeId: number | string, params: any = null) => {
       try {
         setIsLoadingCube(true);
-        const response = await api.get(
-          `organizations/${organizationId}/cubes/${cubeId}`,
-          {
-            params,
-          }
-        );
+        const response = await api.get(`organizations/${organizationId}/cubes/${cubeId}`, {
+          params,
+        });
         setShowCube(cubeId);
         setCube(response?.data?.data);
       } catch (e) {
@@ -125,30 +113,7 @@ const CubesProvider = ({ children, organizationId }: CubesProviderProps) => {
         setIsLoadingCube(false);
       }
     },
-    [setLoadingOverview, organizationId]
-  );
-
-  const showCubeModelHandler = useCallback(
-    async (cubeId: number | string, params: any = null) => {
-      try {
-        setIsLoadingCube(true);
-        const response = await cubesAPI.get(`cube/${cubeId}/model`, {
-          params,
-        });
-        setCubeModel(response?.data);
-      } catch (e) {
-        setCubeModel(null);
-        // [todo]
-        // toaster(
-        //   dispatch,
-        //   'Error while trying to load the departmentSources',
-        //   'error'
-        // );
-      } finally {
-        setIsLoadingCube(false);
-      }
-    },
-    [setLoadingOverview, organizationId]
+    [setLoadingOverview, organizationId],
   );
 
   const fetchCubeViewerHandler = useCallback(
@@ -161,7 +126,7 @@ const CubesProvider = ({ children, organizationId }: CubesProviderProps) => {
             : `cube/${cube?.identifier}/viewer`,
           {
             params,
-          }
+          },
         );
         setCubeView(response?.data);
       } catch (e) {
@@ -176,11 +141,11 @@ const CubesProvider = ({ children, organizationId }: CubesProviderProps) => {
         setIsLoadingCubeView(false);
       }
     },
-    [setLoadingOverview, cube]
+    [setLoadingOverview, cube],
   );
 
   const saveCubeHandler = useCallback(
-    async (data: CubeType) => {
+    async (data: any) => {
       try {
         setIsLoadingSave(true);
         const method = data?.id ? 'put' : 'post';
@@ -191,21 +156,7 @@ const CubesProvider = ({ children, organizationId }: CubesProviderProps) => {
         const response = await api({
           method,
           url,
-          data: {
-            ...data,
-            model: JSON.parse(data.model),
-            // metadata: [
-            //   {
-            //     field: 'start_date',
-            //     value: data?.start_date,
-            //   },
-            //   {
-            //     field: 'end_date',
-            //     value: data?.end_date,
-            //   },
-            //   ...data.metadata,
-            // ],
-          },
+          data,
         });
         setFormSuccess(['Cube created!']);
         // setCubeView(response?.data);
@@ -221,13 +172,13 @@ const CubesProvider = ({ children, organizationId }: CubesProviderProps) => {
         setIsLoadingSave(false);
       }
     },
-    [setLoadingOverview, organizationId, cube]
+    [setLoadingOverview, organizationId, cube],
   );
 
   const fetchCubesHandler = useCallback(
     async (
       search: string | undefined | null = null,
-      params: PaginateParams | null = null
+      params: PaginateParams | null = null,
       // eslint-disable-next-line consistent-return
     ) => {
       try {
@@ -253,12 +204,9 @@ const CubesProvider = ({ children, organizationId }: CubesProviderProps) => {
           };
         }
 
-        const response = await api.get(
-          `organizations/${organizationId}/cubes/`,
-          {
-            params: auxParams,
-          }
-        );
+        const response = await api.get(`organizations/${organizationId}/cubes/`, {
+          params: auxParams,
+        });
 
         setCubes(response?.data?.data);
         setCubesMeta(response?.data?.meta);
@@ -274,14 +222,13 @@ const CubesProvider = ({ children, organizationId }: CubesProviderProps) => {
         setIsLoadingCubes(false);
       }
     },
-    [order, organizationId]
+    [order, organizationId],
   );
 
   const providerValue = useMemo(
     () => ({
       showModal,
       setShowModal,
-      showCubeModelHandler,
       fetchCubeViewerHandler,
       fetchCubesHandler,
       loadingOverview,
@@ -307,8 +254,12 @@ const CubesProvider = ({ children, organizationId }: CubesProviderProps) => {
       cubeModel,
       fetchCubeHandler,
       setInitialValues,
+      siloFilesAttributes,
+      setSiloFilesAttributes,
     }),
     [
+      setSiloFilesAttributes,
+      siloFilesAttributes,
       setInitialValues,
       fetchCubeHandler,
       cubeModel,
@@ -330,21 +281,16 @@ const CubesProvider = ({ children, organizationId }: CubesProviderProps) => {
       setShowModal,
       isUpdating,
       fetchCubesHandler,
-      showCubeModelHandler,
       fetchCubeViewerHandler,
       setIsOpenCubeViewerModal,
       showCube,
       cubeView,
       loadingOverview,
       cubesMeta,
-    ]
+    ],
   );
 
-  return (
-    <CubesContext.Provider value={providerValue}>
-      {children}
-    </CubesContext.Provider>
-  );
-};
+  return <CubesContext.Provider value={providerValue}>{children}</CubesContext.Provider>;
+}
 
 export { CubesProvider, useCubes };

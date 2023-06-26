@@ -1,15 +1,9 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { ReactNode } from 'react';
 
-import { css } from 'glamor';
-import {
-  Button as SemanticButton,
-  SemanticCOLORS,
-  SemanticFLOATS,
-  SemanticSIZES,
-} from 'semantic-ui-react';
-
 import { margin, padding, border, colors } from '@utils/theme';
+import { css } from 'glamor';
+import { Button as SemanticButton, SemanticFLOATS } from 'semantic-ui-react';
 
 import Pill from './Pill';
 
@@ -40,19 +34,12 @@ const linkCss = css(margin.none, padding.none, border.none, {
   userSelect: 'text !important',
 });
 
-const Button = ({
-  pill = false,
-  link = false,
-  className,
-  ...rest
-}: ButtonProps) =>
-  pill ? (
+function Button({ pill = false, link = false, className, ...rest }: ButtonProps) {
+  return pill ? (
     <Pill button className={className} {...rest} />
   ) : (
-    <SemanticButton
-      className={`${className} ${link ? linkCss : ''}`}
-      {...rest}
-    />
+    <SemanticButton className={`${className} ${link ? linkCss : ''}`} {...rest} />
   );
+}
 
 export default Button;

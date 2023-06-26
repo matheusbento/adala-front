@@ -1,10 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useCallback,
-  useMemo,
-  ReactNode,
-} from 'react';
+import { createContext, useContext, useCallback, useMemo, ReactNode } from 'react';
 
 import * as AuthConstants from '@constants/authConstants';
 
@@ -14,43 +8,34 @@ export type BaslakePolicyContextType = {
   canAccess: () => boolean;
 };
 
-const BaslakePolicyContext = createContext<BaslakePolicyContextType | null>(
-  null
-);
+const BaslakePolicyContext = createContext<BaslakePolicyContextType | null>(null);
 
 export interface BaslakePolicyProps {
   children: ReactNode;
 }
 
-const BaslakePolicyProvider = ({ children }: BaslakePolicyProps) => {
+function BaslakePolicyProvider({ children }: BaslakePolicyProps) {
   const { hasPermission } = useAuth();
 
   const canAccess = useCallback(
     () => hasPermission(AuthConstants.permissions.baslake.access),
-    [hasPermission]
+    [hasPermission],
   );
 
   const value = useMemo(
     () => ({
       canAccess,
     }),
-    [canAccess]
+    [canAccess],
   );
 
-  return (
-    <BaslakePolicyContext.Provider value={value}>
-      {children}
-    </BaslakePolicyContext.Provider>
-  );
-};
+  return <BaslakePolicyContext.Provider value={value}>{children}</BaslakePolicyContext.Provider>;
+}
 
 function useBaslakePolicy() {
   const context = useContext(BaslakePolicyContext);
 
-  if (!context)
-    throw new Error(
-      'useBaslakePolicy must be used within a BaslakePolicyProvider'
-    );
+  if (!context) throw new Error('useBaslakePolicy must be used within a BaslakePolicyProvider');
 
   return context;
 }

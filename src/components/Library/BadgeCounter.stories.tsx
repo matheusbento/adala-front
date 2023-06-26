@@ -67,9 +67,7 @@ export default {
   },
 } as ComponentMeta<typeof BadgeCounter>;
 
-const Template: ComponentStory<typeof BadgeCounter> = (args) => (
-  <BadgeCounter {...args} />
-);
+const Template: ComponentStory<typeof BadgeCounter> = (args) => <BadgeCounter {...args} />;
 
 export const Default = Template.bind({});
 

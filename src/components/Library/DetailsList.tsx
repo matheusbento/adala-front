@@ -18,7 +18,7 @@ const styleDescription = css({
   fontWeight: fontWeight.w600,
 });
 
-const DetailsList = ({
+function DetailsList({
   title = '',
   description = '',
   columnsWidths = [8, 8],
@@ -26,21 +26,17 @@ const DetailsList = ({
   title?: string;
   description?: string | number | ReactNode;
   columnsWidths?: SemanticWIDTHS[];
-}) => (
-  <Grid className={`${styleContainer}`}>
-    <Grid.Column
-      width={columnsWidths[0]}
-      className={`${styleTitle} ${styleColumn}`}
-    >
-      {title}
-    </Grid.Column>
-    <Grid.Column
-      width={columnsWidths[1]}
-      className={`${styleDescription} ${styleColumn}`}
-    >
-      {description}
-    </Grid.Column>
-  </Grid>
-);
+}) {
+  return (
+    <Grid className={`${styleContainer}`}>
+      <Grid.Column width={columnsWidths[0]} className={`${styleTitle} ${styleColumn}`}>
+        {title}
+      </Grid.Column>
+      <Grid.Column width={columnsWidths[1]} className={`${styleDescription} ${styleColumn}`}>
+        {description}
+      </Grid.Column>
+    </Grid>
+  );
+}
 
 export default DetailsList;

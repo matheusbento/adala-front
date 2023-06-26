@@ -16,7 +16,7 @@ describe('IconList component', () => {
     const { queryByText } = render(
       <IconList>
         <div>Test</div>
-      </IconList>
+      </IconList>,
     );
 
     const textElement = queryByText('Test');

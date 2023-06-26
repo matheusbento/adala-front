@@ -29,17 +29,13 @@ const styleRounded = css({
 
 const FieldForm = buildFormField(
   FileInput,
-  (
-    input: Component,
-    error: any,
-    { inputIcon, autoComplete, ...props }: Record<string, any>
-  ) => ({
+  (input: Component, error: any, { inputIcon, autoComplete, ...props }: Record<string, any>) => ({
     icon: inputIcon,
     ...input,
     autoComplete: autoComplete ?? 'off',
     ...props,
     error,
-  })
+  }),
 );
 
 export interface RestProps {
@@ -64,7 +60,7 @@ export interface InputFileProps {
   min?: number;
 }
 
-const InputFile = ({
+function InputFile({
   name,
   icon,
   placeholder,
@@ -76,7 +72,7 @@ const InputFile = ({
   required = false,
   formProps = {},
   ...rest
-}: InputFileProps & Partial<RestProps>) => {
+}: InputFileProps & Partial<RestProps>) {
   const { register, setValue, formState, watch } = useFormContext();
 
   const styleField = css(
@@ -85,13 +81,12 @@ const InputFile = ({
     negative && styleNegative,
     {
       width,
-    }
+    },
   );
 
   const defaultPlaceholder = useMemo(
-    () =>
-      placeholder || `Enter ${rest?.label ? rest.label.toLowerCase() : 'text'}`,
-    [placeholder, rest.label]
+    () => placeholder || `Enter ${rest?.label ? rest.label.toLowerCase() : 'text'}`,
+    [placeholder, rest.label],
   );
 
   const message = useMemo(() => {
@@ -132,6 +127,6 @@ const InputFile = ({
       {icon && <i aria-hidden="true" className={`${icon} icon`} />}
     </>
   );
-};
+}
 
 export default InputFile;

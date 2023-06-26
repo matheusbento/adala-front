@@ -18,35 +18,32 @@ export interface BaslakeTableActionItemProps {
   item?: any;
 }
 
-const BaslakeTableActions = ({
-  actions = null,
-  item = null,
-}: BaslakeTableActionItemProps) => (
-  <Dropdown
-    trigger={
-      <SvgIcon path="icon-more-vertical" color={colors.default} size="lg" />
-    }
-    direction="left"
-    className={`${styleDropdown}`}
-    disabled={false}
-  >
-    <Dropdown.Menu>
-      {actions?.map((actionItem: any) => (
-        <When
-          key={`action-item-${item?.id}-${actionItem.label}`}
-          condition={actionItem.shouldShow ? actionItem.shouldShow(item) : true}
-        >
-          {() => (
-            <BaslakeTableActionItem
-              item={item}
-              label={actionItem.label}
-              clickHandler={actionItem.action}
-            />
-          )}
-        </When>
-      ))}
-    </Dropdown.Menu>
-  </Dropdown>
-);
+function BaslakeTableActions({ actions = null, item = null }: BaslakeTableActionItemProps) {
+  return (
+    <Dropdown
+      trigger={<SvgIcon path="icon-more-vertical" color={colors.default} size="lg" />}
+      direction="left"
+      className={`${styleDropdown}`}
+      disabled={false}
+    >
+      <Dropdown.Menu>
+        {actions?.map((actionItem: any) => (
+          <When
+            key={`action-item-${item?.id}-${actionItem.label}`}
+            condition={actionItem.shouldShow ? actionItem.shouldShow(item) : true}
+          >
+            {() => (
+              <BaslakeTableActionItem
+                item={item}
+                label={actionItem.label}
+                clickHandler={actionItem.action}
+              />
+            )}
+          </When>
+        ))}
+      </Dropdown.Menu>
+    </Dropdown>
+  );
+}
 
 export default BaslakeTableActions;

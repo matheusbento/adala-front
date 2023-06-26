@@ -22,9 +22,7 @@ export default {
   },
 } as ComponentMeta<typeof CloseModalIcon>;
 
-const Template: ComponentStory<typeof CloseModalIcon> = (args) => (
-  <CloseModalIcon {...args} />
-);
+const Template: ComponentStory<typeof CloseModalIcon> = (args) => <CloseModalIcon {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {

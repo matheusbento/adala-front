@@ -14,9 +14,7 @@ describe('TextEllipsis component', () => {
   });
 
   it('should be able to display ellipsis.', () => {
-    const { queryByText } = render(
-      <TextEllipsis count={3}>Test Children</TextEllipsis>
-    );
+    const { queryByText } = render(<TextEllipsis count={3}>Test Children</TextEllipsis>);
 
     const textElement = queryByText('View All (3)');
 
@@ -24,9 +22,7 @@ describe('TextEllipsis component', () => {
   });
 
   it('should be able to show overflow on click.', () => {
-    const { queryByText } = render(
-      <TextEllipsis count={3}>Test Children</TextEllipsis>
-    );
+    const { queryByText } = render(<TextEllipsis count={3}>Test Children</TextEllipsis>);
 
     const viewAllElement = queryByText('View All (3)');
 
@@ -38,9 +34,7 @@ describe('TextEllipsis component', () => {
   });
 
   it('should be able to as a paragraph.', () => {
-    const { container } = render(
-      <TextEllipsis paragraph>Test Children</TextEllipsis>
-    );
+    const { container } = render(<TextEllipsis paragraph>Test Children</TextEllipsis>);
 
     const paragraphElement = container.querySelector('p');
 

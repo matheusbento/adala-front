@@ -1,6 +1,5 @@
-import { css } from 'glamor';
-
 import SvgIcon from '@components/Library/SvgIcon';
+import { css } from 'glamor';
 
 interface BaslakeSidebarIconProps {
   path: string;
@@ -9,25 +8,18 @@ interface BaslakeSidebarIconProps {
   className?: string;
 }
 
-const BaslakeSidebarIcon = ({
+function BaslakeSidebarIcon({
   path,
   subItem = false,
   color = '',
   className,
-}: BaslakeSidebarIconProps) => {
+}: BaslakeSidebarIconProps) {
   const styleIcon = css({
     cursor: 'pointer',
   });
 
   const size = subItem ? 'xl' : 'xxl';
 
-  return (
-    <SvgIcon
-      path={path}
-      size={size}
-      className={`${styleIcon} ${className}`}
-      color={color}
-    />
-  );
-};
+  return <SvgIcon path={path} size={size} className={`${styleIcon} ${className}`} color={color} />;
+}
 export default BaslakeSidebarIcon;

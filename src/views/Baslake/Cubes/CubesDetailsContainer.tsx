@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
-
 import CubesDetails from './CubesDetails';
 
-const CubesDetailsContainer = () => <CubesDetails />;
+function CubesDetailsContainer() {
+  return <CubesDetails />;
+}
 
 export default CubesDetailsContainer;

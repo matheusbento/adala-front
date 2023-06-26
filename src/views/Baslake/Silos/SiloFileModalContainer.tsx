@@ -1,5 +1,7 @@
 import SiloFileModal from './SiloFileModal';
 
-const SiloFileModalContainer = (props: any) => <SiloFileModal {...props} />;
+function SiloFileModalContainer(props: any) {
+  return <SiloFileModal {...props} />;
+}
 
 export default SiloFileModalContainer;

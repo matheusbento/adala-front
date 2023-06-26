@@ -1,10 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useCallback,
-  useMemo,
-  ReactNode,
-} from 'react';
+import { ReactNode, createContext, useCallback, useContext, useMemo } from 'react';
 
 import * as AuthConstants from '@constants/authConstants';
 import { useAuth } from '@hooks/Auth';
@@ -22,27 +16,27 @@ export interface SilosPolicyProps {
   children: ReactNode;
 }
 
-const SilosPolicyProvider = ({ children }: SilosPolicyProps) => {
+function SilosPolicyProvider({ children }: SilosPolicyProps) {
   const { hasPermission } = useAuth();
 
   const canAccess = useCallback(
     () => hasPermission(AuthConstants.permissions.silos.see),
-    [hasPermission]
+    [hasPermission],
   );
 
   const canCreate = useCallback(
     () => hasPermission(AuthConstants.permissions.silos.manage),
-    [hasPermission]
+    [hasPermission],
   );
 
   const canEdit = useCallback(
     () => hasPermission(AuthConstants.permissions.silos.manage),
-    [hasPermission]
+    [hasPermission],
   );
 
   const canDelete = useCallback(
     () => hasPermission(AuthConstants.permissions.silos.manage),
-    [hasPermission]
+    [hasPermission],
   );
 
   const value = useMemo(
@@ -52,23 +46,18 @@ const SilosPolicyProvider = ({ children }: SilosPolicyProps) => {
       canDelete,
       canEdit,
     }),
-    [canAccess, canCreate, canDelete, canEdit]
+    [canAccess, canCreate, canDelete, canEdit],
   );
 
-  return (
-    <SilosPolicyContext.Provider value={value}>
-      {children}
-    </SilosPolicyContext.Provider>
-  );
-};
+  return <SilosPolicyContext.Provider value={value}>{children}</SilosPolicyContext.Provider>;
+}
 
-function useSilosPolicy() {
+function useSiloPolicy() {
   const context = useContext(SilosPolicyContext);
 
-  if (!context)
-    throw new Error('useSilosPolicy must be used within a SilosPolicyProvider');
+  if (!context) throw new Error('useSiloPolicy must be used within a SilosPolicyProvider');
 
   return context;
 }
 
-export { SilosPolicyProvider, useSilosPolicy };
+export { SilosPolicyProvider, useSiloPolicy };

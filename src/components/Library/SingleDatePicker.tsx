@@ -2,7 +2,7 @@ import 'react-dates/initialize';
 import { SingleDatePicker as SingleDatePickerComponent } from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
 
-const SingleDatePicker = ({
+function SingleDatePicker({
   error,
   ...props
 }: {
@@ -11,7 +11,7 @@ const SingleDatePicker = ({
   onFocusChange?: any;
   displayFormat?: string;
   block?: boolean;
-}) => {
+}) {
   const childProps = { error, ...props } as any;
   delete childProps.input;
   delete childProps.meta;
@@ -20,6 +20,6 @@ const SingleDatePicker = ({
   delete childProps.validate;
 
   return <SingleDatePickerComponent {...childProps} />;
-};
+}
 
 export default SingleDatePicker;

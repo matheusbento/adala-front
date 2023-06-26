@@ -1,9 +1,8 @@
 import React from 'react';
 
+import Form from '@components/Library/Form';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { Grid } from 'semantic-ui-react';
-
-import Form from '@components/Library/Form';
 
 import { FieldArrayTypeSingle } from 'types/FieldArrayType';
 

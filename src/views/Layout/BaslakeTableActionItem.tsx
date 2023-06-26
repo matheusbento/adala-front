@@ -24,29 +24,25 @@ export interface BaslakeTableActionItemProps {
   disabled?: boolean;
 }
 
-const BaslakeTableActionItem = ({
+function BaslakeTableActionItem({
   item,
   label,
   icon = null,
   disabled = false,
   clickHandler,
-}: BaslakeTableActionItemProps) => {
+}: BaslakeTableActionItemProps) {
   const handleClick = useCallback(() => {
     clickHandler(item);
   }, [item, clickHandler]);
 
   return (
-    <Dropdown.Item
-      className={`${styleActionItem}`}
-      disabled={disabled}
-      onClick={handleClick}
-    >
+    <Dropdown.Item className={`${styleActionItem}`} disabled={disabled} onClick={handleClick}>
       <When condition={icon && typeof icon === 'string'}>
         {() => <SvgIcon color={colors.greyDarker} path={icon as string} />}
       </When>
       <span>{label}</span>
     </Dropdown.Item>
   );
-};
+}
 
 export default BaslakeTableActionItem;

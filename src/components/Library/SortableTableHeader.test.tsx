@@ -16,7 +16,7 @@ describe('SortableTableHeader component', () => {
         onSort={mockedOnSort}
         direction="desc"
         noWrap
-      />
+      />,
     );
 
     const labelElement = queryByText('Test Label');
@@ -31,7 +31,7 @@ describe('SortableTableHeader component', () => {
         field="Test Field"
         onSort={mockedOnSort}
         direction="desc"
-      />
+      />,
     );
 
     const labelElement = queryByText('Test Label');

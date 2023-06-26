@@ -1,11 +1,4 @@
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useMemo,
-  useState,
-  ReactNode,
-} from 'react';
+import { createContext, useCallback, useContext, useMemo, useState, ReactNode } from 'react';
 
 import { AxiosError, AxiosResponse } from 'axios';
 import Cookies from 'js-cookie';
@@ -44,7 +37,7 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
-const AuthProvider = ({ children }: AuthProviderProps) => {
+function AuthProvider({ children }: AuthProviderProps) {
   const [isLoadingSession, setIsLoadingSession] = useState(false);
   const [isLoadingLogout, setIsLoadingLogout] = useState(false);
   const [session, setSession] = useState<SessionType | null>(null);
@@ -96,36 +89,24 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     setIsLoadingSession(true);
     setWasFetched(false);
 
-    api
-      .post('/user/login', { email, password })
-      .then((response: AxiosResponse) => {
-        setSession(response.data);
-        Cookies.set('userToken', JSON.stringify(response.data.authorization));
-        sessionStorage.setItem('isLogged', JSON.stringify(response.data));
-        setIsLoadingSession(true);
-        setWasFetched(true);
-        window.location.href = '/';
-      });
+    api.post('/user/login', { email, password }).then((response: AxiosResponse) => {
+      setSession(response.data);
+      Cookies.set('userToken', JSON.stringify(response.data.authorization));
+      sessionStorage.setItem('isLogged', JSON.stringify(response.data));
+      setIsLoadingSession(true);
+      setWasFetched(true);
+      window.location.href = '/';
+    });
   };
 
-  const loggedSession = useMemo(
-    () => sessionStorage.getItem('isLogged'),
-    [Cookies]
-  );
+  const loggedSession = useMemo(() => sessionStorage.getItem('isLogged'), [Cookies]);
 
-  const loggedIn = useMemo(
-    () => !!session?.user?.id || !!loggedSession,
-    [session, loggedSession]
-  );
+  const loggedIn = useMemo(() => !!session?.user?.id || !!loggedSession, [session, loggedSession]);
 
-  const isUserId = useCallback(
-    (userId: string) => session?.user?.id === userId,
-    [session]
-  );
+  const isUserId = useCallback((userId: string) => session?.user?.id === userId, [session]);
   const hasPermission = useCallback(
-    (permission: string) =>
-      (session?.user?.permissions || []).includes(permission),
-    [session]
+    (permission: string) => (session?.user?.permissions || []).includes(permission),
+    [session],
   );
   const hasSession = useCallback(() => session?.user?.permissions, [session]);
 
@@ -157,10 +138,10 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
       hasSession,
       getAuthenticationHandler,
       logoutHandler,
-    ]
+    ],
   );
 
   return <Auth.Provider value={providerValue}>{children}</Auth.Provider>;
-};
+}
 
 export { AuthProvider, useAuth };

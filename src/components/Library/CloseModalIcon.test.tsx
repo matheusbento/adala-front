@@ -30,9 +30,7 @@ describe('CloseModalIcon component', () => {
   });
 
   it('should not execute onClick funcion if disabled.', () => {
-    const { queryByRole } = render(
-      <CloseModalIcon disabled onClick={mockedOnClick} />
-    );
+    const { queryByRole } = render(<CloseModalIcon disabled onClick={mockedOnClick} />);
 
     const buttonElement = queryByRole('button');
 

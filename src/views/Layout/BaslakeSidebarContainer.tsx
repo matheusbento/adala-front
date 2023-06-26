@@ -1,5 +1,7 @@
 import BaslakeSidebar from './BaslakeSidebar';
 
-const BaslakeSidebarContainer = () => <BaslakeSidebar />;
+function BaslakeSidebarContainer() {
+  return <BaslakeSidebar />;
+}
 
 export default BaslakeSidebarContainer;

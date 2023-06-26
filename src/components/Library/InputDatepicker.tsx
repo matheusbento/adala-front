@@ -25,28 +25,23 @@ const FieldForm = buildFormField(
       ...input,
       ...childProps,
     };
-  }
+  },
 );
 
-const styleMonthElement = css(
-  display.flex,
-  flex.alignItemsCenter,
-  flex.justifyContentCenter,
-  {
-    marginTop: '-4px',
-    paddingBottom: spacing.xxs,
-    '& > div': {
-      padding: `${spacing.none} ${spacing.xxs} !important`,
-    },
-    '& select': {
-      fontWeight: fontWeight.w600,
-      padding: `${spacing.xxs} ${spacing.none} !important`,
-      border: 'none !important',
-    },
-  }
-);
+const styleMonthElement = css(display.flex, flex.alignItemsCenter, flex.justifyContentCenter, {
+  marginTop: '-4px',
+  paddingBottom: spacing.xxs,
+  '& > div': {
+    padding: `${spacing.none} ${spacing.xxs} !important`,
+  },
+  '& select': {
+    fontWeight: fontWeight.w600,
+    padding: `${spacing.xxs} ${spacing.none} !important`,
+    border: 'none !important',
+  },
+});
 
-const Datepicker = ({
+function Datepicker({
   name,
   withDropdowns = false,
   lastYearAvailable = moment().year() + 5,
@@ -68,7 +63,7 @@ const Datepicker = ({
   name: string;
   label?: string | null;
   setDate?: any;
-}) => {
+}) {
   const { register, setValue, formState, watch } = useFormContext();
 
   const [inputFocused, setInputFocused] = useState(false);
@@ -90,7 +85,7 @@ const Datepicker = ({
           years.push(
             <option value={i} key={`year-${i}`}>
               {i}
-            </option>
+            </option>,
           );
           i -= 1;
         }
@@ -98,10 +93,7 @@ const Datepicker = ({
       return (
         <div className={`${styleMonthElement}`}>
           <div>
-            <select
-              value={month.month()}
-              onChange={(e) => onMonthSelect(month, e.target.value)}
-            >
+            <select value={month.month()} onChange={(e) => onMonthSelect(month, e.target.value)}>
               {moment.months().map((monthLabel, value) => (
                 <option value={value} key={monthLabel}>
                   {monthLabel}
@@ -124,12 +116,12 @@ const Datepicker = ({
         </div>
       );
     },
-    [firstYearAvailable, lastYearAvailable]
+    [firstYearAvailable, lastYearAvailable],
   );
 
   const defaultPlaceholder = useMemo(
     () => placeholder || `Select ${label ? label.toLowerCase() : 'date'}`,
-    [placeholder, label]
+    [placeholder, label],
   );
 
   const message = useMemo(() => {
@@ -153,9 +145,7 @@ const Datepicker = ({
       noBorder
       numberOfMonths={1}
       focused={!!inputFocused}
-      onFocusChange={({ focused }: { focused: boolean }) =>
-        setInputFocused(focused)
-      }
+      onFocusChange={({ focused }: { focused: boolean }) => setInputFocused(focused)}
       renderMonthElement={withDropdowns ? monthElement : null}
       placeholder={defaultPlaceholder}
       required={required}
@@ -171,6 +161,6 @@ const Datepicker = ({
       {...rest}
     />
   );
-};
+}
 
 export default Datepicker;

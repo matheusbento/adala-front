@@ -13,9 +13,7 @@ export default {
   },
 } as ComponentMeta<typeof BaslakeTitle>;
 
-const Template: ComponentStory<typeof BaslakeTitle> = (args) => (
-  <BaslakeTitle {...args} />
-);
+const Template: ComponentStory<typeof BaslakeTitle> = (args) => <BaslakeTitle {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {

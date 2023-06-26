@@ -1,5 +1,5 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
 import React from 'react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import FormMessage from './FormMessage';
 
@@ -80,9 +80,7 @@ export default {
   },
 } as ComponentMeta<typeof FormMessage>;
 
-const Template: ComponentStory<typeof FormMessage> = (args) => (
-  <FormMessage {...args} />
-);
+const Template: ComponentStory<typeof FormMessage> = (args) => <FormMessage {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {

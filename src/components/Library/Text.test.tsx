@@ -42,7 +42,7 @@ describe('Text component', () => {
     const { getByText } = render(
       <Text disabled onClick={mockClick}>
         Text Example
-      </Text>
+      </Text>,
     );
 
     const textElement = getByText('Text Example');

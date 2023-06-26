@@ -23,7 +23,7 @@ interface BaslakeModalProps {
   linkTo?: string;
 }
 
-const BaslakeModal = ({
+function BaslakeModal({
   className = '',
   size = undefined,
   open = false,
@@ -36,30 +36,32 @@ const BaslakeModal = ({
   linkTo = undefined,
   closeHandler,
   ...rest
-}: BaslakeModalProps) => (
-  <Modal
-    size={size}
-    open={open}
-    className={`${className}`}
-    onClose={closeHandler}
-    closeOnDimmerClick={isClosable ? closeByClickingOutside : false}
-    closeOnEscape={isClosable ? closeOnEscape : false}
-    {...rest} // eslint-disable-line react/jsx-props-no-spreading
-  >
-    <When condition={!!title || !!headerChildren}>
-      {() => (
-        <BaslakeModal.Header
-          title={title}
-          closeHandler={closeHandler}
-          isClosable={isClosable}
-          headerChildren={headerChildren}
-          linkTo={linkTo}
-        />
-      )}
-    </When>
-    {children}
-  </Modal>
-);
+}: BaslakeModalProps) {
+  return (
+    <Modal
+      size={size}
+      open={open}
+      className={`${className}`}
+      onClose={closeHandler}
+      closeOnDimmerClick={isClosable ? closeByClickingOutside : false}
+      closeOnEscape={isClosable ? closeOnEscape : false}
+      {...rest} // eslint-disable-line react/jsx-props-no-spreading
+    >
+      <When condition={!!title || !!headerChildren}>
+        {() => (
+          <BaslakeModal.Header
+            title={title}
+            closeHandler={closeHandler}
+            isClosable={isClosable}
+            headerChildren={headerChildren}
+            linkTo={linkTo}
+          />
+        )}
+      </When>
+      {children}
+    </Modal>
+  );
+}
 
 BaslakeModal.Header = BaslakeModalHeader;
 BaslakeModal.Content = BaslakeModalContent;

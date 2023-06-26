@@ -1,5 +1,7 @@
 import CubesList from './CubesList';
 
-const CubesListContainer = () => <CubesList />;
+function CubesListContainer() {
+  return <CubesList />;
+}
 
 export default CubesListContainer;

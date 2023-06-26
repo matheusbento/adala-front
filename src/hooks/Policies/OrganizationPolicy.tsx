@@ -1,10 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useCallback,
-  useMemo,
-  ReactNode,
-} from 'react';
+import { createContext, useContext, useCallback, useMemo, ReactNode } from 'react';
 
 import * as AuthConstants from '@constants/authConstants';
 import { useAuth } from '@hooks/Auth';
@@ -16,34 +10,33 @@ export type OrganizationPolicyContextType = {
   canDelete: () => boolean;
 };
 
-const OrganizationPolicyContext =
-  createContext<OrganizationPolicyContextType | null>(null);
+const OrganizationPolicyContext = createContext<OrganizationPolicyContextType | null>(null);
 
 export interface OrganizationPolicyProps {
   children: ReactNode;
 }
 
-const OrganizationPolicyProvider = ({ children }: OrganizationPolicyProps) => {
+function OrganizationPolicyProvider({ children }: OrganizationPolicyProps) {
   const { hasPermission } = useAuth();
 
   const canAccess = useCallback(
     () => hasPermission(AuthConstants.permissions.organization.see),
-    [hasPermission]
+    [hasPermission],
   );
 
   const canCreate = useCallback(
     () => hasPermission(AuthConstants.permissions.organization.manage),
-    [hasPermission]
+    [hasPermission],
   );
 
   const canEdit = useCallback(
     () => hasPermission(AuthConstants.permissions.organization.manage),
-    [hasPermission]
+    [hasPermission],
   );
 
   const canDelete = useCallback(
     () => hasPermission(AuthConstants.permissions.organization.manage),
-    [hasPermission]
+    [hasPermission],
   );
 
   const value = useMemo(
@@ -53,7 +46,7 @@ const OrganizationPolicyProvider = ({ children }: OrganizationPolicyProps) => {
       canDelete,
       canEdit,
     }),
-    [canAccess, canCreate, canDelete, canEdit]
+    [canAccess, canCreate, canDelete, canEdit],
   );
 
   return (
@@ -61,15 +54,13 @@ const OrganizationPolicyProvider = ({ children }: OrganizationPolicyProps) => {
       {children}
     </OrganizationPolicyContext.Provider>
   );
-};
+}
 
 function useOrganizationPolicy() {
   const context = useContext(OrganizationPolicyContext);
 
   if (!context)
-    throw new Error(
-      'useOrganizationPolicy must be used within a OrganizationPolicyProvider'
-    );
+    throw new Error('useOrganizationPolicy must be used within a OrganizationPolicyProvider');
 
   return context;
 }

@@ -6,8 +6,6 @@ import { When } from 'react-if';
 import NumberFormat from 'react-number-format';
 import { Ref, Checkbox, TextArea } from 'semantic-ui-react';
 
-import { ErrorTypeMultiple, ErrorTypeSingle } from 'types/ErrorType';
-
 import FormLabel from '../components/Library/FormLabel';
 import Text from '../components/Library/Text';
 import TypeOf from '../constants/typeOfConstants';
@@ -46,15 +44,8 @@ export interface Rest {
 const BuildFormField: any = (InputComponent: any, selectProps: any) => {
   const buildFormField = forwardRef(
     (
-      {
-        name,
-        error,
-        label,
-        required,
-        disabled,
-        ...rest
-      }: BuildFormFieldProps & Partial<Rest>,
-      ref
+      { name, error, label, required, disabled, ...rest }: BuildFormFieldProps & Partial<Rest>,
+      ref,
     ) => {
       const inputRef = useRef(null);
 
@@ -71,32 +62,25 @@ const BuildFormField: any = (InputComponent: any, selectProps: any) => {
           InputComponent === TextArea ||
           InputComponent === NumberFormat ||
           InputComponent === Checkbox,
-        []
+        [],
       );
 
       const hasError = useMemo(
-        () =>
-          typeof error === TypeOf.string
-            ? error?.length === 0 || !!error
-            : null,
-        [error]
+        () => (typeof error === TypeOf.string ? error?.length === 0 || !!error : null),
+        [error],
       );
 
       const styleWrapper = css(
         InputStyles.default,
         hasError ? InputStyles.error : null,
-        disabled ? InputStyles.disabled : null
+        disabled ? InputStyles.disabled : null,
       );
 
       return (
         <div className={`${styleWrapper} ${rest.className ?? ''}`}>
           <When condition={label}>
             {() => (
-              <FormLabel
-                required={required}
-                htmlFor={name}
-                color={hasError ? 'error' : 'default'}
-              >
+              <FormLabel required={required} htmlFor={name} color={hasError ? 'error' : 'default'}>
                 {label}
               </FormLabel>
             )}
@@ -105,9 +89,7 @@ const BuildFormField: any = (InputComponent: any, selectProps: any) => {
             <Ref innerRef={inputRef}>
               <InputComponent
                 {...selectProps({ name, id: name }, error, rest)}
-                error={
-                  isTextareaOrNumberFormat ? hasError?.toString() : hasError
-                }
+                error={isTextareaOrNumberFormat ? hasError?.toString() : hasError}
                 disabled={disabled}
               />
             </Ref>
@@ -127,7 +109,7 @@ const BuildFormField: any = (InputComponent: any, selectProps: any) => {
           </span>
         </div>
       );
-    }
+    },
   );
 
   return buildFormField;

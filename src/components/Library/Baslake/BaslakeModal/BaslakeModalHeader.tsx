@@ -16,7 +16,7 @@ const styleSegment = css(
   padding.topMd,
   padding.bottomNone,
   margin.bottomNone,
-  flex.justifyContentBetween
+  flex.justifyContentBetween,
 );
 
 const styleHeader = css(margin.none);
@@ -36,50 +36,50 @@ interface BaslakeModalHeaderProps {
   linkTo?: To;
 }
 
-const BaslakeHeader = ({
+function BaslakeHeader({
   title = '',
   closeHandler = undefined,
   isClosable = true,
   headerChildren = null,
   linkTo = undefined,
-}: BaslakeModalHeaderProps) => (
-  <Segment basic className={`${!headerChildren ? styleSegment : ''}`}>
-    <If condition={!!headerChildren}>
-      <Then>{headerChildren}</Then>
-      <Else>
-        {() => (
-          <>
-            <If condition={!!linkTo}>
-              <Then>
-                {() => (
-                  <Link to={linkTo ?? ''} onClick={closeHandler}>
-                    <Text
-                      size="md"
-                      weight="medium"
-                      className={`${styleHeader} ${styleHeaderLink}`}
-                    >
+}: BaslakeModalHeaderProps) {
+  return (
+    <Segment basic className={`${!headerChildren ? styleSegment : ''}`}>
+      <If condition={!!headerChildren}>
+        <Then>{headerChildren}</Then>
+        <Else>
+          {() => (
+            <>
+              <If condition={!!linkTo}>
+                <Then>
+                  {() => (
+                    <Link to={linkTo ?? ''} onClick={closeHandler}>
+                      <Text
+                        size="md"
+                        weight="medium"
+                        className={`${styleHeader} ${styleHeaderLink}`}
+                      >
+                        {title}
+                      </Text>
+                    </Link>
+                  )}
+                </Then>
+                <Else>
+                  {() => (
+                    <Text size="md" weight="medium" className={`${styleHeader}`}>
                       {title}
                     </Text>
-                  </Link>
-                )}
-              </Then>
-              <Else>
-                {() => (
-                  <Text size="md" weight="medium" className={`${styleHeader}`}>
-                    {title}
-                  </Text>
-                )}
-              </Else>
-            </If>
+                  )}
+                </Else>
+              </If>
 
-            <When condition={isClosable}>
-              {() => <CloseModalIcon onClick={closeHandler} />}
-            </When>
-          </>
-        )}
-      </Else>
-    </If>
-  </Segment>
-);
+              <When condition={isClosable}>{() => <CloseModalIcon onClick={closeHandler} />}</When>
+            </>
+          )}
+        </Else>
+      </If>
+    </Segment>
+  );
+}
 
 export default BaslakeHeader;

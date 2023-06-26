@@ -1,19 +1,18 @@
 import { useMemo, memo, ReactNode } from 'react';
 
-import { css } from 'glamor';
-import { Message } from 'semantic-ui-react';
-
 import IconList from '@components/Library/IconList/IconList';
 import Text from '@components/Library/Text';
 
 import { border, display, flex, padding } from '@utils/themeConstants';
+import { css } from 'glamor';
+import { Message } from 'semantic-ui-react';
 
 const iconStyle = css(
   display.flex,
   padding.rightSm,
   flex.alignContentCenter,
   flex.alignItemsStart,
-  flex.alignSelfStretch
+  flex.alignSelfStretch,
 );
 
 const borderLessStyle = css(border.none, { boxShadow: 'none !important' });
@@ -28,7 +27,7 @@ export interface AlertProps {
   info?: boolean;
 }
 
-const Alert = ({
+function Alert({
   icon,
   colorIcon,
   borderless = true,
@@ -36,7 +35,7 @@ const Alert = ({
   content,
   children,
   info = false,
-}: AlertProps) => {
+}: AlertProps) {
   const renderIcon = useMemo(() => {
     if (!icon) return undefined;
 
@@ -49,11 +48,7 @@ const Alert = ({
 
   // For more extended props, see https://react.semantic-ui.com/collections/message
   return (
-    <Message
-      className={`${borderless && borderLessStyle}`}
-      icon={!!icon}
-      info={info}
-    >
+    <Message className={`${borderless && borderLessStyle}`} icon={!!icon} info={info}>
       {renderIcon}
       <Message.Content>
         {header && <Message.Header>{header}</Message.Header>}
@@ -62,6 +57,6 @@ const Alert = ({
       </Message.Content>
     </Message>
   );
-};
+}
 
 export default memo(Alert);

@@ -1,18 +1,25 @@
+import { useCallback } from 'react';
 import Form from '@components/Library/Form';
-import { useSilos } from '@hooks/Silos';
+import { useSilo } from '@hooks/Silos';
 
 import SiloFolderForm from './SiloFolderForm';
 
-const SiloFolderFormContainer = (props: any) => {
-  const { saveSiloFolderHandler, initialValues } = useSilos();
+function SiloFolderFormContainer(props: any) {
+  const { saveSiloFolderHandler, initialValues } = useSilo();
+
+  const submit = useCallback(
+    (values: any) => {
+      console.log({ values });
+      return saveSiloFolderHandler(values);
+    },
+    [saveSiloFolderHandler],
+  );
+
   return (
-    <Form
-      onSubmit={saveSiloFolderHandler}
-      formArgs={{ defaultValues: initialValues }}
-    >
+    <Form onSubmit={submit} formArgs={{ defaultValues: initialValues }}>
       <SiloFolderForm {...props} />
     </Form>
   );
-};
+}
 
 export default SiloFolderFormContainer;

@@ -8,9 +8,7 @@ export default {
   title: 'DetailsList',
 } as ComponentMeta<typeof DetailsList>;
 
-const Template: ComponentStory<typeof DetailsList> = (args) => (
-  <DetailsList {...args} />
-);
+const Template: ComponentStory<typeof DetailsList> = (args) => <DetailsList {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {

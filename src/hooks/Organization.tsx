@@ -1,11 +1,11 @@
 import {
+  ReactNode,
   createContext,
+  useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
-  ReactNode,
-  useCallback,
-  useEffect,
 } from 'react';
 
 import api from '@helpers/api';
@@ -35,37 +35,30 @@ export type OrganizationHookType = {
   getOrganizationId: () => Promise<number | null>;
 };
 
-export const OrganizationContext = createContext<OrganizationHookType | null>(
-  null
-);
+export const OrganizationContext = createContext<OrganizationHookType | null>(null);
 
-const useOrganizations = () => {
+const useOrganization = () => {
   const context = useContext(OrganizationContext);
   if (!context) {
-    throw new Error('useOrganizations must be within OrganizationsProvider');
+    throw new Error('useOrganization must be within OrganizationProvider');
   }
 
   return context;
 };
 
-interface OrganizationsProviderProps {
+interface OrganizationProviderProps {
   children: ReactNode;
 }
 
-const OrganizationsProvider = ({ children }: OrganizationsProviderProps) => {
+function OrganizationProvider({ children }: OrganizationProviderProps) {
   // const [showModal, setShowModal] = useState(false);
   // const [order, setOrder] = useState<OrderType>();
-  const [isLoadingOrganizations, setIsLoadingAllOrganizations] =
-    useState(false);
+  const [isLoadingOrganizations, setIsLoadingAllOrganizations] = useState(false);
   // const [isLoadingCube, setIsLoadingCube] = useState(false);
   // const [isLoadingCubeView, setIsLoadingCubeView] = useState(false);
   // const [isUpdating, setIsUpdating] = useState(false);
-  const [organizations, setAllOrganizations] = useState<
-    OrganizationType[] | null
-  >(null);
-  const [organization, setOrganization] = useState<OrganizationType | null>(
-    null
-  );
+  const [organizations, setAllOrganizations] = useState<OrganizationType[] | null>(null);
+  const [organization, setOrganization] = useState<OrganizationType | null>(null);
   // const [organizationView, setOrganizationView] = useState<Record<string, any> | null>({});
   // const [currentPage, setCurrentPage] = useState(0);
 
@@ -132,37 +125,32 @@ const OrganizationsProvider = ({ children }: OrganizationsProviderProps) => {
   //   [order, currentPage]
   // );
 
-  const fetchAllOrganizationsHandler = useCallback(
-    async (params: PaginateParams | null = null) => {
-      try {
-        setIsLoadingAllOrganizations(true);
+  const fetchAllOrganizationsHandler = useCallback(async (params: PaginateParams | null = null) => {
+    try {
+      setIsLoadingAllOrganizations(true);
 
-        const response = await api.get(`organizations/`, {
-          params: { ...params, all: true },
-        });
+      const response = await api.get(`organizations/`, {
+        params: { ...params, all: true },
+      });
 
-        setAllOrganizations(response?.data?.data);
-      } catch (e) {
-        setAllOrganizations([]);
-        // [todo]
-        // toaster(
-        //   dispatch,
-        //   'Error while trying to load the departmentSources',
-        //   'error'
-        // );
-      } finally {
-        setIsLoadingAllOrganizations(false);
-      }
-    },
-    []
-  );
+      setAllOrganizations(response?.data?.data);
+    } catch (e) {
+      setAllOrganizations([]);
+      // [todo]
+      // toaster(
+      //   dispatch,
+      //   'Error while trying to load the departmentSources',
+      //   'error'
+      // );
+    } finally {
+      setIsLoadingAllOrganizations(false);
+    }
+  }, []);
 
   const initOrganization = useCallback(async () => {
     const organizationId = await getOrganizationId();
     if (organizationId) {
-      const currentOrganization = organizations?.find(
-        (e) => e.id === +organizationId
-      );
+      const currentOrganization = organizations?.find((e) => e.id === +organizationId);
       setOrganization(currentOrganization as OrganizationType);
     }
   }, [organizations, getOrganizationId]);
@@ -172,7 +160,7 @@ const OrganizationsProvider = ({ children }: OrganizationsProviderProps) => {
   }, []);
 
   const handleSetOrganization = useCallback((o: any) => {
-    Cookies.set('organization', o.id);
+    Cookies.set('organization', o ? o.id : null);
     setOrganization(o);
   }, []);
 
@@ -220,14 +208,12 @@ const OrganizationsProvider = ({ children }: OrganizationsProviderProps) => {
       // showCube,
       // organizationView,
       // loadingOverview,
-    ]
+    ],
   );
 
   return (
-    <OrganizationContext.Provider value={providerValue}>
-      {children}
-    </OrganizationContext.Provider>
+    <OrganizationContext.Provider value={providerValue}>{children}</OrganizationContext.Provider>
   );
-};
+}
 
-export { OrganizationsProvider, useOrganizations };
+export { OrganizationProvider, useOrganization };

@@ -1,10 +1,9 @@
 /* eslint-disable no-alert */
 import React from 'react';
 
+import Form from '@components/Library/Form';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { Button } from 'semantic-ui-react';
-
-import Form from '@components/Library/Form';
 
 import InputTextArea from './InputTextArea';
 
@@ -13,8 +12,7 @@ export default {
   argTypes: {
     placeholder: {
       control: { type: 'text' },
-      description:
-        'Placeholder to use. This will overwrite default Placeholder rules.',
+      description: 'Placeholder to use. This will overwrite default Placeholder rules.',
       table: {
         category: 'Form',
         defaultValue: {

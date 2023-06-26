@@ -25,7 +25,7 @@ const styleSegment = css(
   margin.bottomMd,
   {
     border: `1px solid ${colors.greyLighter} !important`,
-  }
+  },
 );
 
 const styleHeader = css(margin.bottomXs);
@@ -44,7 +44,7 @@ const icons: Record<string, any> = {
 
 let timer: NodeJS.Timeout;
 
-const FormMessage = (props: {
+function FormMessage(props: {
   timeout?: number;
   header?: string;
   content?: string;
@@ -55,7 +55,7 @@ const FormMessage = (props: {
   info?: boolean;
   success?: boolean;
   visible?: boolean;
-}) => {
+}) {
   const [timerHidden, setTimerHidden] = useState(false);
   const {
     timeout,
@@ -131,6 +131,6 @@ const FormMessage = (props: {
       )}
     </When>
   );
-};
+}
 
 export default FormMessage;

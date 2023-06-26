@@ -12,7 +12,7 @@ import Loading from '../views/Baslake/Auth/Loading/Loading';
 import LoadingGate from '../views/Baslake/LoadingGate/LoadingGate';
 import BaslakeRoutes from './Routes';
 
-const RoutesContainer = () => {
+function RoutesContainer() {
   const { addToast } = useToasts();
   const { getAuthenticationHandler, wasFetched, session, loggedIn } = useAuth();
 
@@ -57,6 +57,6 @@ const RoutesContainer = () => {
       </If>
     </LoadingGate>
   );
-};
+}
 
 export default RoutesContainer;

@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { render, fireEvent } from '@testing-library/react';
-
 import Form from '@components/Library/Form';
+import { render, fireEvent } from '@testing-library/react';
 
 import InputText from './InputText';
 
@@ -11,7 +10,7 @@ describe('InputText component', () => {
     const { queryByRole } = render(
       <Form onSubmit={() => {}}>
         <InputText name="test" spaced rounded negative />
-      </Form>
+      </Form>,
     );
 
     const inputElement = queryByRole('textbox');
@@ -23,7 +22,7 @@ describe('InputText component', () => {
     const { queryByPlaceholderText } = render(
       <Form onSubmit={() => {}}>
         <InputText name="test" placeholder="Test Placeholder" />
-      </Form>
+      </Form>,
     );
 
     const placeholderElement = queryByPlaceholderText('Test Placeholder');
@@ -35,7 +34,7 @@ describe('InputText component', () => {
     const { queryByPlaceholderText } = render(
       <Form onSubmit={() => {}}>
         <InputText name="test" label="Test Label" />
-      </Form>
+      </Form>,
     );
 
     const placeholderElement = queryByPlaceholderText('Enter test label');
@@ -47,7 +46,7 @@ describe('InputText component', () => {
     const { container } = render(
       <Form onSubmit={() => {}}>
         <InputText name="test" icon="test-icon" />
-      </Form>
+      </Form>,
     );
 
     const iconElement = container.querySelector('i[class="test-icon icon"]');
@@ -59,7 +58,7 @@ describe('InputText component', () => {
     const { queryByText } = render(
       <Form onSubmit={() => {}}>
         <InputText name="test" label="Test Label" required />
-      </Form>
+      </Form>,
     );
 
     const textElement = queryByText('Test Label *');
@@ -71,7 +70,7 @@ describe('InputText component', () => {
     const { queryByPlaceholderText } = render(
       <Form onSubmit={() => {}}>
         <InputText name="test" />
-      </Form>
+      </Form>,
     );
 
     const inputElement = queryByPlaceholderText('Enter text');

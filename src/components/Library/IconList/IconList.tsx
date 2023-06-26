@@ -1,8 +1,7 @@
 import React, { ReactNode, useMemo } from 'react';
 
-import { css } from 'glamor';
-
 import { spacing, fontSizes } from '@utils/theme';
+import { css } from 'glamor';
 
 import Item from './Item';
 
@@ -12,14 +11,14 @@ export interface IconListProps {
   children: ReactNode;
 }
 
-const IconList = ({ size = 'sm', children, className }: IconListProps) => {
+function IconList({ size = 'sm', children, className }: IconListProps) {
   const styleList = useMemo(
     () =>
       css(fontSizes[size], {
         margin: spacing.none,
         padding: spacing.none,
       }),
-    [size]
+    [size],
   );
 
   const childrenWithProps = useMemo(
@@ -30,11 +29,11 @@ const IconList = ({ size = 'sm', children, className }: IconListProps) => {
         }
         return child;
       }),
-    [children, size]
+    [children, size],
   );
 
   return <ul className={`${styleList} ${className}`}>{childrenWithProps}</ul>;
-};
+}
 
 IconList.Item = Item;
 

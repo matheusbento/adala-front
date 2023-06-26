@@ -9,25 +9,15 @@ export interface FieldArrayProps {
   formProps?: Record<string, any>;
 }
 
-const FieldArray = ({
-  name,
-  required = false,
-  formProps,
-  ...childProps
-}: FieldArrayProps) => {
+function FieldArray({ name, required = false, formProps, ...childProps }: FieldArrayProps) {
   const { control, watch } = useFormContext();
 
-  const { fields, append, prepend, remove, swap, move, update } = useFieldArray(
-    {
-      control,
-      name,
-    }
-  );
+  const { fields, append, prepend, remove, swap, move, update } = useFieldArray({
+    control,
+    name,
+  });
 
-  const handleWatch = useCallback(
-    (index: string) => watch(`${name}${index}`),
-    [name, watch]
-  );
+  const handleWatch = useCallback((index: string) => watch(`${name}${index}`), [name, watch]);
 
   const { component: InnerComponent } = childProps;
 
@@ -54,6 +44,6 @@ const FieldArray = ({
       {...childProps}
     />
   );
-};
+}
 
 export default FieldArray;

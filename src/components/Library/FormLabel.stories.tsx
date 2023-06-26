@@ -16,9 +16,7 @@ export default {
   },
 } as ComponentMeta<typeof FormLabel>;
 
-const Template: ComponentStory<typeof FormLabel> = (args) => (
-  <FormLabel {...args} />
-);
+const Template: ComponentStory<typeof FormLabel> = (args) => <FormLabel {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {

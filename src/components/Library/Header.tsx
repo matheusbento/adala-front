@@ -5,7 +5,7 @@ import { Header as SemanticHeader } from 'semantic-ui-react';
 
 import { colors, spacing } from '../../utils/theme';
 
-const Header = ({
+function Header({
   children,
   color = 'default',
   hexColor = null,
@@ -23,7 +23,7 @@ const Header = ({
   line?: boolean;
   lineMargin?: string;
   weight?: string;
-}) => {
+}) {
   const styleLegend = css({
     fontWeight: `${weight} !important`,
     color: `${colors[color]} !important`,
@@ -34,7 +34,7 @@ const Header = ({
       ? {
           color: `${hexColor} !important`,
         }
-      : {}
+      : {},
   );
 
   const styleLine = line
@@ -57,5 +57,5 @@ const Header = ({
       <span>{children}</span>
     </SemanticHeader>
   );
-};
+}
 export default Header;

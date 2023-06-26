@@ -34,7 +34,7 @@ const styleBlock = css(padding.bottomXs);
 //   },
 // });
 
-const SiloFormReview = () => {
+function SiloFormReview() {
   // eslint-disable-next-line no-console
   console.log('dasdasdasd');
 
@@ -211,6 +211,6 @@ const SiloFormReview = () => {
       )} */}
     </div>
   );
-};
+}
 
 export default SiloFormReview;

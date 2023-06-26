@@ -1,12 +1,10 @@
 /* eslint-disable no-alert */
 import React from 'react';
 
+import Form from '@components/Library/Form';
+import states from '@constants/usStatesConstants';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { Button } from 'semantic-ui-react';
-
-import Form from '@components/Library/Form';
-
-import states from '@constants/usStatesConstants';
 
 import InputDropdown from './InputDropdown';
 

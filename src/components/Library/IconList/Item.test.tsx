@@ -22,13 +22,9 @@ describe('Item component', () => {
   });
 
   it('should display an icon with a label.', () => {
-    const { container } = render(
-      <Item icon="icon-info" label={<div>Test text</div>} />
-    );
+    const { container } = render(<Item icon="icon-info" label={<div>Test text</div>} />);
 
-    const iconElement = container.querySelector(
-      '[data-src="/images/icon-info.svg"]'
-    );
+    const iconElement = container.querySelector('[data-src="/images/icon-info.svg"]');
 
     expect(iconElement).toBeTruthy();
   });
@@ -36,9 +32,7 @@ describe('Item component', () => {
   it('should display an icon.', () => {
     const { container } = render(<Item icon="icon-info" />);
 
-    const iconElement = container.querySelector(
-      '[data-src="/images/icon-info.svg"]'
-    );
+    const iconElement = container.querySelector('[data-src="/images/icon-info.svg"]');
 
     expect(iconElement).toBeTruthy();
   });

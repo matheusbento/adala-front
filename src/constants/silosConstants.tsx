@@ -12,12 +12,7 @@ export const fileStatus = {
   invalid: 'invalid',
 };
 
-export const acceptableFileTypes = [
-  'text/plain',
-  'text/csv',
-  'application/json',
-  '',
-];
+export const acceptableFileTypes = ['text/plain', 'text/csv', 'application/json', ''];
 
 export const statusLabel = {
   [fileStatus.created]: 'Created',

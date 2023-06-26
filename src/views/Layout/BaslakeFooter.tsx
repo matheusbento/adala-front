@@ -1,8 +1,7 @@
+import { display, colors, fontSizes, margin } from '@utils/themeConstants';
 import { css } from 'glamor';
 
-import { display, colors, fontSizes, margin } from '@utils/themeConstants';
-
-const BaslakeFooter = () => {
+function BaslakeFooter() {
   const styleFooter = css(display.flex, fontSizes.xxs, margin.topAuto, {
     alignItems: 'center',
     justifyContent: 'center',
@@ -12,11 +11,7 @@ const BaslakeFooter = () => {
   });
   const year = new Date().getFullYear();
 
-  return (
-    <div
-      className={`${styleFooter}`}
-    >{`© ${year} Baslake. All rights reserved.`}</div>
-  );
-};
+  return <div className={`${styleFooter}`}>{`© ${year} Baslake. All rights reserved.`}</div>;
+}
 
 export default BaslakeFooter;

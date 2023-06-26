@@ -3,8 +3,7 @@ import Cookies from 'js-cookie';
 
 import Config from './config';
 
-const apiDefaultTimeout =
-  (process.env.MIX_API_DEFAULT_TIMEOUT || 60, 10) * 1000;
+const apiDefaultTimeout = (process.env.MIX_API_DEFAULT_TIMEOUT || 60, 10) * 1000;
 
 export const getSession = async () => {
   const userToken = await Cookies.get('userToken');

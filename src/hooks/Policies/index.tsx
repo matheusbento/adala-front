@@ -9,14 +9,16 @@ export interface PolicyProps {
   children: ReactNode;
 }
 
-const PoliciesProvider = ({ children }: PolicyProps) => (
-  <BaslakePolicyProvider>
-    <OrganizationPolicyProvider>
-      <SilosPolicyProvider>
-        <CubesPolicyProvider>{children}</CubesPolicyProvider>
-      </SilosPolicyProvider>
-    </OrganizationPolicyProvider>
-  </BaslakePolicyProvider>
-);
+function PoliciesProvider({ children }: PolicyProps) {
+  return (
+    <BaslakePolicyProvider>
+      <OrganizationPolicyProvider>
+        <SilosPolicyProvider>
+          <CubesPolicyProvider>{children}</CubesPolicyProvider>
+        </SilosPolicyProvider>
+      </OrganizationPolicyProvider>
+    </BaslakePolicyProvider>
+  );
+}
 
 export default PoliciesProvider;

@@ -7,9 +7,7 @@ import { render, fireEvent } from '@testing-library/react';
 import { ListCell, SelectCell } from './BaslakeTableCells';
 
 jest.mock('react-router-dom', () => ({
-  Link: ({ children, ...rest }: { children: ReactNode }) => (
-    <a {...rest}>{children}</a>
-  ),
+  Link: ({ children, ...rest }: { children: ReactNode }) => <a {...rest}>{children}</a>,
 }));
 
 const mockedOnClick = jest.fn();

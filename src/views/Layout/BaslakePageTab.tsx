@@ -19,7 +19,7 @@ const styleActiveText = css({
   },
 });
 
-const BaslakePageTab = (props: { active?: boolean; text?: string }) => {
+function BaslakePageTab(props: { active?: boolean; text?: string }) {
   const { active = false, text = null } = props;
 
   const styleTab = css(styleText, active && styleActiveText);
@@ -29,6 +29,6 @@ const BaslakePageTab = (props: { active?: boolean; text?: string }) => {
       {text}
     </Menu.Item>
   );
-};
+}
 
 export default BaslakePageTab;

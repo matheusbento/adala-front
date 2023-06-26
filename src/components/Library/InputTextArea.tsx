@@ -1,17 +1,11 @@
 import { Component, useMemo } from 'react';
 
+import buildFormField from '@utils/buildFormField';
+import { spacing, input as InputStyles, padding, fontSizes } from '@utils/theme';
 import { css } from 'glamor';
 import { get } from 'lodash';
 import { useFormContext } from 'react-hook-form';
 import { TextArea as SemanticTextArea } from 'semantic-ui-react';
-
-import buildFormField from '@utils/buildFormField';
-import {
-  spacing,
-  input as InputStyles,
-  padding,
-  fontSizes,
-} from '@utils/theme';
 
 const styleTextarea = css(InputStyles.select);
 const styleSpaced = css({
@@ -33,7 +27,7 @@ const FieldForm = buildFormField(
     ...input,
     ...props,
     error,
-  })
+  }),
 );
 
 export interface RestProps {
@@ -56,7 +50,7 @@ export interface InputTextAreaProps {
   onChange?: any;
 }
 
-const InputTextArea = ({
+function InputTextArea({
   spaced,
   rounded,
   className,
@@ -66,18 +60,12 @@ const InputTextArea = ({
   formProps,
   onChange,
   ...childProps
-}: InputTextAreaProps & RestProps) => {
-  const styleField = css(
-    styleTextarea,
-    spaced && styleSpaced,
-    rounded && styleRounded
-  );
+}: InputTextAreaProps & RestProps) {
+  const styleField = css(styleTextarea, spaced && styleSpaced, rounded && styleRounded);
 
   const { register, setValue, formState, watch } = useFormContext();
 
-  const defaultPlaceholder = `Enter ${
-    childProps.label ? childProps.label.toLowerCase() : 'text'
-  }`;
+  const defaultPlaceholder = `Enter ${childProps.label ? childProps.label.toLowerCase() : 'text'}`;
 
   const message = useMemo(() => {
     const error = get<any, string>(formState?.errors, name);
@@ -96,10 +84,7 @@ const InputTextArea = ({
       placeholder={placeholder || defaultPlaceholder}
       required={required}
       {...register(name, { required, ...formProps })}
-      onChange={(
-        _: any,
-        { name: inputName, value: val }: Record<string, any>
-      ) => {
+      onChange={(_: any, { name: inputName, value: val }: Record<string, any>) => {
         setValue(inputName, val, {
           shouldDirty: true,
         });
@@ -109,6 +94,6 @@ const InputTextArea = ({
       value={watch(name)}
     />
   );
-};
+}
 
 export default InputTextArea;

@@ -63,8 +63,7 @@ export default {
     handleSuggestionSelectedCallback: {
       action: 'setFilter Action',
       required: true,
-      description:
-        'Callback called after setting the filter to the selected suggestion',
+      description: 'Callback called after setting the filter to the selected suggestion',
       table: {
         type: {
           summary: 'func',
@@ -100,9 +99,7 @@ export default {
   },
 } as ComponentMeta<typeof SearchBox>;
 
-const Template: ComponentStory<typeof SearchBox> = (args) => (
-  <SearchBox {...args} />
-);
+const Template: ComponentStory<typeof SearchBox> = (args) => <SearchBox {...args} />;
 
 export const Default = Template.bind({});
 

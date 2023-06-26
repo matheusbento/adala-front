@@ -1,5 +1,7 @@
 import SilosList from './SilosList';
 
-const SilosListContainer = () => <SilosList />;
+function SilosListContainer() {
+  return <SilosList />;
+}
 
 export default SilosListContainer;

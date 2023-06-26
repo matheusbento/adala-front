@@ -21,9 +21,7 @@ export default {
   },
 } as ComponentMeta<typeof BaslakeTable>;
 
-const Template: ComponentStory<typeof BaslakeTable> = (args) => (
-  <BaslakeTable {...args} />
-);
+const Template: ComponentStory<typeof BaslakeTable> = (args) => <BaslakeTable {...args} />;
 
 export const Default = Template.bind({});
 const headers = [
@@ -235,6 +233,5 @@ DragAndDropWithCallbackWhenDragEnd.args = {
   alwaysDisplayNested: false,
   highlightNested: true,
   highlightParentRow: true,
-  onCallBackDragEnd: (item: any, to: any, from: any) =>
-    alert(JSON.stringify({ item, to, from })),
+  onCallBackDragEnd: (item: any, to: any, from: any) => alert(JSON.stringify({ item, to, from })),
 };

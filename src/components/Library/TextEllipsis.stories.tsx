@@ -17,9 +17,7 @@ export default {
   },
 } as ComponentMeta<typeof TextEllipsis>;
 
-const Template: ComponentStory<typeof TextEllipsis> = (args) => (
-  <TextEllipsis {...args} />
-);
+const Template: ComponentStory<typeof TextEllipsis> = (args) => <TextEllipsis {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {

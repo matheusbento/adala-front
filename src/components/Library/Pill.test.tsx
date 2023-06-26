@@ -24,7 +24,7 @@ describe('Pill component', () => {
     const { queryByText } = render(
       <Pill button clear>
         Text Example
-      </Pill>
+      </Pill>,
     );
 
     const textElement = queryByText('Text Example');
@@ -37,7 +37,7 @@ describe('Pill component', () => {
     const { queryByText } = render(
       <Pill button onClick={mockedOnClick}>
         Text Example
-      </Pill>
+      </Pill>,
     );
 
     const textElement = queryByText('Text Example');
@@ -52,7 +52,7 @@ describe('Pill component', () => {
     const { queryByText } = render(
       <Pill disabled button onClick={mockedOnClick}>
         Text Example
-      </Pill>
+      </Pill>,
     );
 
     const textElement = queryByText('Text Example');
@@ -65,20 +65,12 @@ describe('Pill component', () => {
 
   it('should display a button component with icon.', () => {
     const { container } = render(
-      <Pill
-        data-testid="test"
-        button
-        icon="icon"
-        color="non-existing"
-        size="12"
-      >
+      <Pill data-testid="test" button icon="icon" color="non-existing" size="12">
         Text Example
-      </Pill>
+      </Pill>,
     );
 
-    const textElement = container.querySelector(
-      'span[data-src="/images/icon.svg"]'
-    );
+    const textElement = container.querySelector('span[data-src="/images/icon.svg"]');
 
     expect(textElement).toBeTruthy();
   });
@@ -106,7 +98,7 @@ describe('Pill component', () => {
         <Pill button to="to">
           Text Example
         </Pill>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     const textElement = queryByText('Text Example');
@@ -121,12 +113,10 @@ describe('Pill component', () => {
         <Pill data-testid="test" button to="to" icon="icon">
           Text Example
         </Pill>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
-    const textElement = container.querySelector(
-      'span[data-src="/images/icon.svg"]'
-    );
+    const textElement = container.querySelector('span[data-src="/images/icon.svg"]');
 
     expect(textElement).toBeTruthy();
   });
@@ -137,7 +127,7 @@ describe('Pill component', () => {
         <Pill data-testid="test" button to="to" onClick={mockedOnClick}>
           Text Example
         </Pill>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     const textElement = queryByText('Text Example');
@@ -151,17 +141,10 @@ describe('Pill component', () => {
   it('should not execute the onClick function when the react router dom button is clicked and the button is disabled.', () => {
     const { queryByText } = render(
       <MemoryRouter initialEntries={['/home']}>
-        <Pill
-          data-testid="test"
-          disabled
-          outline
-          button
-          to="to"
-          onClick={mockedOnClick}
-        >
+        <Pill data-testid="test" disabled outline button to="to" onClick={mockedOnClick}>
           Text Example
         </Pill>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     const textElement = queryByText('Text Example');

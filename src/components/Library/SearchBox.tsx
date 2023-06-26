@@ -1,31 +1,19 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { css } from 'glamor';
-import { useHistory } from 'react-router';
-import { Icon } from 'semantic-ui-react';
-
 import baslakeContext from '@constants/baslakeConstants';
-
-import {
-  SuggestionTypeSingle,
-  SuggestionTypeMultiple,
-} from 'types/SuggestionType';
-
 import { buttons, colors, input, styles, position } from '@utils/theme';
 import { display, margin, padding, text, utils } from '@utils/themeConstants';
+import { css } from 'glamor';
+import { Icon } from 'semantic-ui-react';
 
-const styleButton = css(
-  buttons.pill,
-  buttons.primary,
-  buttons.lg,
-  margin.leftXs,
-  {
-    padding: '0 22px',
-    '& > i': {
-      color: colors.negative,
-    },
-  }
-);
+import { SuggestionTypeSingle, SuggestionTypeMultiple } from 'types/SuggestionType';
+
+const styleButton = css(buttons.pill, buttons.primary, buttons.lg, margin.leftXs, {
+  padding: '0 22px',
+  '& > i': {
+    color: colors.negative,
+  },
+});
 
 const styleInput = css(input.pill, input.lg, utils.w100, {
   paddingLeft: '16px',
@@ -37,85 +25,71 @@ const styleInput = css(input.pill, input.lg, utils.w100, {
   flexGrow: 1,
 });
 
-const styleSuggestions = css(
-  styles.roundedCornersS,
-  styles.fullWidth,
-  padding.sm,
-  styles.shadow,
-  {
-    zIndex: 100,
-    position: 'absolute',
-    top: '45px',
-    backgroundColor: colors.white,
-    color: colors.default,
-    maxHeight: '377px',
-    overflowY: 'auto',
-  }
-);
+const styleSuggestions = css(styles.roundedCornersS, styles.fullWidth, padding.sm, styles.shadow, {
+  zIndex: 100,
+  position: 'absolute',
+  top: '45px',
+  backgroundColor: colors.white,
+  color: colors.default,
+  maxHeight: '377px',
+  overflowY: 'auto',
+});
 
-const styleSuggestion = css(
-  buttons.plain,
-  utils.w100,
-  text.left,
-  display.inlineBlock,
-  {
-    cursor: 'pointer',
-    '& + button': {
-      marginTop: '12px',
-    },
-  }
-);
+const styleSuggestion = css(buttons.plain, utils.w100, text.left, display.inlineBlock, {
+  cursor: 'pointer',
+  '& + button': {
+    marginTop: '12px',
+  },
+});
 
-const SearchSuggestion = ({
+function SearchSuggestion({
   suggestion,
   onSuggestionSelected,
 }: {
   suggestion: SuggestionTypeSingle;
   onSuggestionSelected: (suggestion: SuggestionTypeSingle) => void;
-}) => (
-  <button
-    type="button"
-    className={`${styleSuggestion}`}
-    onClick={() => onSuggestionSelected(suggestion)}
-  >
-    <strong>{suggestion.suggestion}</strong>
-    <br />
-    <small>{suggestion.type}</small>
-  </button>
-);
+}) {
+  return (
+    <button
+      type="button"
+      className={`${styleSuggestion}`}
+      onClick={() => onSuggestionSelected(suggestion)}
+    >
+      <strong>{suggestion.suggestion}</strong>
+      <br />
+      <small>{suggestion.type}</small>
+    </button>
+  );
+}
 
-const SearchSuggestions = ({
+function SearchSuggestions({
   suggestions,
   onSuggestionSelected,
 }: {
   suggestions: SuggestionTypeMultiple;
   onSuggestionSelected: (suggestion: SuggestionTypeSingle) => void;
-}) => (
-  <div id="suggestions" className={`${styleSuggestions}`}>
-    {suggestions.map((s) => (
-      <SearchSuggestion
-        key={`${s.suggestion}-${s.type}`}
-        suggestion={s}
-        onSuggestionSelected={onSuggestionSelected}
-      />
-    ))}
-  </div>
-);
+}) {
+  return (
+    <div id="suggestions" className={`${styleSuggestions}`}>
+      {suggestions.map((s) => (
+        <SearchSuggestion
+          key={`${s.suggestion}-${s.type}`}
+          suggestion={s}
+          onSuggestionSelected={onSuggestionSelected}
+        />
+      ))}
+    </div>
+  );
+}
 
-const styleClearSearch = css(
-  buttons.plain,
-  display.block,
-  position.absolute,
-  margin.rightXxs,
-  {
-    lineHeight: '40px',
-    fontSize: '14px',
-    fontWeight: 500,
-    color: colors.white,
-    top: 0,
-    right: '10px',
-  }
-);
+const styleClearSearch = css(buttons.plain, display.block, position.absolute, margin.rightXxs, {
+  lineHeight: '40px',
+  fontSize: '14px',
+  fontWeight: 500,
+  color: colors.white,
+  top: 0,
+  right: '10px',
+});
 
 interface SearchBoxProps {
   onChange: (val: string) => void;
@@ -124,7 +98,7 @@ interface SearchBoxProps {
     context: string,
     keyword: string,
     search: string | null,
-    handleSuggestionSelectedCallback: (val: any) => void
+    handleSuggestionSelectedCallback: (val: any) => void,
   ) => void;
   handleSuggestionSelectedCallback: (val: any) => void;
   updateUrlFiltersHandler: (routeHistory: any, context: string) => void;
@@ -133,7 +107,7 @@ interface SearchBoxProps {
   currentKeyword: string;
 }
 
-const SearchBox = ({
+function SearchBox({
   onChange,
   onSuggestionSelected,
   setFilterHandler,
@@ -142,7 +116,7 @@ const SearchBox = ({
   context,
   suggestions = [],
   currentKeyword = '',
-}: SearchBoxProps) => {
+}: SearchBoxProps) {
   const [keyword, setKeyword] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(true);
   // const routeHistory = useHistory();
@@ -164,12 +138,7 @@ const SearchBox = ({
         search = null;
       }
 
-      setFilterHandler(
-        context,
-        'keyword',
-        search,
-        handleSuggestionSelectedCallback
-      );
+      setFilterHandler(context, 'keyword', search, handleSuggestionSelectedCallback);
       updateUrlFiltersHandler(routeHistory, context);
       setShowSuggestions(false);
       e?.target?.blur();
@@ -181,7 +150,7 @@ const SearchBox = ({
       handleSuggestionSelectedCallback,
       updateUrlFiltersHandler,
       routeHistory,
-    ]
+    ],
   );
 
   const clearSearchHandler = useCallback(() => {
@@ -203,7 +172,7 @@ const SearchBox = ({
       setShowSuggestions(false);
       onSuggestionSelected(suggestion);
     },
-    [onSuggestionSelected]
+    [onSuggestionSelected],
   );
 
   const onKeywordChangedHandler = useCallback(
@@ -212,7 +181,7 @@ const SearchBox = ({
       setShowSuggestions(!!ev.target.value);
       onChange(ev.target.value);
     },
-    [onChange]
+    [onChange],
   );
 
   useEffect(() => {
@@ -234,20 +203,12 @@ const SearchBox = ({
             onKeyDown={(e) => e.key === 'Enter' && onSubmitSearchHandler(e)}
           />
           {keyword && !!keyword.trim().length && (
-            <button
-              type="button"
-              onClick={clearSearchHandler}
-              className={`${styleClearSearch}`}
-            >
+            <button type="button" onClick={clearSearchHandler} className={`${styleClearSearch}`}>
               X
             </button>
           )}
         </div>
-        <button
-          type="button"
-          className={`${styleButton}`}
-          onClick={onSubmitSearchHandler}
-        >
+        <button type="button" className={`${styleButton}`} onClick={onSubmitSearchHandler}>
           <Icon name="search" />
         </button>
       </div>
@@ -259,6 +220,6 @@ const SearchBox = ({
       )}
     </div>
   );
-};
+}
 
 export default SearchBox;

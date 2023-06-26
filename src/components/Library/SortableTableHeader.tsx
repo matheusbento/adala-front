@@ -16,7 +16,7 @@ export interface SortableTableHeaderProps {
   noWrap?: boolean;
 }
 
-const SortableTableHeader = ({
+function SortableTableHeader({
   label,
   field,
   direction,
@@ -25,7 +25,7 @@ const SortableTableHeader = ({
   isLoading = false,
   onSort = null,
   noWrap = false,
-}: SortableTableHeaderProps) => {
+}: SortableTableHeaderProps) {
   const styleButton = useMemo(
     () =>
       css(display.flex, flex.alignItemsCenter, buttons.plain, hovers.primary, {
@@ -34,7 +34,7 @@ const SortableTableHeader = ({
         cursor: onSort ? 'pointer' : 'default',
         whiteSpace: noWrap ? 'nowrap' : 'normal',
       }),
-    [noWrap, onSort]
+    [noWrap, onSort],
   );
 
   return (
@@ -53,7 +53,7 @@ const SortableTableHeader = ({
       )}
     </button>
   );
-};
+}
 
 SortableTableHeader.defaultProps = {
   className: '',

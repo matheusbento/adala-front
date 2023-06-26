@@ -1,10 +1,10 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
-import { useState, useMemo, ReactNode, useEffect } from 'react';
+import { ReactNode, useEffect, useMemo, useState } from 'react';
 
+import { useOrganization } from '@/hooks/Organization';
 import PolicyCheck from '@components/Library/PolicyCheck';
-import { useOrganizations } from '@hooks/Organizations';
 import { useBaslakePolicy } from '@hooks/Policies/BaslakePolicy';
-import { colors, utils, display } from '@utils/theme';
+import { colors, display, utils } from '@utils/theme';
 import { css } from 'glamor';
 
 import BaslakeFooter from './BaslakeFooter';
@@ -26,12 +26,12 @@ export interface BaslakePageProps {
   children: ReactNode;
 }
 
-const BaslakePage = ({ children }: BaslakePageProps) => {
+function BaslakePage({ children }: BaslakePageProps) {
   const [visible, setVisible] = useState(window.innerWidth >= 1200);
 
   const { canAccess } = useBaslakePolicy();
 
-  const { fetchAllOrganizationsHandler } = useOrganizations();
+  const { fetchAllOrganizationsHandler } = useOrganization();
 
   const canAccessBaslake = canAccess();
 
@@ -46,7 +46,7 @@ const BaslakePage = ({ children }: BaslakePageProps) => {
           paddingTop: '52px',
         },
       }),
-    [visible, canAccessBaslake]
+    [visible, canAccessBaslake],
   );
 
   const styleSidebar = useMemo(
@@ -60,7 +60,7 @@ const BaslakePage = ({ children }: BaslakePageProps) => {
         backgroundColor: colors.blueDarkest,
         zIndex: 9999,
       }),
-    [visible]
+    [visible],
   );
 
   const styleSidebarOverlay = useMemo(
@@ -79,7 +79,7 @@ const BaslakePage = ({ children }: BaslakePageProps) => {
           display: visible ? 'block !important' : 'none',
         },
       }),
-    [visible]
+    [visible],
   );
 
   useEffect(() => {
@@ -95,10 +95,7 @@ const BaslakePage = ({ children }: BaslakePageProps) => {
       </PolicyCheck>
       <div className={`${styleContent}`}>
         <PolicyCheck policy={canAccessBaslake}>
-          <BaslakeHeaderContainer
-            setIsBarVisible={setVisible}
-            isBarVisible={visible}
-          />
+          <BaslakeHeaderContainer setIsBarVisible={setVisible} isBarVisible={visible} />
         </PolicyCheck>
         <div className={`${styleInnerContent}`}>{children}</div>
         <BaslakeFooter />
@@ -112,6 +109,6 @@ const BaslakePage = ({ children }: BaslakePageProps) => {
       </PolicyCheck>
     </div>
   );
-};
+}
 
 export default BaslakePage;

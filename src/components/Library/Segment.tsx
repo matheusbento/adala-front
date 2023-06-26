@@ -2,7 +2,7 @@ import { css } from 'glamor';
 
 import { colors, spacing, padding } from '../../utils/theme';
 
-const Segment = ({
+function Segment({
   children,
   borders = false,
   box = false,
@@ -11,7 +11,7 @@ const Segment = ({
   marginBottom = null,
   boxPadding = null,
   ...props
-}: any) => {
+}: any) {
   const styleBox = box
     ? css({
         backgroundColor: colors.greyLightest,
@@ -61,6 +61,6 @@ const Segment = ({
       {children}
     </div>
   );
-};
+}
 
 export default Segment;

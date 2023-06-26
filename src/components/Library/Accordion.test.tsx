@@ -14,9 +14,7 @@ describe('Accordion component', () => {
   it('should display an arrow up if not active.', () => {
     const { container } = render(<Accordion data-testid="test-id" />);
 
-    const svgElement = container.querySelector(
-      '[data-src="/images/icon-arrow-circle-up-line.svg"'
-    );
+    const svgElement = container.querySelector('[data-src="/images/icon-arrow-circle-up-line.svg"');
 
     expect(svgElement).toBeTruthy();
   });
@@ -25,7 +23,7 @@ describe('Accordion component', () => {
     const { container } = render(<Accordion data-testid="test-id" active />);
 
     const svgElement = container.querySelector(
-      '[data-src="/images/icon-arrow-circle-down-line.svg"'
+      '[data-src="/images/icon-arrow-circle-down-line.svg"',
     );
 
     expect(svgElement).toBeTruthy();
@@ -37,7 +35,7 @@ describe('Accordion component', () => {
         data-testid="test-id"
         token="token-example"
         accordionHandler={mockedHandleAccordionClick}
-      />
+      />,
     );
 
     const containerElement = queryByTestId('test-id');
@@ -56,7 +54,7 @@ describe('Accordion component', () => {
         accordionHandler={mockedHandleAccordionClick}
         disabled
         size="xxxs"
-      />
+      />,
     );
 
     const containerElement = queryByTestId('test-id');

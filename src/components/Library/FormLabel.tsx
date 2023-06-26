@@ -2,14 +2,7 @@ import { ReactNode } from 'react';
 
 import { css } from 'glamor';
 
-import {
-  colors,
-  margin,
-  display,
-  fontSizes,
-  fontWeight,
-  spacing,
-} from '../../utils/theme';
+import { colors, margin, display, fontSizes, fontWeight, spacing } from '../../utils/theme';
 
 const colorsLabel: any = {
   default: colors.greyDark,
@@ -31,12 +24,7 @@ export interface TextProps {
   htmlFor?: string | undefined;
 }
 
-const FormLabel = ({
-  color = 'default',
-  children,
-  required,
-  ...childProps
-}: TextProps) => {
+function FormLabel({ color = 'default', children, required, ...childProps }: TextProps) {
   const styleLabel = css(styleDefault, {
     color: `${colorsLabel[color]} !important`,
   });
@@ -46,6 +34,6 @@ const FormLabel = ({
       {children} {required && '*'}
     </label>
   );
-};
+}
 
 export default FormLabel;

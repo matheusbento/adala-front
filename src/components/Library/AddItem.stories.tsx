@@ -12,8 +12,7 @@ export default {
     addHandler: {
       action: 'onClick Action',
       type: { name: 'func' },
-      description:
-        'Callback used on click to Add something (When not disabled)',
+      description: 'Callback used on click to Add something (When not disabled)',
     },
     className: {
       type: { name: 'string' },
@@ -26,9 +25,7 @@ export default {
   },
 } as unknown as ComponentMeta<typeof AddItem>;
 
-const Template: ComponentStory<typeof AddItem> = (args) => (
-  <AddItem {...args} />
-);
+const Template: ComponentStory<typeof AddItem> = (args) => <AddItem {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {

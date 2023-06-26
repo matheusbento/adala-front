@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
-
 import SiloDetails from './SiloDetails';
 
-const SiloDetailsContainer = () => <SiloDetails />;
+function SiloDetailsContainer() {
+  return <SiloDetails />;
+}
 
 export default SiloDetailsContainer;

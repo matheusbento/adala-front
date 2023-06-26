@@ -1,6 +1,8 @@
 import SiloFormReview from './SiloFormReview';
 
 // eslint-disable-next-line react/jsx-props-no-spreading
-const SiloFormReviewContainer = (props: any) => <SiloFormReview {...props} />;
+function SiloFormReviewContainer(props: any) {
+  return <SiloFormReview {...props} />;
+}
 
 export default SiloFormReviewContainer;

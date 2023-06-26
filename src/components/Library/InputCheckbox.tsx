@@ -1,20 +1,13 @@
-import { Component, useMemo } from 'react';
-
-import { css } from 'glamor';
-import { get, isNaN } from 'lodash';
-import { useFormContext } from 'react-hook-form';
-import { Checkbox } from 'semantic-ui-react';
+import { Component, useMemo, useEffect } from 'react';
 
 import buildFormField from '@utils/buildFormField';
 import { display, flex } from '@utils/themeConstants';
+import { css } from 'glamor';
+import { get } from 'lodash';
+import { useFormContext } from 'react-hook-form';
+import { Checkbox } from 'semantic-ui-react';
 
-import {
-  colors,
-  fontSizes,
-  padding,
-  fontWeight,
-  spacing,
-} from '../../utils/theme';
+import { colors, fontSizes, padding, fontWeight, spacing } from '../../utils/theme';
 
 const styleDefault = css({
   '&.ui.checkbox': {
@@ -94,7 +87,7 @@ const FieldForm = buildFormField(
     ...props,
     label: props?.text,
     error,
-  })
+  }),
 );
 
 export interface InputCheckboxProps {
@@ -112,11 +105,12 @@ export interface InputCheckboxProps {
   toggle?: boolean;
   slider?: boolean;
   input?: any;
+  checked?: boolean;
   id?: any;
   onChange?: any;
 }
 
-const InputCheckbox = ({
+function InputCheckbox({
   label,
   text,
   labelSize = 'sm',
@@ -131,8 +125,9 @@ const InputCheckbox = ({
   slider,
   toggle = false,
   onChange,
+  checked = undefined,
   ...rest
-}: InputCheckboxProps) => {
+}: InputCheckboxProps) {
   const { register, setValue, formState, watch } = useFormContext();
 
   const styleProps = css({
@@ -145,7 +140,7 @@ const InputCheckbox = ({
   const styleForm = css(
     smallBox ? styleSmallBox : styleDefault,
     reverse && styleReverse,
-    !!labelSize && styleProps
+    !!labelSize && styleProps,
   );
 
   const message = useMemo(() => {
@@ -160,7 +155,18 @@ const InputCheckbox = ({
 
   const value = watch(name);
 
-  const isChecked = useMemo(() => (isNaN(value) ? 0 : value), [value]);
+  const isChecked = useMemo(() => value, [value]);
+
+  useEffect(() => {
+    // eslint-disable-next-line no-console
+    // console.log({ name, checked });
+    if (checked) {
+      setValue(name, checked);
+    }
+  }, []);
+
+  // eslint-disable-next-line no-console
+  // console.log({ name, isChecked, value, checked, vals: watch() });
 
   return (
     <FieldForm
@@ -174,10 +180,9 @@ const InputCheckbox = ({
         required: required ? 'This field is required' : false,
         ...formProps,
       })}
-      onChange={(
-        _: any,
-        { name: inputName, value: val }: Record<string, any>
-      ) => {
+      onChange={(_: any, { name: inputName, value: val }: Record<string, any>) => {
+        // eslint-disable-next-line no-console
+        console.log({ val, inputName }, 'VAL2', val ? 0 : 1);
         onChange?.(val);
         setValue(inputName, val ? 0 : 1, {
           shouldDirty: true,
@@ -190,5 +195,5 @@ const InputCheckbox = ({
       slider={slider}
     />
   );
-};
+}
 export default InputCheckbox;

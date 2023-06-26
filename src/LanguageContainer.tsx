@@ -13,7 +13,7 @@ const messages: Record<string, any> = {
   'pt-BR': messages_br,
 };
 
-const LanguageContainer = () => {
+function LanguageContainer() {
   const { locale, locales, setLocale } = useSystem();
 
   useEffect(() => {
@@ -32,6 +32,6 @@ const LanguageContainer = () => {
       <App changeLanguage={setLocale} currentLocale={locale} />
     </IntlProvider>
   );
-};
+}
 
 export default LanguageContainer;

@@ -38,11 +38,7 @@ const rows: any = [
 const conditionalRows: any = [
   [{ id: 1, canDelete: true, canEdit: false }, 'Name 1 (Can delete)', 'Date 1'],
   [{ id: 2, canDelete: false, canEdit: true }, 'Name 2 (Can edit)', 'Date 2'],
-  [
-    { id: 3, canDelete: false, canEdit: false },
-    "Name 3 (Can't delete or edit)",
-    'Date 3',
-  ],
+  [{ id: 3, canDelete: false, canEdit: false }, "Name 3 (Can't delete or edit)", 'Date 3'],
 ];
 
 const conditionalActions: any = [
@@ -135,9 +131,7 @@ describe('BaslakeTable component', () => {
   });
 
   it('should display headers and rows.', () => {
-    const { queryByText } = render(
-      <BaslakeTable headers={headers} rows={rows} disabled />
-    );
+    const { queryByText } = render(<BaslakeTable headers={headers} rows={rows} disabled />);
 
     headers.forEach((header) => {
       const headerElement = queryByText(header.label);
@@ -163,7 +157,7 @@ describe('BaslakeTable component', () => {
         order={order}
         dataSortHandler={mockedDataSortHandler}
         responsive
-      />
+      />,
     );
 
     headers.forEach((header) => {
@@ -181,11 +175,9 @@ describe('BaslakeTable component', () => {
       });
     });
 
-    const sortUpIconElement = container.querySelector(
-      'span[data-src="/images/icon-arrow-up.svg"]'
-    );
+    const sortUpIconElement = container.querySelector('span[data-src="/images/icon-arrow-up.svg"]');
     const sortDownIconElement = container.querySelector(
-      'span[data-src="/images/icon-arrow-down.svg"]'
+      'span[data-src="/images/icon-arrow-down.svg"]',
     );
 
     expect(sortUpIconElement).toBeTruthy();
@@ -211,11 +203,11 @@ describe('BaslakeTable component', () => {
         rows={rows}
         order={{ ...order, direction: 'desc' }}
         dataSortHandler={mockedDataSortHandler}
-      />
+      />,
     );
 
     const sortDownIconElements = container.querySelectorAll(
-      'span[data-src="/images/icon-arrow-down.svg"]'
+      'span[data-src="/images/icon-arrow-down.svg"]',
     );
 
     fireEvent.click(sortDownIconElements[0]);
@@ -228,12 +220,7 @@ describe('BaslakeTable component', () => {
 
   it('should be able to display actions and execute them.', () => {
     const { queryByText, queryAllByText, queryAllByRole } = render(
-      <BaslakeTable
-        headers={headersWithActions}
-        rows={rows}
-        actions={actions}
-        condensed
-      />
+      <BaslakeTable headers={headersWithActions} rows={rows} actions={actions} condensed />,
     );
 
     const optionsListElements = queryAllByRole('listbox');
@@ -243,15 +230,12 @@ describe('BaslakeTable component', () => {
     optionsListElements.forEach((optionsElement, i) => {
       const actionsArr = i > 0 ? actions : headerActions;
 
-      const optionElements =
-        optionsElement.querySelectorAll('div[role="option"]');
+      const optionElements = optionsElement.querySelectorAll('div[role="option"]');
 
       expect(optionElements).toHaveLength(2);
 
       optionElements.forEach((option, index) => {
-        expect(option?.lastChild?.firstChild?.textContent).toBe(
-          actionsArr[index].label
-        );
+        expect(option?.lastChild?.firstChild?.textContent).toBe(actionsArr[index].label);
 
         fireEvent.click(option);
 
@@ -291,10 +275,8 @@ describe('BaslakeTable component', () => {
 
         if (i > 0) {
           expect(actionsArr[index].action).toHaveBeenCalledWith(
-            Array.isArray(rows[i - 1]) && rows[i - 1]?.[0]?.id
-              ? rows[i - 1][0]
-              : rows[i - 1],
-            i - 1
+            Array.isArray(rows[i - 1]) && rows[i - 1]?.[0]?.id ? rows[i - 1][0] : rows[i - 1],
+            i - 1,
           );
         } else {
           expect(actionsArr[index].action).toHaveBeenCalled();
@@ -311,7 +293,7 @@ describe('BaslakeTable component', () => {
         headers={headersWithActions}
         rows={conditionalRows}
         actions={conditionalActions}
-      />
+      />,
     );
 
     const optionsListElements = queryAllByRole('listbox');
@@ -321,19 +303,15 @@ describe('BaslakeTable component', () => {
     optionsListElements.forEach((optionsElement, i) => {
       const actionsArr = i > 0 ? conditionalActions : headerActions;
 
-      const optionElements =
-        optionsElement.querySelectorAll('div[role="option"]');
+      const optionElements = optionsElement.querySelectorAll('div[role="option"]');
 
       if (!optionsElement.className.includes('disabled')) {
         optionElements.forEach((option, j) => {
-          let index =
-            option?.lastChild?.firstChild?.textContent === 'Delete' ? 0 : 1;
+          let index = option?.lastChild?.firstChild?.textContent === 'Delete' ? 0 : 1;
 
           index = i > 0 ? index : j;
 
-          expect(option?.lastChild?.firstChild?.textContent).toBe(
-            actionsArr[index].label
-          );
+          expect(option?.lastChild?.firstChild?.textContent).toBe(actionsArr[index].label);
 
           fireEvent.click(option);
 
@@ -372,10 +350,7 @@ describe('BaslakeTable component', () => {
           }
 
           if (i > 0) {
-            expect(actionsArr[index].action).toHaveBeenCalledWith(
-              conditionalRows[index][0],
-              index
-            );
+            expect(actionsArr[index].action).toHaveBeenCalledWith(conditionalRows[index][0], index);
           } else {
             expect(actionsArr[index].action).toHaveBeenCalled();
           }
@@ -399,7 +374,7 @@ describe('BaslakeTable component', () => {
         rows={groupedRows}
         nested={nestedRows}
         alignNested="left"
-      />
+      />,
     );
 
     const keys = Object.keys(nestedRows);
@@ -421,9 +396,7 @@ describe('BaslakeTable component', () => {
       expect(headerElement).toBeTruthy();
     });
 
-    const tableRowElements = container
-      ?.querySelector('tbody')
-      ?.querySelectorAll('tr');
+    const tableRowElements = container?.querySelector('tbody')?.querySelectorAll('tr');
 
     expect(tableRowElements).toHaveLength(parsedRows.length);
 
@@ -447,7 +420,7 @@ describe('BaslakeTable component', () => {
         rows={groupedRows}
         nested={nestedRows}
         alignNested="right"
-      />
+      />,
     );
 
     const keys = Object.keys(nestedRows);
@@ -470,9 +443,7 @@ describe('BaslakeTable component', () => {
       expect(headerElement).toBeTruthy();
     });
 
-    const tableRowElements = container
-      ?.querySelector('tbody')
-      ?.querySelectorAll('tr');
+    const tableRowElements = container?.querySelector('tbody')?.querySelectorAll('tr');
 
     expect(tableRowElements).toHaveLength(parsedRows.length);
 
@@ -495,14 +466,14 @@ describe('BaslakeTable component', () => {
         nested={nestedRows}
         alignNested="left"
         allCollapsed
-      />
+      />,
     );
 
     let iconUpElements = container.querySelectorAll(
-      'span[data-src="/images/icon-arrow-circle-up-line.svg"]'
+      'span[data-src="/images/icon-arrow-circle-up-line.svg"]',
     );
     let iconDownElements = container.querySelectorAll(
-      'span[data-src="/images/icon-arrow-circle-down-line.svg"]'
+      'span[data-src="/images/icon-arrow-circle-down-line.svg"]',
     );
 
     expect(iconUpElements).toHaveLength(groupedRows.length);
@@ -511,10 +482,10 @@ describe('BaslakeTable component', () => {
     fireEvent.click(iconUpElements[1]);
 
     iconUpElements = container.querySelectorAll(
-      'span[data-src="/images/icon-arrow-circle-up-line.svg"]'
+      'span[data-src="/images/icon-arrow-circle-up-line.svg"]',
     );
     iconDownElements = container.querySelectorAll(
-      'span[data-src="/images/icon-arrow-circle-down-line.svg"]'
+      'span[data-src="/images/icon-arrow-circle-down-line.svg"]',
     );
 
     expect(iconUpElements).toHaveLength(groupedRows.length - 1);
@@ -523,10 +494,10 @@ describe('BaslakeTable component', () => {
     fireEvent.click(iconDownElements[0]);
 
     iconUpElements = container.querySelectorAll(
-      'span[data-src="/images/icon-arrow-circle-up-line.svg"]'
+      'span[data-src="/images/icon-arrow-circle-up-line.svg"]',
     );
     iconDownElements = container.querySelectorAll(
-      'span[data-src="/images/icon-arrow-circle-down-line.svg"]'
+      'span[data-src="/images/icon-arrow-circle-down-line.svg"]',
     );
 
     expect(iconUpElements).toHaveLength(groupedRows.length);
@@ -535,16 +506,10 @@ describe('BaslakeTable component', () => {
 
   it('should be able to call onRowClick on click.', () => {
     const { container } = render(
-      <BaslakeTable
-        headers={headers}
-        rows={rows}
-        onRowClick={mockedOnRowClick}
-      />
+      <BaslakeTable headers={headers} rows={rows} onRowClick={mockedOnRowClick} />,
     );
 
-    const tableRowElements = container
-      ?.querySelector('tbody')
-      ?.querySelectorAll('tr');
+    const tableRowElements = container?.querySelector('tbody')?.querySelectorAll('tr');
 
     tableRowElements?.forEach((item, index) => {
       fireEvent.click(item);
@@ -562,7 +527,7 @@ describe('BaslakeTable component', () => {
         rows={rows}
         bulk
         bulkActionsHandler={mockedBulkActionsHandler}
-      />
+      />,
     );
 
     const inputElements = queryAllByRole('checkbox');
@@ -573,13 +538,11 @@ describe('BaslakeTable component', () => {
       fireEvent.click(item);
       if (index === 0) {
         expect(mockedBulkActionsHandler).toHaveBeenCalledWith(
-          rows.map((row: any) => row?.[0]?.id ?? null)
+          rows.map((row: any) => row?.[0]?.id ?? null),
         );
       } else {
         const key = rows?.[index - 1]?.[0]?.id ?? index;
-        expect(mockedBulkActionsHandler).toHaveBeenCalledWith(
-          Number.isInteger(key) ? key : null
-        );
+        expect(mockedBulkActionsHandler).toHaveBeenCalledWith(Number.isInteger(key) ? key : null);
       }
 
       jest.resetAllMocks();
@@ -595,12 +558,10 @@ describe('BaslakeTable component', () => {
         alignNested="left"
         bulk
         selectedChildrenRows={selectedChildrenRows}
-      />
+      />,
     );
 
-    const inputElement = container.querySelector(
-      'div[class*="ui indeterminate fitted checkbox"]'
-    );
+    const inputElement = container.querySelector('div[class*="ui indeterminate fitted checkbox"]');
 
     expect(inputElement).toBeTruthy();
   });
@@ -614,7 +575,7 @@ describe('BaslakeTable component', () => {
         alignNested="left"
         bulk
         bulkChildrenActionsHandler={mockedBulkChildrenActionsHandler}
-      />
+      />,
     );
 
     const inputElements = queryAllByRole('checkbox');
@@ -623,9 +584,7 @@ describe('BaslakeTable component', () => {
 
     fireEvent.click(inputElements[3]);
 
-    expect(mockedBulkChildrenActionsHandler).toHaveBeenCalledWith(
-      nestedRows[2][0][0].id
-    );
+    expect(mockedBulkChildrenActionsHandler).toHaveBeenCalledWith(nestedRows[2][0][0].id);
 
     fireEvent.click(inputElements[4]);
 
@@ -640,15 +599,13 @@ describe('BaslakeTable component', () => {
         selectedRows={[1]}
         loading={loading.actions}
         actions={actions}
-      />
+      />,
     );
 
-    const tableRowsElements: any = container
-      ?.querySelector('tbody')
-      ?.querySelectorAll('tr');
+    const tableRowsElements: any = container?.querySelector('tbody')?.querySelectorAll('tr');
 
     const loaderElement = tableRowsElements[0].querySelector(
-      'div[class*="ui small active centered inline loader"]'
+      'div[class*="ui small active centered inline loader"]',
     );
 
     expect(loaderElement).toBeTruthy();
@@ -661,7 +618,7 @@ describe('BaslakeTable component', () => {
         rows={[]}
         bulk
         bulkActionsHandler={mockedBulkActionsHandler}
-      />
+      />,
     );
 
     const textELement = queryByText('No data found');
@@ -678,18 +635,16 @@ describe('BaslakeTable component', () => {
         alignNested="left"
         actions={conditionalNestedActions}
         loading={loading.data}
-      />
+      />,
     );
 
     const actionMenuElements = queryAllByRole('listbox');
 
-    const firstMenuOptionElements =
-      actionMenuElements[2].querySelectorAll('div[role="option"]');
+    const firstMenuOptionElements = actionMenuElements[2].querySelectorAll('div[role="option"]');
 
     expect(firstMenuOptionElements).toHaveLength(2);
 
-    const secondMenuOptionElements =
-      actionMenuElements[3].querySelectorAll('div[role="option"]');
+    const secondMenuOptionElements = actionMenuElements[3].querySelectorAll('div[role="option"]');
 
     expect(secondMenuOptionElements).toHaveLength(1);
   });
@@ -705,16 +660,12 @@ describe('BaslakeTable component', () => {
         activeRow={1}
         highlightParentRow
         loading={loading.pagination}
-      />
+      />,
     );
 
-    const tableRowsElements: any = container
-      ?.querySelector('tbody')
-      ?.querySelectorAll('tr');
+    const tableRowsElements: any = container?.querySelector('tbody')?.querySelectorAll('tr');
 
-    expect(tableRowsElements[0].className).toEqual(
-      expect.stringContaining('active')
-    );
+    expect(tableRowsElements[0].className).toEqual(expect.stringContaining('active'));
   });
 
   it('should be able to display highlighted parents.', () => {
@@ -726,16 +677,12 @@ describe('BaslakeTable component', () => {
         alignNested="left"
         actions={actions}
         highlightParentRow
-      />
+      />,
     );
 
-    const tableRowsElements: any = container
-      ?.querySelector('tbody')
-      ?.querySelectorAll('tr');
+    const tableRowsElements: any = container?.querySelector('tbody')?.querySelectorAll('tr');
 
-    expect(tableRowsElements[1].className).toEqual(
-      expect.stringContaining('highlighted')
-    );
+    expect(tableRowsElements[1].className).toEqual(expect.stringContaining('highlighted'));
   });
 
   it('should be able to display highlighted nested.', () => {
@@ -746,19 +693,13 @@ describe('BaslakeTable component', () => {
         nested={nestedRows}
         alignNested="left"
         highlightNested
-      />
+      />,
     );
 
-    const tableRowsElements: any = container
-      ?.querySelector('tbody')
-      ?.querySelectorAll('tr');
+    const tableRowsElements: any = container?.querySelector('tbody')?.querySelectorAll('tr');
 
-    expect(tableRowsElements[2].className).toEqual(
-      expect.stringContaining('highlight-nested')
-    );
-    expect(tableRowsElements[3].className).toEqual(
-      expect.stringContaining('highlight-nested')
-    );
+    expect(tableRowsElements[2].className).toEqual(expect.stringContaining('highlight-nested'));
+    expect(tableRowsElements[3].className).toEqual(expect.stringContaining('highlight-nested'));
   });
 
   it('should be able to display a specific nested item.', () => {
@@ -769,40 +710,30 @@ describe('BaslakeTable component', () => {
         nested={nestedRows}
         alignNested="left"
         alwaysDisplayNested={false}
-      />
+      />,
     );
 
-    const tableRowsElements: any = container
-      ?.querySelector('tbody')
-      ?.querySelectorAll('tr');
+    const tableRowsElements: any = container?.querySelector('tbody')?.querySelectorAll('tr');
 
     const iconElement = tableRowsElements[1].querySelector(
-      'span[data-src="/images/icon-arrow-circle-down-line.svg"]'
+      'span[data-src="/images/icon-arrow-circle-down-line.svg"]',
     );
 
     expect(iconElement).toBeTruthy();
   });
 
   it('should display a custom styled header.', () => {
-    const { container } = render(
-      <BaslakeTable headers={headers} rows={rows} />
-    );
+    const { container } = render(<BaslakeTable headers={headers} rows={rows} />);
 
-    const tableRowsElements: any = container
-      ?.querySelector('tbody')
-      ?.querySelectorAll('tr');
+    const tableRowsElements: any = container?.querySelector('tbody')?.querySelectorAll('tr');
 
-    const firstHeaderElement = tableRowsElements[0].querySelector(
-      'td[class="header 1 style"]'
-    );
+    const firstHeaderElement = tableRowsElements[0].querySelector('td[class="header 1 style"]');
 
     expect(firstHeaderElement).toBeTruthy();
   });
 
   it("should display and enable row's drag and drop.", () => {
-    const { container } = render(
-      <BaslakeTable headers={headers} rows={rows} enableDragAndDrop />
-    );
+    const { container } = render(<BaslakeTable headers={headers} rows={rows} enableDragAndDrop />);
 
     const tBody = container.querySelector('tbody');
 
@@ -813,7 +744,7 @@ describe('BaslakeTable component', () => {
 
   it('should be able to display actions by item action key.', () => {
     const { queryByText, queryAllByText, queryAllByRole } = render(
-      <BaslakeTable headers={headers} rows={rows} actions={actionsObj} />
+      <BaslakeTable headers={headers} rows={rows} actions={actionsObj} />,
     );
 
     const optionsListElements = queryAllByRole('listbox');
@@ -821,8 +752,7 @@ describe('BaslakeTable component', () => {
     expect(optionsListElements).toHaveLength(3);
 
     optionsListElements.forEach((optionsElement, i) => {
-      const optionElements =
-        optionsElement.querySelectorAll('div[role="option"]');
+      const optionElements = optionsElement.querySelectorAll('div[role="option"]');
 
       if (i !== 0) {
         expect(optionElements).toHaveLength(0);
@@ -830,9 +760,7 @@ describe('BaslakeTable component', () => {
         expect(optionElements).toHaveLength(2);
 
         optionElements.forEach((option, index) => {
-          expect(option?.lastChild?.firstChild?.textContent).toBe(
-            actions[index].label
-          );
+          expect(option?.lastChild?.firstChild?.textContent).toBe(actions[index].label);
 
           fireEvent.click(option);
 
@@ -872,7 +800,7 @@ describe('BaslakeTable component', () => {
 
           expect(actions[index].action).toHaveBeenCalledWith(
             Array.isArray(rows[i]) && rows[i]?.[0]?.id ? rows[i][0] : rows[i],
-            i
+            i,
           );
 
           jest.resetAllMocks();

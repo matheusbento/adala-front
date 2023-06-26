@@ -10,8 +10,7 @@ export default {
   parameters: {
     docs: {
       description: {
-        component:
-          '**IMPORTANT:** This components extends the `<Message />` component).',
+        component: '**IMPORTANT:** This components extends the `<Message />` component).',
       },
     },
   },

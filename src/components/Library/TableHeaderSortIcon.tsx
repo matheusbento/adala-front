@@ -18,14 +18,14 @@ export interface TableHeaderSortIconProps {
   isLoading?: boolean;
 }
 
-const TableHeaderSortIcon = ({
+function TableHeaderSortIcon({
   isActive,
   direction,
   activeColor = colors.primary,
   inactiveColor = colors.greyLighter,
   className = '',
   isLoading = false,
-}: TableHeaderSortIconProps) => {
+}: TableHeaderSortIconProps) {
   const styleLoader = css(display.inlineBlock, margin.leftXxs, {
     width: '16px',
     height: '16px',
@@ -47,6 +47,6 @@ const TableHeaderSortIcon = ({
       color={isActive ? activeColor : inactiveColor}
     />
   );
-};
+}
 
 export default TableHeaderSortIcon;

@@ -23,7 +23,7 @@ const FieldForm = buildFormField(
         : props?.value,
     error,
     className: `${props?.className} scrolling`,
-  })
+  }),
 );
 
 export interface InputDropdownProps {
@@ -51,7 +51,7 @@ export interface RestProps {
   multiple?: boolean;
 }
 
-const InputDropdown = ({
+function InputDropdown({
   placeholder,
   spaced = false,
   options,
@@ -66,7 +66,7 @@ const InputDropdown = ({
   formProps,
   selection,
   ...childProps
-}: InputDropdownProps & Partial<RestProps>) => {
+}: InputDropdownProps & Partial<RestProps>) {
   const styleField = css(spaced && styleSpaced);
 
   const { register, setValue, formState, watch } = useFormContext();
@@ -100,9 +100,8 @@ const InputDropdown = ({
   }
 
   const defaultPlaceholder = useMemo(
-    () =>
-      `Select ${childProps.label ? childProps.label.toLowerCase() : 'item'}`,
-    [childProps.label]
+    () => `Select ${childProps.label ? childProps.label.toLowerCase() : 'item'}`,
+    [childProps.label],
   );
 
   const message = useMemo(() => {
@@ -135,10 +134,7 @@ const InputDropdown = ({
         required: required ? 'This field is required' : false,
         ...formProps,
       })}
-      onChange={(
-        _: any,
-        { name: inputName, value: val }: Record<string, any>
-      ) => {
+      onChange={(_: any, { name: inputName, value: val }: Record<string, any>) => {
         onChange?.(val);
         setValue(inputName, val, {
           shouldDirty: true,
@@ -152,6 +148,6 @@ const InputDropdown = ({
       {...childProps}
     />
   );
-};
+}
 
 export default InputDropdown;

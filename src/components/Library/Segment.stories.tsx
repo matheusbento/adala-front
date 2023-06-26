@@ -16,19 +16,14 @@ export default {
   },
 } as ComponentMeta<typeof Segment>;
 
-const Template: ComponentStory<typeof Segment> = (args) => (
-  <Segment {...args} />
-);
+const Template: ComponentStory<typeof Segment> = (args) => <Segment {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
   children: (
     <>
       <h1>Text</h1>
-      <p>
-        Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus
-        hendrerit.
-      </p>
+      <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus hendrerit.</p>
     </>
   ),
 };

@@ -1,11 +1,10 @@
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect } from 'react';
 
 import Button from '@components/Library/Button';
 import Header from '@components/Library/Header';
 import InputText from '@components/Library/InputText';
 import InputTextArea from '@components/Library/InputTextArea';
-import SvgIcon from '@components/Library/SvgIcon';
-import { useSilos } from '@hooks/Silos';
+import { useSilo } from '@hooks/Silos';
 import { css } from 'glamor';
 import { animateScroll } from 'react-scroll';
 import { Form as SemanticForm } from 'semantic-ui-react';
@@ -32,8 +31,8 @@ const styleTitle = css(margin.topNone, {
   },
 });
 
-const SilosForm = () => {
-  const { showModal, setFormState, isLoadingSave, formState } = useSilos();
+function SilosForm() {
+  const { showModal, setFormState, isLoadingSave, formState } = useSilo();
 
   const valid = true;
 
@@ -93,13 +92,7 @@ const SilosForm = () => {
         <>
           <SiloFormReviewContainer />
           <SemanticForm.Group>
-            <Button
-              color="success"
-              fluid
-              pill
-              loading={isLoadingSave}
-              type="submit"
-            >
+            <Button color="success" fluid pill loading={isLoadingSave} type="submit">
               Confirm and Create Silo Folder
             </Button>
           </SemanticForm.Group>
@@ -134,6 +127,6 @@ const SilosForm = () => {
       </SemanticForm.Group>
     </>
   );
-};
+}
 
 export default SilosForm;

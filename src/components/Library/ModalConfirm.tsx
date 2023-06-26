@@ -22,7 +22,7 @@ export interface ModalConfirmProps {
   children?: ReactNode;
 }
 
-const ModalConfirm = ({
+function ModalConfirm({
   onConfirm,
   onDismiss,
   open = false,
@@ -35,7 +35,7 @@ const ModalConfirm = ({
   loadingActions = false,
   canSubmit = true,
   children = null,
-}: ModalConfirmProps) => {
+}: ModalConfirmProps) {
   const [currentCaptcha, setCurrentCaptcha] = useState('');
 
   const handleDismiss = useCallback(() => {
@@ -52,18 +52,12 @@ const ModalConfirm = ({
     () =>
       !canSubmit ||
       (!!captchaText &&
-        `${captchaText}`.toLocaleLowerCase() !==
-          currentCaptcha.toLocaleLowerCase()),
-    [canSubmit, captchaText, currentCaptcha]
+        `${captchaText}`.toLocaleLowerCase() !== currentCaptcha.toLocaleLowerCase()),
+    [canSubmit, captchaText, currentCaptcha],
   );
 
   return (
-    <BaslakeModal
-      open={open}
-      closeHandler={onDismiss}
-      size={size}
-      title={header}
-    >
+    <BaslakeModal open={open} closeHandler={onDismiss} size={size} title={header}>
       <BaslakeModal.Content>
         <When condition={!!confirmText}>{() => <p>{confirmText}</p>}</When>
         {children}
@@ -89,12 +83,7 @@ const ModalConfirm = ({
               <Button pill color="default" outline onClick={handleDismiss}>
                 {labelDismiss}
               </Button>
-              <Button
-                pill
-                color="danger"
-                onClick={handleConfirm}
-                disabled={isDisabled}
-              >
+              <Button pill color="danger" onClick={handleConfirm} disabled={isDisabled}>
                 {labelConfirm}
               </Button>
             </>
@@ -103,6 +92,6 @@ const ModalConfirm = ({
       </BaslakeModal.Actions>
     </BaslakeModal>
   );
-};
+}
 
 export default ModalConfirm;

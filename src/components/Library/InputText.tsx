@@ -1,14 +1,12 @@
 import { Component, useMemo } from 'react';
 
+import buildFormField from '@utils/buildFormField';
+import { spacing } from '@utils/theme';
 import { css } from 'glamor';
-import { get, NumericDictionary, String } from 'lodash';
+import { get } from 'lodash';
 
 import { useFormContext } from 'react-hook-form';
 import { Input } from 'semantic-ui-react';
-
-import buildFormField from '@utils/buildFormField';
-import { spacing } from '@utils/theme';
-import { ErrorTypeMultiple, ErrorTypeSingle } from 'types/ErrorType';
 
 const styleSpaced = css({
   '& input': {
@@ -32,17 +30,13 @@ const styleRounded = css({
 
 const FieldForm = buildFormField(
   Input,
-  (
-    input: Component,
-    error: any,
-    { inputIcon, autoComplete, ...props }: Record<string, any>
-  ) => ({
+  (input: Component, error: any, { inputIcon, autoComplete, ...props }: Record<string, any>) => ({
     icon: inputIcon,
     ...input,
     autoComplete: autoComplete ?? 'off',
     ...props,
     error,
-  })
+  }),
 );
 
 export interface RestProps {
@@ -67,7 +61,7 @@ export interface InputTextProps {
   min?: number;
 }
 
-const InputText = ({
+function InputText({
   name,
   icon,
   placeholder,
@@ -79,7 +73,7 @@ const InputText = ({
   required = false,
   formProps = {},
   ...rest
-}: InputTextProps & Partial<RestProps>) => {
+}: InputTextProps & Partial<RestProps>) {
   const { register, setValue, formState, watch } = useFormContext();
 
   const styleField = css(
@@ -88,13 +82,12 @@ const InputText = ({
     negative && styleNegative,
     {
       width,
-    }
+    },
   );
 
   const defaultPlaceholder = useMemo(
-    () =>
-      placeholder || `Enter ${rest?.label ? rest.label.toLowerCase() : 'text'}`,
-    [placeholder, rest.label]
+    () => placeholder || `Enter ${rest?.label ? rest.label.toLowerCase() : 'text'}`,
+    [placeholder, rest.label],
   );
 
   const message = useMemo(() => {
@@ -115,10 +108,7 @@ const InputText = ({
           required: required ? 'This field is required' : false,
           ...formProps,
         })}
-        onChange={(
-          _: any,
-          { name: inputName, value: val }: Record<string, string>
-        ) => {
+        onChange={(_: any, { name: inputName, value: val }: Record<string, string>) => {
           setValue(inputName, val, {
             shouldDirty: true,
           });
@@ -132,6 +122,6 @@ const InputText = ({
       {icon && <i aria-hidden="true" className={`${icon} icon`} />}
     </>
   );
-};
+}
 
 export default InputText;

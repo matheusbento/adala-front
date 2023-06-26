@@ -91,7 +91,7 @@ const iconMargin: Record<string, string> = {
   xl: margin.rightMd,
 };
 
-const Pill = ({
+function Pill({
   size = 'sm',
   color = 'primary',
   clear = false,
@@ -106,19 +106,17 @@ const Pill = ({
   to = null,
   icon = null,
   ...rest
-}: PillProps & Partial<RestProps>) => {
+}: PillProps & Partial<RestProps>) {
   const getBackgroundColor = useCallback(
     (hover: boolean) => {
       const pill = pillColors[color] ?? pillColors.primary;
 
       if (clear) return 'transparent !important';
-      if (disabled)
-        return `${outline ? 'transparent' : pillColors.disabled} !important`;
-      if (active || hover)
-        return `${outline ? pill : lighten(0.075, pill)} !important`;
+      if (disabled) return `${outline ? 'transparent' : pillColors.disabled} !important`;
+      if (active || hover) return `${outline ? pill : lighten(0.075, pill)} !important`;
       return `${outline ? 'transparent' : pill} !important`;
     },
-    [color, clear, disabled, outline, active]
+    [color, clear, disabled, outline, active],
   );
 
   const getTextColor = useCallback(
@@ -127,14 +125,11 @@ const Pill = ({
       const pill = pillColors[color] ?? pillColors.primary;
 
       if (clear) return `${pill} !important`;
-      if (disabled)
-        return `${
-          outline ? pillColors.disabled : contrastColors.disabled
-        } !important`;
+      if (disabled) return `${outline ? pillColors.disabled : contrastColors.disabled} !important`;
       if (active || hover) return `${contrast} !important`;
       return `${outline ? pill : contrast} !important`;
     },
-    [active, disabled, outline, color, clear]
+    [active, disabled, outline, color, clear],
   );
 
   const getBorderStyle = useCallback(
@@ -143,12 +138,10 @@ const Pill = ({
       if (clear) return 'none !important';
       if (disabled) return `solid 1px ${pillColors.disabled} !important`;
       if (active || hover)
-        return `solid 1px ${
-          outline ? 'transparent' : lighten(0.075, pill)
-        } !important`;
+        return `solid 1px ${outline ? 'transparent' : lighten(0.075, pill)} !important`;
       return `solid 1px ${pill} !important`;
     },
-    [active, clear, disabled, outline, color]
+    [active, clear, disabled, outline, color],
   );
 
   const cursorStyle = useMemo(() => {
@@ -184,7 +177,7 @@ const Pill = ({
         '& svg path, & svg use': {
           fill: getTextColor(false),
         },
-      }
+      },
     );
   }, [
     children,
@@ -214,13 +207,10 @@ const Pill = ({
           },
         },
       }),
-    [cursorStyle, getBackgroundColor, getTextColor, getBorderStyle]
+    [cursorStyle, getBackgroundColor, getTextColor, getBorderStyle],
   );
 
-  const styleIcon = useMemo(
-    () => css(children ? iconMargin[size] : margin.none),
-    [children, size]
-  );
+  const styleIcon = useMemo(() => css(children ? iconMargin[size] : margin.none), [children, size]);
 
   if (button) {
     if (to) {
@@ -249,9 +239,9 @@ const Pill = ({
     return (
       <Button
         type={rest.type || 'button'}
-        className={`${stylePill} ${styleButton} ${className}${
-          active ? ' active' : ''
-        }${disabled ? ' disabled' : ''}`}
+        className={`${stylePill} ${styleButton} ${className}${active ? ' active' : ''}${
+          disabled ? ' disabled' : ''
+        }`}
         onClick={!disabled ? onClick : undefined}
         loading={loading}
         {...rest}
@@ -276,6 +266,6 @@ const Pill = ({
       {children}
     </span>
   );
-};
+}
 
 export default Pill;

@@ -1,20 +1,10 @@
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useMemo,
-  useState,
-  ReactNode,
-} from 'react';
+import { createContext, useCallback, useContext, useMemo, useState, ReactNode } from 'react';
 
 import { ToasterType } from 'types/ToasterType';
 
 export type ToasterContextType = {
   toaster: ToasterType;
-  invokeToaster: (
-    message: string,
-    status: 'success' | 'error' | 'warning' | 'info'
-  ) => void;
+  invokeToaster: (message: string, status: 'success' | 'error' | 'warning' | 'info') => void;
 };
 
 export const ToasterContext = createContext<ToasterContextType | null>(null);
@@ -32,7 +22,7 @@ interface ToasterProviderProps {
   children: ReactNode;
 }
 
-const ToasterProvider = ({ children }: ToasterProviderProps) => {
+function ToasterProvider({ children }: ToasterProviderProps) {
   const initialState = {
     trigger: undefined,
     message: undefined,
@@ -42,8 +32,7 @@ const ToasterProvider = ({ children }: ToasterProviderProps) => {
   const [toaster, setToaster] = useState<ToasterType>(initialState);
 
   const trigger = () =>
-    Math.random().toString(36).substring(2, 15) +
-    Math.random().toString(36).substring(2, 15);
+    Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
   const invokeToaster = useCallback(
     (message: string, status: 'success' | 'error' | 'warning' | 'info') => {
@@ -53,7 +42,7 @@ const ToasterProvider = ({ children }: ToasterProviderProps) => {
         status,
       });
     },
-    [trigger]
+    [trigger],
   );
 
   const providerValue = useMemo(
@@ -61,14 +50,10 @@ const ToasterProvider = ({ children }: ToasterProviderProps) => {
       toaster,
       invokeToaster,
     }),
-    [toaster, invokeToaster]
+    [toaster, invokeToaster],
   );
 
-  return (
-    <ToasterContext.Provider value={providerValue}>
-      {children}
-    </ToasterContext.Provider>
-  );
-};
+  return <ToasterContext.Provider value={providerValue}>{children}</ToasterContext.Provider>;
+}
 
 export { ToasterProvider, useToaster };

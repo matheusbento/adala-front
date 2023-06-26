@@ -53,19 +53,10 @@ const Template: ComponentStory<typeof BaslakeModal> = (args) => {
           <p>Content</p>
         </BaslakeModal.Content>
         <BaslakeModal.Actions>
-          <Button
-            pill
-            color="default"
-            outline
-            onClick={() => setWithActionsOpen(false)}
-          >
+          <Button pill color="default" outline onClick={() => setWithActionsOpen(false)}>
             Dismiss
           </Button>
-          <Button
-            pill
-            color="success"
-            onClick={() => setWithActionsOpen(false)}
-          >
+          <Button pill color="success" onClick={() => setWithActionsOpen(false)}>
             Confirm
           </Button>
         </BaslakeModal.Actions>

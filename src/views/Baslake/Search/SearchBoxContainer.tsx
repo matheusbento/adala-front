@@ -1,16 +1,10 @@
 import { useCallback, useMemo } from 'react';
 
-import { debounce } from 'lodash';
-import { useHistory } from 'react-router';
-
 import SearchBox from '@components/Library/SearchBox';
-
 import baslakeContext from '@constants/baslakeConstants';
+import { debounce } from 'lodash';
 
-import {
-  SuggestionTypeMultiple,
-  SuggestionTypeSingle,
-} from 'types/SuggestionType';
+import { SuggestionTypeMultiple, SuggestionTypeSingle } from 'types/SuggestionType';
 
 interface SearchBoxContainerProps {
   className?: string;
@@ -19,13 +13,8 @@ interface SearchBoxContainerProps {
   currentKeyword?: string;
 }
 
-const SearchBoxContainer = (props: SearchBoxContainerProps) => {
-  const {
-    className = '',
-    suggestions = [],
-    context,
-    currentKeyword = '',
-  } = props;
+function SearchBoxContainer(props: SearchBoxContainerProps) {
+  const { className = '', suggestions = [], context, currentKeyword = '' } = props;
 
   const methods = useMemo(() => {
     let callback = () => null;
@@ -33,7 +22,9 @@ const SearchBoxContainer = (props: SearchBoxContainerProps) => {
     switch (context) {
       case baslakeContext:
         // eslint-disable-next-line react/display-name
-        callback = () => null;
+        callback = function () {
+          return null;
+        };
         break;
       default:
         break;
@@ -44,7 +35,7 @@ const SearchBoxContainer = (props: SearchBoxContainerProps) => {
       onSuggestionSelectedHandler: (
         _innerContext: string,
         _suggestion: SuggestionTypeSingle,
-        _handleSuggestionSelectedCallback: () => void
+        _handleSuggestionSelectedCallback: () => void,
       ): void => {},
       handleSuggestionSelectedCallback: callback,
       updateUrlFiltersHandler: (_outeHistory: any, _context: string) => {},
@@ -72,11 +63,7 @@ const SearchBoxContainer = (props: SearchBoxContainerProps) => {
 
   const suggestionSelectedHandler = useCallback(
     (suggestion: SuggestionTypeSingle) => {
-      onSuggestionSelectedHandler(
-        context,
-        suggestion,
-        handleSuggestionSelectedCallback
-      );
+      onSuggestionSelectedHandler(context, suggestion, handleSuggestionSelectedCallback);
       updateUrlFiltersHandler(routeHistory, context);
     },
     [
@@ -85,15 +72,13 @@ const SearchBoxContainer = (props: SearchBoxContainerProps) => {
       onSuggestionSelectedHandler,
       updateUrlFiltersHandler,
       routeHistory,
-    ]
+    ],
   );
 
   return (
     <div className={className}>
       <SearchBox
-        onChange={(keyword: string) =>
-          debounceKeywordChangeHandler(context, keyword)
-        }
+        onChange={(keyword: string) => debounceKeywordChangeHandler(context, keyword)}
         onSuggestionSelected={suggestionSelectedHandler}
         setFilterHandler={setFilterHandler}
         handleSuggestionSelectedCallback={handleSuggestionSelectedCallback}
@@ -104,6 +89,6 @@ const SearchBoxContainer = (props: SearchBoxContainerProps) => {
       />
     </div>
   );
-};
+}
 
 export default SearchBoxContainer;

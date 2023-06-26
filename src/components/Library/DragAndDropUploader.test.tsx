@@ -39,12 +39,10 @@ describe('DragAndDropUploader component', () => {
         loaderLabel={null}
         showFiles={false}
         name={null}
-      />
+      />,
     );
 
-    const iconElement = container.querySelector(
-      'span[data-src="/images/icon-cloud-upload.svg"]'
-    );
+    const iconElement = container.querySelector('span[data-src="/images/icon-cloud-upload.svg"]');
     const labelElement = queryByText('Drag & Drop your file');
     const mobileLabelElement = queryByText('Select your file');
     const buttonElement = queryByText('Browse to Upload');
@@ -77,12 +75,10 @@ describe('DragAndDropUploader component', () => {
         loaderLabel={null}
         showFiles={false}
         name={null}
-      />
+      />,
     );
 
-    const iconElement = container.querySelector(
-      'span[data-src="/images/test-icon.svg"]'
-    );
+    const iconElement = container.querySelector('span[data-src="/images/test-icon.svg"]');
 
     expect(iconElement).toBeTruthy();
   });
@@ -107,7 +103,7 @@ describe('DragAndDropUploader component', () => {
         loaderLabel={null}
         showFiles={false}
         name={null}
-      />
+      />,
     );
 
     const labelElement = queryByText('Test Label');
@@ -135,7 +131,7 @@ describe('DragAndDropUploader component', () => {
         loaderLabel={null}
         showFiles={false}
         name={null}
-      />
+      />,
     );
 
     const mobileLabelElement = queryByText('Test Mobile Label');
@@ -163,7 +159,7 @@ describe('DragAndDropUploader component', () => {
         loaderLabel={null}
         showFiles={false}
         name={null}
-      />
+      />,
     );
 
     const buttonElement = queryByText('Test Button Text');
@@ -191,7 +187,7 @@ describe('DragAndDropUploader component', () => {
         errorMessage={null}
         showFiles={false}
         name={null}
-      />
+      />,
     );
 
     const loaderLabelElement = queryByText('Test Loader Label');
@@ -219,7 +215,7 @@ describe('DragAndDropUploader component', () => {
         loaderLabel={null}
         showFiles={false}
         name={null}
-      />
+      />,
     );
 
     const subtitleElement = queryByText('Test Subtitle Label');
@@ -247,7 +243,7 @@ describe('DragAndDropUploader component', () => {
         loaderLabel={null}
         showFiles={false}
         name={null}
-      />
+      />,
     );
 
     fireEvent.drop(getByText(/Drag & Drop your file/i), {
@@ -280,13 +276,11 @@ describe('DragAndDropUploader component', () => {
         loaderLabel={null}
         showFiles={false}
         name={null}
-      />
+      />,
     );
 
     const buttonElement = queryByRole('button') as Element;
-    const inputElement = container.querySelector(
-      'input[type="file"]'
-    ) as Element;
+    const inputElement = container.querySelector('input[type="file"]') as Element;
 
     fireEvent.click(buttonElement);
     fireEvent.change(inputElement, { target: { files: [file1] } });
@@ -314,7 +308,7 @@ describe('DragAndDropUploader component', () => {
         loaderLabel={null}
         showFiles={false}
         name={null}
-      />
+      />,
     );
 
     const dropElement = getByText(/Drag & Drop your file/i);
@@ -367,12 +361,10 @@ describe('DragAndDropUploader component', () => {
         loaderLabel={null}
         showFiles={false}
         name={null}
-      />
+      />,
     );
 
-    const inputElement = container.querySelector(
-      'input[type="file"]'
-    ) as Element;
+    const inputElement = container.querySelector('input[type="file"]') as Element;
 
     fireEvent.change(inputElement, { target: { files: [file1] } });
 
@@ -399,7 +391,7 @@ describe('DragAndDropUploader component', () => {
         loaderLabel={null}
         showFiles={false}
         name={null}
-      />
+      />,
     );
 
     const dropElement = getByText(/Drag & Drop your file/i);
@@ -434,12 +426,10 @@ describe('DragAndDropUploader component', () => {
         loaderLabel={null}
         showFiles={false}
         name={null}
-      />
+      />,
     );
 
-    const inputElement = container.querySelector(
-      'input[type="file"]'
-    ) as Element;
+    const inputElement = container.querySelector('input[type="file"]') as Element;
 
     fireEvent.change(inputElement, { target: { files: [file2, file1] } });
 
@@ -466,7 +456,7 @@ describe('DragAndDropUploader component', () => {
         loaderLabel={null}
         showFiles={false}
         name={null}
-      />
+      />,
     );
 
     const dropElement = queryByText(/Drag & Drop your file/i) as Element;
@@ -504,12 +494,10 @@ describe('DragAndDropUploader component', () => {
         loaderLabel={null}
         showFiles={false}
         name={null}
-      />
+      />,
     );
 
-    const inputElement = container.querySelector(
-      'input[type="file"]'
-    ) as Element;
+    const inputElement = container.querySelector('input[type="file"]') as Element;
 
     fireEvent.change(inputElement, { target: { files: [file2, file1] } });
 
@@ -539,7 +527,7 @@ describe('DragAndDropUploader component', () => {
         loaderLabel={null}
         showFiles={false}
         name={null}
-      />
+      />,
     );
 
     const textElement = queryByText('Test Error Message');
@@ -567,12 +555,10 @@ describe('DragAndDropUploader component', () => {
         loaderLabel={null}
         showFiles={false}
         name={null}
-      />
+      />,
     );
 
-    const inputElement = container.querySelector(
-      'input[type="file"]'
-    ) as Element;
+    const inputElement = container.querySelector('input[type="file"]') as Element;
 
     fireEvent.change(inputElement, { target: { files: [file2, file1] } });
 
@@ -595,7 +581,7 @@ describe('DragAndDropUploader component', () => {
         loaderLabel={null}
         showFiles={false}
         name={null}
-      />
+      />,
     );
 
     const textElement = queryByText('Test Error Message');
@@ -623,7 +609,7 @@ describe('DragAndDropUploader component', () => {
         loaderLabel={null}
         showFiles={false}
         name={null}
-      />
+      />,
     );
 
     const dropElement = queryByText(/Drag & Drop your file/i) as Element;
@@ -635,9 +621,7 @@ describe('DragAndDropUploader component', () => {
       },
     });
 
-    const textElement = queryByText(
-      'File size is too large. Please try again.'
-    );
+    const textElement = queryByText('File size is too large. Please try again.');
 
     expect(textElement).toBeTruthy();
     expect(mockedOnFileSelected).not.toHaveBeenCalled();
@@ -663,7 +647,7 @@ describe('DragAndDropUploader component', () => {
         loaderLabel={null}
         showFiles={false}
         name={null}
-      />
+      />,
     );
 
     const dropElement = queryByText(/Drag & Drop your file/i) as Element;
@@ -675,9 +659,7 @@ describe('DragAndDropUploader component', () => {
       },
     });
 
-    const textElement = queryByText(
-      'File size is too large. Please try again.'
-    );
+    const textElement = queryByText('File size is too large. Please try again.');
 
     expect(textElement).toBeFalsy();
     expect(mockedOnFileSelected).toHaveBeenCalledWith([file1], []);
@@ -703,7 +685,7 @@ describe('DragAndDropUploader component', () => {
         loaderLabel={null}
         showFiles={false}
         name={null}
-      />
+      />,
     );
 
     const dropElement = queryByText(/Drag & Drop your file/i) as Element;
@@ -741,7 +723,7 @@ describe('DragAndDropUploader component', () => {
         loaderLabel={null}
         showFiles={false}
         name={null}
-      />
+      />,
     );
 
     const dropElement = queryByText(/Drag & Drop your file/i) as Element;
@@ -779,13 +761,11 @@ describe('DragAndDropUploader component', () => {
         errorMessage={null}
         loaderLabel={null}
         name={null}
-      />
+      />,
     );
 
     const buttonElement = queryByRole('button') as Element;
-    const inputElement = container.querySelector(
-      'input[type="file"]'
-    ) as Element;
+    const inputElement = container.querySelector('input[type="file"]') as Element;
 
     fireEvent.click(buttonElement);
     fireEvent.change(inputElement, { target: { files: [file1] } });
@@ -814,7 +794,7 @@ describe('DragAndDropUploader component', () => {
         errorMessage={null}
         loaderLabel={null}
         name={null}
-      />
+      />,
     );
 
     const textElement = queryByText('stringfile');

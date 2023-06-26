@@ -4,13 +4,7 @@ import { ReactNode, useMemo } from 'react';
 import { css } from 'glamor';
 
 import TypeOf from '../../../constants/typeOfConstants';
-import {
-  colors,
-  fontSizes,
-  display,
-  spacing,
-  margin,
-} from '../../../utils/theme';
+import { colors, fontSizes, display, spacing, margin } from '../../../utils/theme';
 import SvgIcon from '../SvgIcon';
 
 /*
@@ -45,7 +39,7 @@ export interface ItemProps {
   textAlign?: string;
 }
 
-const Item = ({
+function Item({
   icon,
   label,
   size = 'sm',
@@ -53,7 +47,7 @@ const Item = ({
   textAlign = 'center',
   className,
   children,
-}: ItemProps) => {
+}: ItemProps) {
   const styleTab = useMemo(
     () =>
       css({
@@ -63,7 +57,7 @@ const Item = ({
           marginBottom: marginBottoms[size],
         },
       }),
-    [size]
+    [size],
   );
 
   return (
@@ -86,6 +80,6 @@ const Item = ({
       </div>
     </li>
   );
-};
+}
 
 export default Item;

@@ -1,14 +1,12 @@
 import { useCallback } from 'react';
 
 import Form from '@components/Library/Form';
-import { useSilos } from '@hooks/Silos';
-
-import { SiloFileType } from 'types/SiloFileType';
+import { useSilo } from '@hooks/Silos';
 
 import SilosFileForm from './SiloFileForm';
 
-const SiloFileFormContainer = (props: any) => {
-  const { showSilo, saveSiloHandler, initialValues } = useSilos();
+function SiloFileFormContainer(props: any) {
+  const { showSilo, saveSiloHandler, initialValues } = useSilo();
 
   const submit = useCallback(
     (values: any) => {
@@ -19,7 +17,7 @@ const SiloFileFormContainer = (props: any) => {
         file: values.file[0],
       });
     },
-    [showSilo]
+    [showSilo],
   );
 
   return (
@@ -27,6 +25,6 @@ const SiloFileFormContainer = (props: any) => {
       <SilosFileForm {...props} />
     </Form>
   );
-};
+}
 
 export default SiloFileFormContainer;

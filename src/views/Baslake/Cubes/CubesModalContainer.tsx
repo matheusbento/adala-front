@@ -1,5 +1,7 @@
 import CubesModal from './CubesModal';
 
-const CubesModalContainer = (props: any) => <CubesModal {...props} />;
+function CubesModalContainer(props: any) {
+  return <CubesModal {...props} />;
+}
 
 export default CubesModalContainer;

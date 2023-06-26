@@ -17,37 +17,31 @@ interface AccordionProps {
   size?: string;
 }
 
-const Accordion = ({
+function Accordion({
   accordionHandler = undefined,
   active = undefined,
   disabled = undefined,
   token = '',
   size = 'sm',
   ...rest
-}: AccordionProps) => {
+}: AccordionProps) {
   const styleIcon = css(disabled && styleDisabled);
 
   const handleAccordionClick = useCallback(
     () => !disabled && accordionHandler(token),
-    [disabled, accordionHandler, token]
+    [disabled, accordionHandler, token],
   );
 
   return (
     // eslint-disable-next-line react/jsx-props-no-spreading
-    <Segment
-      className={`${styleSegment}`}
-      onClick={handleAccordionClick}
-      {...rest}
-    >
+    <Segment className={`${styleSegment}`} onClick={handleAccordionClick} {...rest}>
       <SvgIcon
         size={size}
-        path={
-          active ? 'icon-arrow-circle-down-line' : 'icon-arrow-circle-up-line'
-        }
+        path={active ? 'icon-arrow-circle-down-line' : 'icon-arrow-circle-up-line'}
         className={`${styleIcon}`}
       />
     </Segment>
   );
-};
+}
 
 export default Accordion;

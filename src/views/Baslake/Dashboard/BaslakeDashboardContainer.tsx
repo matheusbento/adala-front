@@ -1,5 +1,7 @@
 import BaslakeDashboard from './BaslakeDashboard';
 
-const BaslakeDashboardContainer = () => <BaslakeDashboard />;
+function BaslakeDashboardContainer() {
+  return <BaslakeDashboard />;
+}
 
 export default BaslakeDashboardContainer;

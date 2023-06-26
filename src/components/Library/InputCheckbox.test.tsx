@@ -12,7 +12,7 @@ describe('InputCheckbox component', () => {
     const { getByText } = render(
       <Form onSubmit={() => {}}>
         <InputCheckbox text={text} name="test" />
-      </Form>
+      </Form>,
     );
 
     const inputElementLabel = getByText(text);
@@ -24,7 +24,7 @@ describe('InputCheckbox component', () => {
     const { getByTestId } = render(
       <Form onSubmit={() => {}}>
         <InputCheckbox data-testid="test" text={text} name="test" required />
-      </Form>
+      </Form>,
     );
 
     const toastElement = getByTestId('test');
@@ -43,7 +43,7 @@ describe('InputCheckbox component', () => {
     const { getByTestId } = render(
       <Form onSubmit={() => {}}>
         <InputCheckbox data-testid="test" text={text} name="test" disabled />
-      </Form>
+      </Form>,
     );
 
     const toastElement = getByTestId('test');
@@ -55,7 +55,7 @@ describe('InputCheckbox component', () => {
     const { getByTestId } = render(
       <Form onSubmit={() => {}}>
         <InputCheckbox data-testid="test" text={text} name="test" smallBox />
-      </Form>
+      </Form>,
     );
 
     const toastElement = getByTestId('test');
@@ -67,7 +67,7 @@ describe('InputCheckbox component', () => {
     const { getByTestId } = render(
       <Form onSubmit={() => {}}>
         <InputCheckbox data-testid="test" text={text} name="test" reverse />
-      </Form>
+      </Form>,
     );
 
     const toastElement = getByTestId('test');

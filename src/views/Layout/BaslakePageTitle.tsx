@@ -17,14 +17,14 @@ const styleSegment = css(display.block);
 
 const styleIconActive = css(margin.leftXs);
 
-const BaslakePageTitle = (props: {
+function BaslakePageTitle(props: {
   clickIconHandler?: any;
   clickIconActive?: boolean;
   visible: boolean;
   children: ReactNode;
   icon: string;
   subtitle?: string;
-}) => {
+}) {
   const {
     clickIconActive = false,
     visible,
@@ -45,15 +45,8 @@ const BaslakePageTitle = (props: {
     <>
       <When condition={icon}>
         {() => (
-          <Button
-            onClick={clickIconHandler}
-            className={`${styleSidebarToggle}`}
-          >
-            <SvgIcon
-              path={icon}
-              size="md"
-              color={visible ? colors.default : colors.grey}
-            />
+          <Button onClick={clickIconHandler} className={`${styleSidebarToggle}`}>
+            <SvgIcon path={icon} size="md" color={visible ? colors.default : colors.grey} />
             <When condition={clickIconActive && !visible}>
               <SvgIcon
                 path="icon-filter"
@@ -66,22 +59,12 @@ const BaslakePageTitle = (props: {
         )}
       </When>
       <BaslakeSegmet className={`${styleSegment}`}>
-        <Text
-          size="lg"
-          weight="medium"
-          color="default"
-          className={`${styleSidebarText}`}
-        >
+        <Text size="lg" weight="medium" color="default" className={`${styleSidebarText}`}>
           {children}
         </Text>
         <When condition={subtitle}>
           {() => (
-            <Text
-              size="sm"
-              weight="medium"
-              color="primary"
-              className={`${styleSegment}`}
-            >
+            <Text size="sm" weight="medium" color="primary" className={`${styleSegment}`}>
               {subtitle}
             </Text>
           )}
@@ -89,6 +72,6 @@ const BaslakePageTitle = (props: {
       </BaslakeSegmet>
     </>
   );
-};
+}
 
 export default BaslakePageTitle;

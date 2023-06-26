@@ -1,41 +1,26 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { useMemo } from 'react';
 
-import { css } from 'glamor';
-import { Link } from 'react-router-dom';
-
 import PolicyCheck from '@components/Library/PolicyCheck';
 
 import { useAuth } from '@hooks/Auth';
 import { useBaslakePolicy } from '@hooks/Policies/BaslakePolicy';
 
-import {
-  fontSizes,
-  fontWeight,
-  text,
-  colors,
-  margin,
-  padding,
-  buttons,
-} from '@utils/theme';
+import { fontSizes, fontWeight, text, colors, margin, padding, buttons } from '@utils/theme';
+import { css } from 'glamor';
+import { Link } from 'react-router-dom';
 
 const styleContainer = css(text.center, padding.yXxl);
 
-const styleTitle = css(
-  fontSizes.xxl,
-  fontWeight.normal,
-  margin.topNone,
-  margin.bottomXs,
-  {
-    color: colors.greyDarker,
-  }
-);
+const styleTitle = css(fontSizes.xxl, fontWeight.normal, margin.topNone, margin.bottomXs, {
+  color: colors.greyDarker,
+});
 
 const styleSubtitle = css(fontSizes.md, {
   color: colors.greyDark,
 });
 
-const Code404 = () => {
+function Code404() {
   const { session } = useAuth();
   const { canAccess } = useBaslakePolicy();
 
@@ -61,6 +46,6 @@ const Code404 = () => {
       </div>
     </div>
   );
-};
+}
 
 export default Code404;

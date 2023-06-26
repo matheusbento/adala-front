@@ -25,8 +25,7 @@ i18n.init({
   interpolation: {
     format(value, format, lng) {
       if (value instanceof Date) return moment(value).format(format);
-      if (typeof value === 'number')
-        return new Intl.NumberFormat().format(value);
+      if (typeof value === 'number') return new Intl.NumberFormat().format(value);
       return value;
     },
   },

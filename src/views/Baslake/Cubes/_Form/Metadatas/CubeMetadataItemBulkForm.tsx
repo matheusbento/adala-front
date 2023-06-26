@@ -15,29 +15,21 @@ const headers = [
   { label: '', key: 'actions', sortable: false },
 ];
 
-const CubeMetadataItemBulkForm = ({
-  fields,
-  name,
-  push,
-  remove,
-}: FieldArrayTypeSingle) => {
+function CubeMetadataItemBulkForm({ fields, name, push, remove }: FieldArrayTypeSingle) {
   const baseMetadata = useMemo(
     () => ({
       field: '',
       value: '',
     }),
-    []
+    [],
   );
 
-  const fieldsPush = useCallback(
-    () => push(baseMetadata),
-    [baseMetadata, push]
-  );
+  const fieldsPush = useCallback(() => push(baseMetadata), [baseMetadata, push]);
   const handleSetDeletingDepartment = useCallback(
     (_: any, index: number) => {
       remove(index);
     },
-    [remove]
+    [remove],
   );
   const fieldsList = useMemo(
     () =>
@@ -60,7 +52,7 @@ const CubeMetadataItemBulkForm = ({
           required
         />,
       ]),
-    [fields, name]
+    [fields, name],
   );
 
   const actions = useMemo(
@@ -72,7 +64,7 @@ const CubeMetadataItemBulkForm = ({
         shouldShow: () => fieldsList?.length > 1,
       },
     ],
-    [fieldsList?.length, handleSetDeletingDepartment]
+    [fieldsList?.length, handleSetDeletingDepartment],
   );
 
   return (
@@ -81,6 +73,6 @@ const CubeMetadataItemBulkForm = ({
       <AddItem label="Add new metadata" addHandler={fieldsPush} />
     </>
   );
-};
+}
 
 export default CubeMetadataItemBulkForm;

@@ -49,9 +49,7 @@ export default {
   },
 };
 
-const Template: ComponentStory<typeof FileIcon> = (args) => (
-  <FileIcon {...args} />
-);
+const Template: ComponentStory<typeof FileIcon> = (args) => <FileIcon {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {

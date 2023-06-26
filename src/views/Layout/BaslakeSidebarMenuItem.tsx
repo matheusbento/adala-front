@@ -37,14 +37,14 @@ const styleActive = css({
   top: 25,
 });
 
-const BaslakeSidebarMenuItem = ({
+function BaslakeSidebarMenuItem({
   to,
   label,
   icon,
   subItem = false,
   active = false,
   bullet = false,
-}: BaslakeSidebarMenuItemProps) => {
+}: BaslakeSidebarMenuItemProps) {
   const styleMenuItem = css(
     display.block,
     text.center,
@@ -54,35 +54,22 @@ const BaslakeSidebarMenuItem = ({
       fontWeight: 200,
       opacity: active ? 1 : 0.5,
       color: active && subItem ? 'white' : colors.grey,
-      borderLeft:
-        active && !subItem
-          ? `4px solid ${colors.green}`
-          : '4px solid transparent',
+      borderLeft: active && !subItem ? `4px solid ${colors.green}` : '4px solid transparent',
       '&.active, &:hover': {
         color: colors.negative,
       },
     },
     subItem && styleSubMenu,
-    bullet && styleBullet
+    bullet && styleBullet,
   );
 
   return (
-    <NavLink
-      to={{ pathname: to }}
-      state={{ closeFilters: true }}
-      className={`${styleMenuItem}`}
-    >
-      {active && subItem && (
-        <Icon name="chevron right" className={`${styleActive}`} />
-      )}
-      <BaslakeSidebarIcon
-        path={icon}
-        subItem={subItem}
-        color={colors.negative}
-      />
+    <NavLink to={{ pathname: to }} state={{ closeFilters: true }} className={`${styleMenuItem}`}>
+      {active && subItem && <Icon name="chevron right" className={`${styleActive}`} />}
+      <BaslakeSidebarIcon path={icon} subItem={subItem} color={colors.negative} />
       <span className={`${css(display.block, text.center)}`}>{label}</span>
     </NavLink>
   );
-};
+}
 
 export default BaslakeSidebarMenuItem;

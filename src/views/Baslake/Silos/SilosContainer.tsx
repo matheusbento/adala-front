@@ -1,18 +1,18 @@
+import { useOrganization } from '@/hooks/Organization';
 import { FilterProvider } from '@hooks/Filter';
-import { useOrganizations } from '@hooks/Organizations';
-import { SilosProvider } from '@hooks/Silos';
+import { SiloProvider } from '@hooks/Silos';
 
 import Silos from './Silos';
 
-const SilosContainer = (props: any) => {
-  const { organization } = useOrganizations();
+function SilosContainer(props: any) {
+  const { organization } = useOrganization();
   return (
     <FilterProvider context="silos">
-      <SilosProvider organizationId={organization?.id as unknown as number}>
+      <SiloProvider organizationId={organization?.id as unknown as number}>
         <Silos {...props} />
-      </SilosProvider>
+      </SiloProvider>
     </FilterProvider>
   );
-};
+}
 
 export default SilosContainer;

@@ -1,5 +1,7 @@
 import CubeViewerModal from './CubeViewerModal';
 
-const CubeViewerModalContainer = () => <CubeViewerModal />;
+function CubeViewerModalContainer() {
+  return <CubeViewerModal />;
+}
 
 export default CubeViewerModalContainer;

@@ -17,30 +17,22 @@ const headers = [
   { label: '', key: 'actions', sortable: false },
 ];
 
-const CubeAggregationItemBulkForm = ({
-  fields,
-  name,
-  push,
-  remove,
-}: FieldArrayTypeSingle) => {
+function CubeAggregationItemBulkForm({ fields, name, push, remove }: FieldArrayTypeSingle) {
   const baseAggregation = useMemo(
     () => ({
       name: '',
       function: '',
       variable: '',
     }),
-    []
+    [],
   );
 
-  const fieldsPush = useCallback(
-    () => push(baseAggregation),
-    [baseAggregation, push]
-  );
+  const fieldsPush = useCallback(() => push(baseAggregation), [baseAggregation, push]);
   const handleSetDeletingDepartment = useCallback(
     (_: any, index: number) => {
       remove(index);
     },
-    [remove]
+    [remove],
   );
   const fieldsList = useMemo(
     () =>
@@ -78,7 +70,7 @@ const CubeAggregationItemBulkForm = ({
           search
         />,
       ]),
-    [fields, name]
+    [fields, name],
   );
 
   const actions = useMemo(
@@ -90,7 +82,7 @@ const CubeAggregationItemBulkForm = ({
         shouldShow: () => fieldsList?.length > 1,
       },
     ],
-    [fieldsList?.length, handleSetDeletingDepartment]
+    [fieldsList?.length, handleSetDeletingDepartment],
   );
 
   return (
@@ -99,6 +91,6 @@ const CubeAggregationItemBulkForm = ({
       <AddItem label="Add new aggregation" addHandler={fieldsPush} />
     </>
   );
-};
+}
 
 export default CubeAggregationItemBulkForm;

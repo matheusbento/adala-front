@@ -15,22 +15,21 @@ export interface BaslakeTitleProps {
   className?: string;
 }
 
-const BaslakeTitle = ({
+function BaslakeTitle({
   title = null,
   children = '',
   color = colors.greyDarkest,
   height = null,
   className = '',
-}: BaslakeTitleProps) => {
+}: BaslakeTitleProps) {
   const styleMenu = useMemo(
     () =>
       css({
-        boxShadow:
-          '0 0 1px 0 rgba(48,49,51,0.05), 0 1px 3px 0 rgba(48,49,51,0.1) !important',
+        boxShadow: '0 0 1px 0 rgba(48,49,51,0.05), 0 1px 3px 0 rgba(48,49,51,0.1) !important',
         border: 'none !important',
         height: height || null,
       }),
-    [height]
+    [height],
   );
 
   const styleHeader = useMemo(
@@ -39,7 +38,7 @@ const BaslakeTitle = ({
         fontWeight: fontWeight.w600,
         color,
       }),
-    [color]
+    [color],
   );
 
   return (
@@ -52,6 +51,6 @@ const BaslakeTitle = ({
       {children}
     </Menu>
   );
-};
+}
 
 export default BaslakeTitle;

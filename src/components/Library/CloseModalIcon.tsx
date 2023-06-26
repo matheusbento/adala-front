@@ -10,23 +10,17 @@ interface CloseModalIconProps {
   disabled?: boolean;
 }
 
-const CloseModalIcon = ({
-  onClick = null,
-  disabled = false,
-}: CloseModalIconProps) => (
-  <button
-    type="button"
-    className={`${styleButton}`}
-    onClick={onClick}
-    disabled={disabled}
-  >
-    <SvgIcon
-      className={`${css(display.block)}`}
-      path="icon-close"
-      size="lg"
-      color={colors.primary}
-    />
-  </button>
-);
+function CloseModalIcon({ onClick = null, disabled = false }: CloseModalIconProps) {
+  return (
+    <button type="button" className={`${styleButton}`} onClick={onClick} disabled={disabled}>
+      <SvgIcon
+        className={`${css(display.block)}`}
+        path="icon-close"
+        size="lg"
+        color={colors.primary}
+      />
+    </button>
+  );
+}
 
 export default CloseModalIcon;

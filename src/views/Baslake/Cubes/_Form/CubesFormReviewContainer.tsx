@@ -1,6 +1,8 @@
 import CubesFormReview from './CubesFormReview';
 
 // eslint-disable-next-line react/jsx-props-no-spreading
-const CubesFormReviewContainer = (props: any) => <CubesFormReview {...props} />;
+function CubesFormReviewContainer(props: any) {
+  return <CubesFormReview {...props} />;
+}
 
 export default CubesFormReviewContainer;

@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 
+import { useOrganization } from '@/hooks/Organization';
 import BaslakeModal from '@components/Library/Baslake/BaslakeModal/BaslakeModal';
 import BaslakeTitle from '@components/Library/BaslakeTitle';
 import Button from '@components/Library/Button';
 import FormMessage from '@components/Library/FormMessage';
 import Segment from '@components/Library/Segment';
-import { useOrganizations } from '@hooks/Organizations';
-import { useSilosPolicy } from '@hooks/Policies/SilosPolicy';
-import { useSilos } from '@hooks/Silos';
+import { useSiloPolicy } from '@hooks/Policies/SilosPolicy';
+import { useSilo } from '@hooks/Silos';
 import { css } from 'glamor';
 import { useTranslation } from 'react-i18next';
 import { When } from 'react-if';
@@ -31,8 +31,8 @@ const styleSegment = css({
   marginTop: '0 !important',
 });
 
-const Silos = () => {
-  const { canCreate } = useSilosPolicy();
+function Silos() {
+  const { canCreate } = useSiloPolicy();
 
   const {
     showModal,
@@ -41,9 +41,9 @@ const Silos = () => {
     setShowModal,
     fetchSilosHandler,
     formSuccess,
-  } = useSilos();
+  } = useSilo();
 
-  const { organization } = useOrganizations();
+  const { organization } = useOrganization();
 
   const { t } = useTranslation();
 
@@ -115,6 +115,6 @@ const Silos = () => {
       <SiloFoldersContainer />
     </div>
   );
-};
+}
 
 export default Silos;

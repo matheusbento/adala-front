@@ -1,19 +1,15 @@
 /* eslint-disable no-plusplus */
 import { useLayoutEffect, useState } from 'react';
 
-import { isArray, isNaN } from 'lodash';
-import moment from 'moment-timezone';
-
 import * as fileTypes from '@constants/fileTypesConstants';
 import { toasterTypes } from '@constants/toasterConstants';
 import TypeOf from '@constants/typeOfConstants';
 import usStates from '@constants/usStatesConstants';
+import { isArray, isNaN } from 'lodash';
+import moment from 'moment-timezone';
 
-export const plural = (
-  singularString: string,
-  pluralString: string,
-  count: number
-) => (count === 1 ? singularString : pluralString);
+export const plural = (singularString: string, pluralString: string, count: number) =>
+  count === 1 ? singularString : pluralString;
 
 export const truncate = (text: string, length: number, suffix = '...') =>
   text.length > length ? `${text.substring(0, length)}${suffix}` : text;
@@ -64,17 +60,13 @@ export const contrastColor = (hex: string) => {
   };
 
   const brightness = Math.round(
-    (parseInt(rgb.r, 10) * 299 +
-      parseInt(rgb.g, 10) * 587 +
-      parseInt(rgb.b, 10) * 114) /
-      1000
+    (parseInt(rgb.r, 10) * 299 + parseInt(rgb.g, 10) * 587 + parseInt(rgb.b, 10) * 114) / 1000,
   );
 
   return brightness > 125 ? 'black' : 'white';
 };
 
-export const sanitizeUrl = (url: string) =>
-  url.replace(/(^\w+:|^)\/\//, '').replace('www.', '');
+export const sanitizeUrl = (url: string) => url.replace(/(^\w+:|^)\/\//, '').replace('www.', '');
 
 export const sanitizePhone = (number: string) => number.replace(/[^\d+]/g, '');
 
@@ -85,19 +77,14 @@ export const normalizePhoneInput = (value: string) => {
     const cvLength = currentValue.length;
 
     if (cvLength < 4) return currentValue;
-    if (cvLength < 7)
-      return `(${currentValue.slice(0, 3)}) ${currentValue.slice(3)}`;
-    return `(${currentValue.slice(0, 3)}) ${currentValue.slice(
-      3,
-      6
-    )}-${currentValue.slice(6, 10)}`;
+    if (cvLength < 7) return `(${currentValue.slice(0, 3)}) ${currentValue.slice(3)}`;
+    return `(${currentValue.slice(0, 3)}) ${currentValue.slice(3, 6)}-${currentValue.slice(6, 10)}`;
   } catch {
     return value;
   }
 };
 
-export const normalizeAlphaNumeric = (value: string) =>
-  value.replace(/[^a-z0-9]/gi, '');
+export const normalizeAlphaNumeric = (value: string) => value.replace(/[^a-z0-9]/gi, '');
 
 export const sanitizeInteger = (value: string) => parseInt(value, 10);
 
@@ -120,7 +107,7 @@ export const capitalize = (s: string) => {
 
 export const sortArray = (arr: any, key: any, order: string) => {
   const sortedArr = arr.sort((a: any, b: any) =>
-    a[key].toString().localeCompare(b[key].toString())
+    a[key].toString().localeCompare(b[key].toString()),
   );
   return order === 'desc' ? sortedArr.reverse() : sortedArr;
 };
@@ -174,11 +161,7 @@ export const useDocumentHeight = () => {
   return size;
 };
 
-export const dateRangeToString = (
-  startDate: Date,
-  endDate: Date,
-  isPresent: boolean
-) => {
+export const dateRangeToString = (startDate: Date, endDate: Date, isPresent: boolean) => {
   let str = '';
   const momentStartDate = moment(startDate);
   str = momentStartDate.format('MMMM YYYY');
@@ -194,8 +177,7 @@ export const dateRangeToString = (
   return str;
 };
 
-export const strHasContent = (str: string) =>
-  str?.replace(/\s/g, '').length > 0;
+export const strHasContent = (str: string) => str?.replace(/\s/g, '').length > 0;
 
 export const cityStateToString = (city: string, state: string) => {
   let str = '';
@@ -212,8 +194,7 @@ export const cityStateToString = (city: string, state: string) => {
 export const arrayHasSubChildren = (array: any) => {
   if (![TypeOf.array, TypeOf.object].includes(typeof array)) return false;
 
-  const checkArray =
-    typeof array === TypeOf.object ? Object.values(array) : array;
+  const checkArray = typeof array === TypeOf.object ? Object.values(array) : array;
 
   for (let i = 0; i < checkArray.length; i += 1) {
     if (Array.isArray(checkArray[i]) && checkArray[i].length) return true;
@@ -234,9 +215,7 @@ export const differenceBetweenTwoArrays = (array1: any, array2: any) =>
     .concat(array2.filter((x: any) => !array1.includes(x)));
 
 export const toggleValueInArray = (array: any, value: any) =>
-  array.includes(value)
-    ? array.filter((i: any) => i !== value)
-    : array.concat(value);
+  array.includes(value) ? array.filter((i: any) => i !== value) : array.concat(value);
 
 export const groupByDate = (array: any) => {
   const obj: any = {};
@@ -258,9 +237,7 @@ export const isValidArray = (inputTest: any) =>
 
 export const sortArrayBasedOnArray = (itemsArray: any, sortingArray: any) => {
   const sortedArray = [...itemsArray];
-  sortedArray.sort(
-    (a: any, b: any) => sortingArray.indexOf(a.id) - sortingArray.indexOf(b.id)
-  );
+  sortedArray.sort((a: any, b: any) => sortingArray.indexOf(a.id) - sortingArray.indexOf(b.id));
   return sortedArray;
 };
 
@@ -322,15 +299,11 @@ export const roundNearestQtr = (number: number) => {
   return res.toFixed(2);
 };
 
-export const convertToLocalDatetime = (
-  datetime: Date,
-  format = 'YYYY-MM-DD HH:mm:ss'
-) => moment.utc(datetime).local().format(format);
+export const convertToLocalDatetime = (datetime: Date, format = 'YYYY-MM-DD HH:mm:ss') =>
+  moment.utc(datetime).local().format(format);
 
-export const convertToUtcDatetime = (
-  datetime: Date,
-  format = 'YYYY-MM-DD HH:mm:ss'
-) => moment(datetime).utc().format(format);
+export const convertToUtcDatetime = (datetime: Date, format = 'YYYY-MM-DD HH:mm:ss') =>
+  moment(datetime).utc().format(format);
 
 export const toaster = (dispatch: any, message: string, type = 'success') =>
   dispatch({ type: toasterTypes[type], message });
@@ -340,11 +313,7 @@ export const convertIntToCurrency = (integer = 0, currencySymbol = '$') =>
     ? `${currencySymbol}${Number(integer.toFixed(1)).toLocaleString()}`
     : Number(integer.toFixed(1)).toLocaleString();
 
-export const filterMultContextDataByOptions = (
-  data: any,
-  optionsRef: any,
-  types: any
-) => {
+export const filterMultContextDataByOptions = (data: any, optionsRef: any, types: any) => {
   const tempData = Array.isArray(data) ? data : [data];
   const unifiedData: any = [];
   types.map((type: any) => {

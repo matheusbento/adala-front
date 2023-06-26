@@ -24,13 +24,13 @@ export interface SvgIconProps {
   wrapper?: 'div' | 'span' | 'svg' | undefined;
 }
 
-const SvgIcon = ({
+function SvgIcon({
   path,
   color = colors.primary,
   size = 'sm',
   className,
   wrapper = 'span',
-}: SvgIconProps & Partial<RestProps>) => {
+}: SvgIconProps & Partial<RestProps>) {
   const styleIcon = css({
     '&, & > span': {
       display: 'inline-block',
@@ -52,6 +52,6 @@ const SvgIcon = ({
       wrapper={wrapper}
     />
   );
-};
+}
 
 export default SvgIcon;

@@ -22,7 +22,7 @@ describe('ModalConfirm component', () => {
         labelConfirm="Label confirm"
         labelDismiss="Label dismiss"
         open
-      />
+      />,
     );
 
     const textElement1 = queryByText('Test header');
@@ -38,11 +38,7 @@ describe('ModalConfirm component', () => {
 
   it('should not display the modal if open prop is false.', () => {
     const { queryByText } = render(
-      <ModalConfirm
-        onConfirm={mockedOnConfirm}
-        onDismiss={mockedOnDismiss}
-        header="Test header"
-      />
+      <ModalConfirm onConfirm={mockedOnConfirm} onDismiss={mockedOnDismiss} header="Test header" />,
     );
 
     const textElement = queryByText('Test header');
@@ -60,7 +56,7 @@ describe('ModalConfirm component', () => {
         labelConfirm="Label confirm"
         labelDismiss="Label dismiss"
         open
-      />
+      />,
     );
 
     const textElement = queryByText('Label confirm');
@@ -80,7 +76,7 @@ describe('ModalConfirm component', () => {
         labelConfirm="Label confirm"
         labelDismiss="Label dismiss"
         open
-      />
+      />,
     );
 
     const textElement = queryByText('Label dismiss');
@@ -101,12 +97,10 @@ describe('ModalConfirm component', () => {
         labelDismiss="Label dismiss"
         open
         captchaText="Text to check"
-      />
+      />,
     );
 
-    const textElement = queryByText(
-      'Please type Text to check to confirm your action'
-    );
+    const textElement = queryByText('Please type Text to check to confirm your action');
     const inputElement = queryByPlaceholderText('Type Text to check here');
 
     expect(textElement).toBeTruthy();
@@ -124,7 +118,7 @@ describe('ModalConfirm component', () => {
         labelDismiss="Label dismiss"
         open
         captchaText="Text to check"
-      />
+      />,
     );
 
     const inputElement = queryByPlaceholderText('Type Text to check here');
@@ -149,7 +143,7 @@ describe('ModalConfirm component', () => {
         labelDismiss="Label dismiss"
         open
         captchaText="Text to check"
-      />
+      />,
     );
 
     const inputElement = queryByPlaceholderText('Type Text to check here');

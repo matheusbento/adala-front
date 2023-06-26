@@ -27,20 +27,24 @@ const styleSelectCell = css({
   },
 });
 
-export const ListCell = ({ list }: { list?: any }) =>
-  list ? (
+export function ListCell({ list }: { list?: any }) {
+  return list ? (
     <p className={`${styleRole}`}>{list}</p>
   ) : (
     <p className={`${styleNoInfo}`}>No info saved</p>
   );
+}
 
-export const SelectCell = ({ input, ...rest }: any) => (
-  <Segment className={`${styleSelectCell}`}>
-    <InputCheckbox
-      name={rest.name}
-      input={{ ...input, value: input?.value ?? false }}
-      onChange={input?.onChange}
-      {...rest}
-    />
-  </Segment>
-);
+export function SelectCell({ input, ...rest }: any) {
+  return (
+    <Segment className={`${styleSelectCell}`}>
+      <InputCheckbox
+        name={rest.name}
+        input={{ ...input, value: input?.value ?? false }}
+        checked={input?.value}
+        onChange={input?.onChange}
+        {...rest}
+      />
+    </Segment>
+  );
+}

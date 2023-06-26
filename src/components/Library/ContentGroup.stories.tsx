@@ -1,5 +1,5 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
 import React from 'react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import ContentGroup from './ContentGroup';
 
@@ -23,15 +23,7 @@ export default {
       },
       control: {
         type: 'select',
-        options: [
-          'primary',
-          'warning',
-          'danger',
-          'success',
-          'disabled',
-          'light',
-          'dark',
-        ],
+        options: ['primary', 'warning', 'danger', 'success', 'disabled', 'light', 'dark'],
       },
     },
     captionWeight: {
@@ -108,16 +100,14 @@ export default {
   },
 } as unknown as ComponentMeta<typeof ContentGroup>;
 
-const Template: ComponentStory<typeof ContentGroup> = (args) => (
-  <ContentGroup {...args} />
-);
+const Template: ComponentStory<typeof ContentGroup> = (args) => <ContentGroup {...args} />;
 
 const Content = (
   <p>
     Vivamus suscipit tortor eget felis porttitor volutpat.
     <br />
-    Proin eget tortor risus. Vestibulum ante ipsum primis in faucibus orci
-    luctus et ultrices posuere cubilia Curae;
+    Proin eget tortor risus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices
+    posuere cubilia Curae;
     <br />
     Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula.
   </p>

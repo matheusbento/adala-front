@@ -1,18 +1,18 @@
 import { useEffect } from 'react';
 
+import { useOrganization } from '@/hooks/Organization';
 import BaslakeModal from '@components/Library/Baslake/BaslakeModal/BaslakeModal';
 import BaslakeTitle from '@components/Library/BaslakeTitle';
 import Button from '@components/Library/Button';
 import FormMessage from '@components/Library/FormMessage';
 import Segment from '@components/Library/Segment';
 import { useCubes } from '@hooks/Cubes';
-import { useOrganizations } from '@hooks/Organizations';
 import { useCubesPolicy } from '@hooks/Policies/CubesPolicy';
 import { css } from 'glamor';
 import { useTranslation } from 'react-i18next';
 import { When } from 'react-if';
 import { Element } from 'react-scroll';
-import { Menu, Dimmer, Loader } from 'semantic-ui-react';
+import { Dimmer, Loader, Menu } from 'semantic-ui-react';
 
 import CubesModalContainer from './CubesModalContainer';
 import CubesOverviewContainer from './CubesOverviewContainer';
@@ -27,13 +27,12 @@ const styleSegment = css({
   marginTop: '0 !important',
 });
 
-const Cubes = () => {
+function Cubes() {
   const { canCreate } = useCubesPolicy();
 
-  const { showModal, setShowModal, fetchCubesHandler, formSuccess } =
-    useCubes();
+  const { showModal, setShowModal, fetchCubesHandler, formSuccess } = useCubes();
 
-  const { organization } = useOrganizations();
+  const { organization } = useOrganization();
 
   const { t } = useTranslation();
 
@@ -48,16 +47,11 @@ const Cubes = () => {
       </Dimmer>
       <When condition={!!organization}>
         <>
-          <BaslakeTitle title={t('Data Cubes')}>
+          <BaslakeTitle title={t('Cubes')}>
             <When condition={canCreate()}>
               {() => (
                 <Menu.Item position="right">
-                  <Button
-                    pill
-                    outline
-                    color="success"
-                    onClick={() => setShowModal('new')}
-                  >
+                  <Button pill outline color="success" onClick={() => setShowModal('new')}>
                     Create new Cube
                   </Button>
                 </Menu.Item>
@@ -98,6 +92,6 @@ const Cubes = () => {
       </When>
     </div>
   );
-};
+}
 
 export default Cubes;

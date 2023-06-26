@@ -6,11 +6,8 @@ interface BaslakeModalActionsProps {
   children?: ReactNode;
 }
 
-const BaslakeModalActions = ({
-  children,
-  ...childProps
-}: BaslakeModalActionsProps) => (
-  <Modal.Actions {...childProps}>{children}</Modal.Actions>
-);
+function BaslakeModalActions({ children, ...childProps }: BaslakeModalActionsProps) {
+  return <Modal.Actions {...childProps}>{children}</Modal.Actions>;
+}
 
 export default BaslakeModalActions;

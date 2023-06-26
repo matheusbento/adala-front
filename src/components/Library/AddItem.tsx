@@ -3,13 +3,7 @@ import { useCallback, useMemo } from 'react';
 import { css } from 'glamor';
 
 import { styles } from '../../utils/theme';
-import {
-  colors,
-  display,
-  fontSizes,
-  padding,
-  margin,
-} from '../../utils/themeConstants';
+import { colors, display, fontSizes, padding, margin } from '../../utils/themeConstants';
 import Segment from './Segment';
 import SvgIcon from './SvgIcon';
 import Text from './Text';
@@ -19,24 +13,18 @@ const styleSpan = css(fontSizes.sm, {
   lineHeight: '1',
 });
 
-const styleSegment = css(
-  display.flex,
-  padding.yXs,
-  padding.xNone,
-  styles.pointer,
-  {
-    minHeight: 50,
-    alignItems: 'center',
-    width: 'fit-content',
-  }
-);
+const styleSegment = css(display.flex, padding.yXs, padding.xNone, styles.pointer, {
+  minHeight: 50,
+  alignItems: 'center',
+  width: 'fit-content',
+});
 
 const styleDisabled = css({
   opacity: 0.5,
   cursor: 'not-allowed',
 });
 
-const AddItem = ({
+function AddItem({
   label,
   addHandler,
   icon = 'icon-plus-line',
@@ -51,11 +39,8 @@ const AddItem = ({
   size?: string;
   className?: string;
   disabled?: boolean;
-}) => {
-  const styleContainer = useMemo(
-    () => css(styleSegment, disabled && styleDisabled),
-    [disabled]
-  );
+}) {
+  const styleContainer = useMemo(() => css(styleSegment, disabled && styleDisabled), [disabled]);
 
   const onClickHandler = useCallback(() => {
     if (!disabled) {
@@ -64,11 +49,7 @@ const AddItem = ({
   }, [disabled, addHandler]);
 
   return (
-    <Segment
-      className={`${styleContainer} ${className}`}
-      onClick={onClickHandler}
-      {...rest}
-    >
+    <Segment className={`${styleContainer} ${className}`} onClick={onClickHandler} {...rest}>
       <SvgIcon
         className={`${css(margin.rightXs)}`}
         path={icon}
@@ -78,6 +59,6 @@ const AddItem = ({
       <Text className={`${styleSpan}`}>{label}</Text>
     </Segment>
   );
-};
+}
 
 export default AddItem;

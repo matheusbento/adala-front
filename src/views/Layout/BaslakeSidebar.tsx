@@ -3,11 +3,11 @@ import { useAuth } from '@hooks/Auth';
 import { useBaslakePolicy } from '@hooks/Policies/BaslakePolicy';
 import { useCubesPolicy } from '@hooks/Policies/CubesPolicy';
 import { useOrganizationPolicy } from '@hooks/Policies/OrganizationPolicy';
-import { useSilosPolicy } from '@hooks/Policies/SilosPolicy';
+import { useSiloPolicy } from '@hooks/Policies/SilosPolicy';
 import { display, padding, text } from '@utils/themeConstants';
 import { css } from 'glamor';
 import { useTranslation } from 'react-i18next';
-import { Link, Location, matchPath, useLocation } from 'react-router-dom';
+import { Link, matchPath, useLocation } from 'react-router-dom';
 import { Menu } from 'semantic-ui-react';
 
 // import { SessionType } from 'types/SessionType';
@@ -28,7 +28,7 @@ const styleSubMenu = css({
   background: '#ffffff10',
 });
 
-const BaslakeSidebar = () => {
+function BaslakeSidebar() {
   const { pathname } = useLocation();
 
   const { loggedIn } = useAuth();
@@ -36,7 +36,7 @@ const BaslakeSidebar = () => {
   const BaslakePolicy = useBaslakePolicy();
   const CubesPolicy = useCubesPolicy();
   const OrganizationPolicy = useOrganizationPolicy();
-  const SilosPolicy = useSilosPolicy();
+  const SilosPolicy = useSiloPolicy();
   const { t } = useTranslation();
   return (
     <div className={`${styleMenu}`}>
@@ -45,12 +45,7 @@ const BaslakeSidebar = () => {
       </Link>
       {loggedIn && (
         <>
-          <BaslakeSidebarMenuItem
-            active
-            to="/"
-            icon="icon-dashboard"
-            label={t('Dashboard')}
-          />
+          <BaslakeSidebarMenuItem active to="/" icon="icon-dashboard" label={t('Dashboard')} />
 
           <Menu.Menu className={`${styleSubMenu}`}>
             <PolicyCheck policy={CubesPolicy.canAccess()}>
@@ -103,6 +98,6 @@ const BaslakeSidebar = () => {
       )}
     </div>
   );
-};
+}
 
 export default BaslakeSidebar;

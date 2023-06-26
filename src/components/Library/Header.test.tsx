@@ -9,7 +9,7 @@ describe('Header component', () => {
     const { container } = render(
       <Header hexColor="#000" line>
         Children Text
-      </Header>
+      </Header>,
     );
 
     const headerElement = container.querySelector('div[class*=header]');

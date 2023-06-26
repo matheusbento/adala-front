@@ -26,11 +26,7 @@ describe('DetailsList component', () => {
 
   it('should display be able to set the width of the columns.', () => {
     const { container } = render(
-      <DetailsList
-        title={title}
-        description={description}
-        columnsWidths={[5, 7]}
-      />
+      <DetailsList title={title} description={description} columnsWidths={[5, 7]} />,
     );
 
     const firstColumn = container.querySelector('div[class*="five"');

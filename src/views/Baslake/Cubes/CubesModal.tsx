@@ -1,19 +1,12 @@
 import { useCallback } from 'react';
 
-import { css } from 'glamor';
-import { Else, If, Then, When } from 'react-if';
-import {
-  Segment as SemanticSegment,
-  Header,
-  Grid,
-  Dropdown,
-  Divider,
-} from 'semantic-ui-react';
-
-import { CubeTemplateType } from 'types/CubeTemplateType';
-
 import { useCubes } from '@hooks/Cubes';
 import { useCubesTemplate } from '@hooks/CubesTemplate';
+import { css } from 'glamor';
+import { Else, If, Then, When } from 'react-if';
+import { Segment as SemanticSegment, Header, Grid, Dropdown, Divider } from 'semantic-ui-react';
+
+import { CubeTemplateType } from 'types/CubeTemplateType';
 
 import LayoutLoader from '../../../components/Layout/Loader';
 import Button from '../../../components/Library/Button';
@@ -21,8 +14,8 @@ import Segment from '../../../components/Library/Segment';
 import SvgIcon from '../../../components/Library/SvgIcon';
 import { styles } from '../../../utils/theme';
 import { colors, margin, padding } from '../../../utils/themeConstants';
-import CubesDetailsHeader from './CubesDetailsHeader';
 import CubesFormContainer from './_Form/CubesFormContainer';
+import CubesDetailsHeader from './CubesDetailsHeader';
 
 const styleHeader = css({
   '&.ui.header': { fontWeight: '500' },
@@ -39,10 +32,9 @@ const styleTemplates = css({
 const styleSegment = css(padding.topNone, padding.xNone);
 const styleTemplate = css(styles.pointer, padding.bottomSm);
 
-const CubesModal = () => {
+function CubesModal() {
   const { showModal, isLoadingSave, formState } = useCubes();
-  const { selectedTemplate, setSelectedTemplate, cubesTemplates } =
-    useCubesTemplate();
+  const { selectedTemplate, setSelectedTemplate, cubesTemplates } = useCubesTemplate();
 
   const isNewCube = useCallback(() => showModal === 'new', [showModal]);
 
@@ -56,19 +48,11 @@ const CubesModal = () => {
           {() => (
             <>
               <When
-                condition={
-                  cubesTemplates?.length > 0 &&
-                  selectedTemplate === null &&
-                  isNewCube()
-                }
+                condition={cubesTemplates?.length > 0 && selectedTemplate === null && isNewCube()}
               >
                 {() => (
                   <Segment box>
-                    <Dropdown
-                      className="selection"
-                      fluid
-                      text="What do you want to post?"
-                    >
+                    <Dropdown className="selection" fluid text="What do you want to post?">
                       <Dropdown.Menu>
                         <Dropdown.Header>New</Dropdown.Header>
                         <Dropdown.Item
@@ -111,9 +95,7 @@ const CubesModal = () => {
                             className={`${styleTemplate}`}
                           >
                             <p>
-                              <strong className={`${styleTemplates}`}>
-                                {item.title}
-                              </strong>
+                              <strong className={`${styleTemplates}`}>{item.title}</strong>
                               <br />
                               {/* {item?.department?.location?.name} <br />
                               {jobOrderTypesEn[item.order_type]} */}
@@ -158,6 +140,6 @@ const CubesModal = () => {
       </If>
     </SemanticSegment>
   );
-};
+}
 
 export default CubesModal;

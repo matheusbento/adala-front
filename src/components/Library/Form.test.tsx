@@ -2,10 +2,9 @@
 /* eslint-disable testing-library/no-unnecessary-act */
 import React from 'react';
 
+import Form from '@components/Library/Form';
 import { render, fireEvent, act, waitFor } from '@testing-library/react';
 import { Button } from 'semantic-ui-react';
-
-import Form from '@components/Library/Form';
 
 import InputText from './InputText';
 
@@ -29,7 +28,7 @@ describe('InputMoney component', () => {
         >
           <InputText name="input" />
           <Button aria-label="button" name="button" type="submit" />
-        </Form>
+        </Form>,
       );
 
       const inputElement = queryByRole('textbox');
@@ -43,7 +42,7 @@ describe('InputMoney component', () => {
       <Form onSubmit={mockedOnSubmit}>
         <InputText name="input" />
         <Button aria-label="button" name="button" type="submit" />
-      </Form>
+      </Form>,
     );
 
     act(() => {
@@ -58,7 +57,7 @@ describe('InputMoney component', () => {
         >
           <InputText name="input" />
           <Button aria-label="button" name="button" type="submit" />
-        </Form>
+        </Form>,
       );
     });
 
@@ -84,7 +83,7 @@ describe('InputMoney component', () => {
       <Form onSubmit={() => {}}>
         <InputText name="input" />
         <Button aria-label="button" name="button" type="submit" />
-      </Form>
+      </Form>,
     );
 
     const inputElement = queryByRole('textbox');

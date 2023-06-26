@@ -22,7 +22,7 @@ export interface FormProps {
   formArgs?: UseFormProps;
 }
 
-const Form = ({
+function Form({
   onSubmit,
   formArgs = {
     mode: 'onSubmit',
@@ -37,7 +37,7 @@ const Form = ({
     delayError: undefined,
   },
   children,
-}: FormProps) => {
+}: FormProps) {
   const methods = useForm(formArgs);
 
   useEffect(() => {
@@ -46,11 +46,9 @@ const Form = ({
 
   return (
     <FormProvider {...methods}>
-      <SemanticForm onSubmit={methods.handleSubmit(onSubmit)}>
-        {children}
-      </SemanticForm>
+      <SemanticForm onSubmit={methods.handleSubmit(onSubmit)}>{children}</SemanticForm>
     </FormProvider>
   );
-};
+}
 
 export default Form;

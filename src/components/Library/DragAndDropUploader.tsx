@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { useState, useCallback, useRef, useEffect, ChangeEvent } from 'react';
 
-import { any, css } from 'glamor';
+import { css } from 'glamor';
 import { When } from 'react-if';
 import { Dimmer, Loader } from 'semantic-ui-react';
 
@@ -70,7 +70,7 @@ interface DragAndDropUploaderType {
   name: string | null | undefined;
 }
 
-const DragAndDropUploader = ({
+function DragAndDropUploader({
   icon = 'icon-cloud-upload',
   label = 'Drag & Drop your file',
   mobileLabel = 'Select your file',
@@ -89,7 +89,7 @@ const DragAndDropUploader = ({
   name = 'file',
   input = null,
   ...props
-}: DragAndDropUploaderType & Partial<{ uploadMaxSize: any }>) => {
+}: DragAndDropUploaderType & Partial<{ uploadMaxSize: any }>) {
   const [isDragging, setDragging] = useState(false);
   const [dragCount, setDragCount] = useState(0);
   const [internalErrorMessage, setErrorMessage] = useState(errorMessage);
@@ -122,29 +122,24 @@ const DragAndDropUploader = ({
       if (dragCount > 0) return;
       setDragging(false);
     },
-    [dragCount]
+    [dragCount],
   );
 
   const handleFilesSelected = useCallback(
     (e: ChangeEvent<HTMLInputElement>, files: FileList | undefined) => {
       console.log({ files });
       if (files?.length) {
-        if (
-          maxSize &&
-          Array.from(files).filter((file) => file.size > maxSize).length
-        ) {
+        if (maxSize && Array.from(files).filter((file) => file.size > maxSize).length) {
           setErrorMessage('File size is too large. Please try again.');
           return;
         }
         if (
           allowedTypes &&
-          Array.from(files).filter((file) => allowedTypes.includes(file.type))
-            .length !== files.length
+          Array.from(files).filter((file) => allowedTypes.includes(file.type)).length !==
+            files.length
         ) {
           setErrorMessage(
-            files.length > 1
-              ? 'One or more file types are not allowed'
-              : 'File type not allowed'
+            files.length > 1 ? 'One or more file types are not allowed' : 'File type not allowed',
           );
           return;
         }
@@ -159,7 +154,7 @@ const DragAndDropUploader = ({
 
       input?.onChange([...(f ?? [])]);
     },
-    [allowedTypes, maxSize, onFileSelected, input, previousFiles]
+    [allowedTypes, maxSize, onFileSelected, input, previousFiles],
   );
 
   const handleDrop = useCallback(
@@ -169,18 +164,14 @@ const DragAndDropUploader = ({
       setErrorMessage(null);
       setDragging(false);
       setDragCount(0);
-      if (
-        !multiple &&
-        e?.dataTransfer?.files &&
-        e?.dataTransfer?.files?.length > 1
-      ) {
+      if (!multiple && e?.dataTransfer?.files && e?.dataTransfer?.files?.length > 1) {
         setErrorMessage('You cannot select multiple files');
       } else {
         handleFilesSelected(e, e?.dataTransfer?.files);
       }
       e?.dataTransfer?.clearData();
     },
-    [handleFilesSelected, multiple]
+    [handleFilesSelected, multiple],
   );
 
   const handleFileInputChange = useCallback(
@@ -200,7 +191,7 @@ const DragAndDropUploader = ({
         fileInput.current.value = '';
       }
     },
-    [handleFilesSelected, multiple]
+    [handleFilesSelected, multiple],
   );
 
   useEffect(() => {
@@ -282,16 +273,12 @@ const DragAndDropUploader = ({
         </Dimmer>
       </div>
       {!!internalErrorMessage && (
-        <Text
-          className={`${css(text.center, padding.md, margin.none)}`}
-          color="danger"
-          as="p"
-        >
+        <Text className={`${css(text.center, padding.md, margin.none)}`} color="danger" as="p">
           {internalErrorMessage}
         </Text>
       )}
     </>
   );
-};
+}
 
 export default DragAndDropUploader;

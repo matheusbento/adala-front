@@ -1,29 +1,18 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 
 import Button from '@components/Library/Button';
 import Header from '@components/Library/Header';
 import IconList from '@components/Library/IconList/IconList';
-import SvgIcon from '@components/Library/SvgIcon';
 import Text from '@components/Library/Text';
-import { useSilos } from '@hooks/Silos';
+import { useSilo } from '@hooks/Silos';
 import { css } from 'glamor';
-import moment from 'moment';
 import { useTranslation } from 'react-i18next';
-import { If, Then, Else, When } from 'react-if';
+import { Else, If, Then } from 'react-if';
 import { List, Loader } from 'semantic-ui-react';
 
 import { SiloType } from 'types/SiloType';
 
-import {
-  colors,
-  margin,
-  padding,
-  styles,
-  utils,
-  display,
-  tables,
-  fontSizes,
-} from 'utils/theme';
+import { colors, display, fontSizes, margin, padding, styles, tables, utils } from 'utils/theme';
 
 const styleSilos = css({
   '&.ui.header': {
@@ -52,8 +41,8 @@ const styleListItem = css(styles.pointer, padding.sm, {
 
 const styleButton = css(margin.rightXxs, margin.bottomXxs);
 
-const SilosList = () => {
-  const { isLoadingSilos, silos, showSilo, fetchSiloHandler } = useSilos();
+function SilosList() {
+  const { isLoadingSilos, silos, showSilo, fetchSiloHandler } = useSilo();
 
   const { t } = useTranslation();
 
@@ -69,11 +58,7 @@ const SilosList = () => {
       <Else>
         {silos?.length && (
           <div className={`${styleTitleContainer}`}>
-            <Header
-              as="h3"
-              color="primary"
-              className={`${css(margin.none)} ${styleSilos}`}
-            >
+            <Header as="h3" color="primary" className={`${css(margin.none)} ${styleSilos}`}>
               {t('silo_amount', { count: silos?.length })}
             </Header>
           </div>
@@ -95,9 +80,7 @@ const SilosList = () => {
             silos.map((item: any, index: number) => (
               <List.Item
                 key={item.id ? `silo-id-${item.id}` : `silo-index-${index}`}
-                className={`${styleListItem} ${
-                  showSilo?.id === item.id ? 'active' : ''
-                }`}
+                className={`${styleListItem} ${showSilo?.id === item.id ? 'active' : ''}`}
                 onClick={() => handleShowSilo(item)}
               >
                 <List.Content className={`${css(utils.w100)}`}>
@@ -113,9 +96,7 @@ const SilosList = () => {
                     </Text>
                   </div>
                   <IconList
-                    className={`${css(
-                      item.secondary_status ? margin.bottomXxs : margin.bottomSm
-                    )}`}
+                    className={`${css(item.secondary_status ? margin.bottomXxs : margin.bottomSm)}`}
                     size="xs"
                   >
                     {/* <IconList.Item
@@ -166,6 +147,6 @@ const SilosList = () => {
       </Else>
     </If>
   );
-};
+}
 
 export default SilosList;

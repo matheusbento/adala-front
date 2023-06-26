@@ -1,7 +1,7 @@
 import SiloFolders from './SiloFolders';
 
-const SiloFoldersContainer = (props: any) => (
-  <SiloFolders context="silos" {...props} />
-);
+function SiloFoldersContainer(props: any) {
+  return <SiloFolders context="silos" {...props} />;
+}
 
 export default SiloFoldersContainer;

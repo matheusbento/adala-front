@@ -13,8 +13,7 @@ export default {
   parameters: {
     docs: {
       description: {
-        component:
-          'This components extends the `<SingleDatePicker />` component.',
+        component: 'This components extends the `<SingleDatePicker />` component.',
       },
     },
   },
@@ -54,8 +53,7 @@ export default {
     },
     placeholder: {
       control: { type: 'text' },
-      description:
-        'Placeholder to use. This will overwrite default Placeholder rules.',
+      description: 'Placeholder to use. This will overwrite default Placeholder rules.',
       table: {
         category: 'Form',
         defaultValue: {

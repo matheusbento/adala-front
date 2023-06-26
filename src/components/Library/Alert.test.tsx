@@ -14,21 +14,15 @@ describe('Alert component', () => {
   });
 
   it('should display an icon.', () => {
-    const { container } = render(
-      <Alert content="Example Text" icon="icon-info" />
-    );
+    const { container } = render(<Alert content="Example Text" icon="icon-info" />);
 
-    const iconElement = container.querySelector(
-      '[data-src="/images/icon-info.svg"]'
-    );
+    const iconElement = container.querySelector('[data-src="/images/icon-info.svg"]');
 
     expect(iconElement).toBeTruthy();
   });
 
   it('should display a Header.', () => {
-    const { queryByText } = render(
-      <Alert content="Example Text" header="Header Text" />
-    );
+    const { queryByText } = render(<Alert content="Example Text" header="Header Text" />);
 
     const textElement = queryByText('Header Text');
 
@@ -37,12 +31,10 @@ describe('Alert component', () => {
 
   it('should display an icon with Header.', () => {
     const { container } = render(
-      <Alert content="Example Text" header="Header Text" icon="icon-info" />
+      <Alert content="Example Text" header="Header Text" icon="icon-info" />,
     );
 
-    const iconElement = container.querySelector(
-      '[data-src="/images/icon-info.svg"]'
-    );
+    const iconElement = container.querySelector('[data-src="/images/icon-info.svg"]');
 
     expect(iconElement).toBeTruthy();
   });

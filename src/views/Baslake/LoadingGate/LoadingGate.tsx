@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-const LoadingGate = ({
+function LoadingGate({
   waitFor,
   meanwhile,
   children,
@@ -8,6 +8,8 @@ const LoadingGate = ({
   waitFor: boolean;
   meanwhile: ReactNode;
   children: ReactNode;
-}) => <div>{waitFor ? children : meanwhile}</div>;
+}) {
+  return <div>{waitFor ? children : meanwhile}</div>;
+}
 
 export default LoadingGate;

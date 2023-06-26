@@ -66,9 +66,7 @@ export default {
   },
 } as ComponentMeta<typeof SvgIcon>;
 
-const Template: ComponentStory<typeof SvgIcon> = (args) => (
-  <SvgIcon {...args} />
-);
+const Template: ComponentStory<typeof SvgIcon> = (args) => <SvgIcon {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {

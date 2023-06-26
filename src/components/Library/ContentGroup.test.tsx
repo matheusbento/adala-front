@@ -6,17 +6,21 @@ import ContentGroup from './ContentGroup';
 
 const mockedOnCaptionClick = jest.fn();
 
-const LeftComponent = () => (
-  <div>
-    <p>Left Component</p>
-  </div>
-);
+function LeftComponent() {
+  return (
+    <div>
+      <p>Left Component</p>
+    </div>
+  );
+}
 
-const RightComponent = () => (
-  <div>
-    <p>Right Component</p>
-  </div>
-);
+function RightComponent() {
+  return (
+    <div>
+      <p>Right Component</p>
+    </div>
+  );
+}
 
 describe('ContentGroup component', () => {
   beforeEach(() => {
@@ -32,9 +36,7 @@ describe('ContentGroup component', () => {
   });
 
   it('should not display children when collapsed.', () => {
-    const { queryByText } = render(
-      <ContentGroup collapsed={false}>test text</ContentGroup>
-    );
+    const { queryByText } = render(<ContentGroup collapsed={false}>test text</ContentGroup>);
 
     const textElement1 = queryByText('test text');
 
@@ -45,7 +47,7 @@ describe('ContentGroup component', () => {
     const { queryByText } = render(
       <ContentGroup caption="test caption" collapsed={false}>
         test text
-      </ContentGroup>
+      </ContentGroup>,
     );
 
     const textElement1 = queryByText('test caption');
@@ -55,12 +57,9 @@ describe('ContentGroup component', () => {
 
   it('should execute onCaptionClick when caption is clicked.', () => {
     const { queryByText } = render(
-      <ContentGroup
-        caption="test caption"
-        onCaptionClick={mockedOnCaptionClick}
-      >
+      <ContentGroup caption="test caption" onCaptionClick={mockedOnCaptionClick}>
         test text
-      </ContentGroup>
+      </ContentGroup>,
     );
 
     const textElement1 = queryByText('test caption');
@@ -72,7 +71,7 @@ describe('ContentGroup component', () => {
 
   it('should display the left component.', () => {
     const { queryByText } = render(
-      <ContentGroup leftComponent={<LeftComponent />}>test text</ContentGroup>
+      <ContentGroup leftComponent={<LeftComponent />}>test text</ContentGroup>,
     );
 
     const textElement1 = queryByText('Left Component');
@@ -82,7 +81,7 @@ describe('ContentGroup component', () => {
 
   it('should display the right component.', () => {
     const { queryByText } = render(
-      <ContentGroup rightComponent={<RightComponent />}>test text</ContentGroup>
+      <ContentGroup rightComponent={<RightComponent />}>test text</ContentGroup>,
     );
 
     const textElement1 = queryByText('Right Component');
@@ -94,7 +93,7 @@ describe('ContentGroup component', () => {
     const { queryByTestId } = render(
       <ContentGroup data-testid="test-id" disabled>
         test text
-      </ContentGroup>
+      </ContentGroup>,
     );
 
     const textElement1 = queryByTestId('test-id');

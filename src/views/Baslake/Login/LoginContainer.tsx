@@ -1,5 +1,7 @@
 import Login from './Login';
 
-const LoginContainer = () => <Login />;
+function LoginContainer() {
+  return <Login />;
+}
 
 export default LoginContainer;

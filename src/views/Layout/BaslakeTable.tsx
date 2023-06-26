@@ -1,12 +1,5 @@
 /* eslint-disable react/no-array-index-key */
-import {
-  ReactNode,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { SelectCell } from '@components/Baslake/BaslakeTableCells';
 import Accordion from '@components/Library/Accordion';
@@ -16,15 +9,7 @@ import SortableTableHeader from '@components/Library/SortableTableHeader';
 import SvgIcon from '@components/Library/SvgIcon';
 import { loading as BaslakeLoading } from '@constants/baslakeTableConstants';
 import TypeOf from '@constants/typeOfConstants';
-import {
-  colors,
-  display,
-  fontSizes,
-  padding,
-  tables,
-  utils,
-  fontWeight,
-} from '@utils/theme';
+import { colors, display, fontSizes, padding, tables, utils, fontWeight } from '@utils/theme';
 import { css } from 'glamor';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { createPortal } from 'react-dom';
@@ -42,14 +27,9 @@ const styleResponsiveContainer = css({
   paddingBottom: 50,
 });
 
-const styleTableDefault = css(
-  tables.baslake,
-  tables.default,
-  tables.paddingSm,
-  {
-    overflow: 'visible',
-  }
-);
+const styleTableDefault = css(tables.baslake, tables.default, tables.paddingSm, {
+  overflow: 'visible',
+});
 
 const styleTableLoading = css({
   '& > tbody': { opacity: 0.5 },
@@ -173,11 +153,13 @@ export interface BaslakeTableProps {
   enableDragAndDrop?: boolean;
   onCallBackDragEnd?: any;
   droppableId?: string;
+  hideBulkForValues?: string[];
 }
 
-const BaslakeTable = ({
+function BaslakeTable({
   headers = [],
   selectedRows = [],
+  hideBulkForValues = [],
   selectedChildrenRows = undefined,
   data = undefined,
   actions = undefined,
@@ -207,7 +189,7 @@ const BaslakeTable = ({
   enableDragAndDrop = false,
   onCallBackDragEnd = undefined,
   droppableId = undefined,
-}: BaslakeTableProps) => {
+}: BaslakeTableProps) {
   const [activeConfirm, setActiveConfirm] = useState<any>(null);
   const [collapsed, setCollapsed] = useState<any>([]);
   const [activeActionRow, setActiveActionRow] = useState<any>(0);
@@ -227,31 +209,25 @@ const BaslakeTable = ({
       const [removed] = listSteps.splice(result.source.index, 1);
       listSteps.splice(result.destination.index, 0, removed);
 
-      if (
-        onCallBackDragEnd &&
-        result.source.index !== result.destination.index
-      ) {
+      if (onCallBackDragEnd && result.source.index !== result.destination.index) {
         onCallBackDragEnd(
           data?.[result.source.index] ?? listData?.[result.source.index][0],
           result.destination.index,
-          result.source.index
+          result.source.index,
         );
       }
 
       setListData(listSteps);
       setDragging(false);
     },
-    [listData, onCallBackDragEnd, data]
+    [listData, onCallBackDragEnd, data],
   );
 
   const setActiveConfirmFalse = useCallback(() => {
     setActiveConfirm(false);
   }, [setActiveConfirm]);
 
-  const alignmentOn = useCallback(
-    (align: string) => alignNested === align,
-    [alignNested]
-  );
+  const alignmentOn = useCallback((align: string) => alignNested === align, [alignNested]);
 
   const styleTable = useMemo(
     () =>
@@ -259,9 +235,9 @@ const BaslakeTable = ({
         styleTableDefault,
         loading === BaslakeLoading.pagination && styleTableLoading,
         loading === BaslakeLoading.data && styleTableDataLoading,
-        disabled && styleTableDisabled
+        disabled && styleTableDisabled,
       ),
-    [disabled, loading]
+    [disabled, loading],
   );
 
   const styleActiveRow = useMemo(
@@ -272,17 +248,12 @@ const BaslakeTable = ({
         },
         cursor: onRowClick ? 'pointer' : 'default',
       }),
-    [onRowClick]
+    [onRowClick],
   );
 
   const styleContainer = useMemo(
-    () =>
-      css(
-        styleSegment,
-        responsive && styleResponsiveContainer,
-        condensed && styleCondensed
-      ),
-    [condensed, responsive]
+    () => css(styleSegment, responsive && styleResponsiveContainer, condensed && styleCondensed),
+    [condensed, responsive],
   );
 
   const styleNoActiveRow = useMemo(
@@ -290,7 +261,7 @@ const BaslakeTable = ({
       css({
         cursor: onRowClick ? 'pointer' : 'default',
       }),
-    [onRowClick]
+    [onRowClick],
   );
 
   const styleHighlightParentRow = css({
@@ -330,7 +301,7 @@ const BaslakeTable = ({
         },
         cursor: onRowClick ? 'pointer' : 'default',
       }),
-    [onRowClick]
+    [onRowClick],
   );
 
   const styleName = css(padding.topXxs);
@@ -342,17 +313,13 @@ const BaslakeTable = ({
   const isActionItemActive = useCallback(
     (id: string | number) =>
       loading === BaslakeLoading.actions &&
-      (id === activeActionRow ||
-        (!activeActionRow && selectedRows.includes(id))),
-    [selectedRows, loading, activeActionRow]
+      (id === activeActionRow || (!activeActionRow && selectedRows.includes(id))),
+    [selectedRows, loading, activeActionRow],
   );
 
   const isSelectedAll = useMemo(
-    () =>
-      selectedRows &&
-      selectedRows?.length === listData?.length &&
-      listData?.length !== 0,
-    [listData, selectedRows]
+    () => selectedRows && selectedRows?.length === listData?.length && listData?.length !== 0,
+    [listData, selectedRows],
   );
 
   const getRowClass = useCallback(
@@ -372,12 +339,8 @@ const BaslakeTable = ({
           ? `highlight-nested ${styleHighlightNested} ${styleIsDragging}`
           : `highlight-nested ${styleHighlightNested}`;
       if (activeRow === undefined)
-        return isDragging
-          ? `${styleNoActiveRow} ${styleIsDragging}`
-          : `${styleNoActiveRow}`;
-      return isDragging
-        ? `${styleInactiveRow} ${styleIsDragging}`
-        : `${styleInactiveRow}`;
+        return isDragging ? `${styleNoActiveRow} ${styleIsDragging}` : `${styleNoActiveRow}`;
+      return isDragging ? `${styleInactiveRow} ${styleIsDragging}` : `${styleInactiveRow}`;
     },
     [
       activeRow,
@@ -390,7 +353,7 @@ const BaslakeTable = ({
       styleInactiveRow,
       styleNoActiveRow,
       styleIsDragging,
-    ]
+    ],
   );
 
   const handleDataSorting = useCallback(
@@ -400,21 +363,21 @@ const BaslakeTable = ({
         direction: order?.direction === 'asc' ? 'desc' : 'asc',
       });
     },
-    [dataSortHandler, order]
+    [dataSortHandler, order],
   );
 
   const handleBulkActions = useCallback(
     (id: number | string) => {
-      bulkActionsHandler(Number.isInteger(id) ? id : null);
+      bulkActionsHandler(id);
     },
-    [bulkActionsHandler]
+    [bulkActionsHandler],
   );
 
   const handleBulkChildrenActions = useCallback(
     (id: number | string) => {
-      bulkChildrenActionsHandler(Number.isInteger(id) ? id : null);
+      bulkChildrenActionsHandler(id);
     },
-    [bulkChildrenActionsHandler]
+    [bulkChildrenActionsHandler],
   );
 
   const handleSelectAll = useCallback(() => {
@@ -426,11 +389,7 @@ const BaslakeTable = ({
 
       if (Array.isArray(listData)) {
         bulkArray = listData.map((i) => {
-          if (
-            Array.isArray(i) &&
-            i.length > 0 &&
-            typeof i[0] === TypeOf.object
-          ) {
+          if (Array.isArray(i) && i.length > 0 && typeof i[0] === TypeOf.object) {
             return i[0].id;
           }
           return null;
@@ -448,7 +407,7 @@ const BaslakeTable = ({
 
       return key;
     },
-    [data]
+    [data],
   );
 
   const handleSetCollapse = useCallback(
@@ -456,10 +415,10 @@ const BaslakeTable = ({
       setCollapsed(
         collapsed.includes(item)
           ? collapsed.filter((i: any) => i !== item)
-          : collapsed.concat(item)
+          : collapsed.concat(item),
       );
     },
-    [collapsed, setCollapsed]
+    [collapsed, setCollapsed],
   );
 
   const handleColapseAll = useCallback(() => {
@@ -484,7 +443,7 @@ const BaslakeTable = ({
 
       return [];
     },
-    [actions]
+    [actions],
   );
 
   const mapActions = useCallback(
@@ -492,21 +451,16 @@ const BaslakeTable = ({
       getItemGroupActions(item).filter(
         (action: any) =>
           (action.shouldShow ? action.shouldShow(item[0]) : true) &&
-          (!isParent && action.showOnNested
-            ? action.showOnNested(item[0])
-            : true) &&
-          !(!isParent && readyOnlyNest)
+          (!isParent && action.showOnNested ? action.showOnNested(item[0]) : true) &&
+          !(!isParent && readyOnlyNest),
       ),
-    [getItemGroupActions, readyOnlyNest]
+    [getItemGroupActions, readyOnlyNest],
   );
 
-  const clickAction = useCallback(
-    async (id: any, handler: any, params: any, index?: any) => {
-      setActiveActionRow(id);
-      await handler(params, index);
-    },
-    []
-  );
+  const clickAction = useCallback(async (id: any, handler: any, params: any, index?: any) => {
+    setActiveActionRow(id);
+    await handler(params, index);
+  }, []);
 
   const renderCollapsibleButton = useCallback(
     (key: any, isParent: boolean) => (
@@ -522,14 +476,14 @@ const BaslakeTable = ({
         )}
       </When>
     ),
-    [alwaysDisplayNested, collapsed, disabled, handleSetCollapse, nested]
+    [alwaysDisplayNested, collapsed, disabled, handleSetCollapse, nested],
   );
 
   const handleRowClick = useCallback(
     (item: any) => {
       if (onRowClick) onRowClick(item);
     },
-    [onRowClick]
+    [onRowClick],
   );
 
   const getItemData = useCallback(
@@ -539,15 +493,13 @@ const BaslakeTable = ({
       if (item) return item;
       return index;
     },
-    [data]
+    [data],
   );
 
   const renderHeaderActions = useCallback(
     (item: any) => (
       <Dropdown
-        trigger={
-          <SvgIcon path="icon-more-vertical" color={colors.default} size="lg" />
-        }
+        trigger={<SvgIcon path="icon-more-vertical" color={colors.default} size="lg" />}
         direction="left"
         className={`${styleDropdown}`}
         disabled={item.disabled}
@@ -562,20 +514,29 @@ const BaslakeTable = ({
               clickHandler={
                 action.confirm
                   ? () => setActiveConfirm(`${item.key}-${action.label}`)
-                  : (params: any) =>
-                      clickAction(item.key, action.action, params)
+                  : (params: any) => clickAction(item.key, action.action, params)
               }
             />
           ))}
         </Dropdown.Menu>
       </Dropdown>
     ),
-    [clickAction]
+    [clickAction],
   );
+
+  // eslint-disable-next-line no-console
+  // console.log({ selectedRows });/
 
   const renderRows = useCallback(
     (item: any, i: any, isParent = true) => {
       const key = handleCreateKey(item, i);
+      // eslint-disable-next-line no-console
+      // console.log({
+      //   key,
+      //   selectedRows,
+      //   cond: selectedRows && selectedRows.includes(key),
+      //   isParent,
+      // });
       const fragmentKey = isParent ? `parent-${key}` : key;
 
       return (
@@ -593,65 +554,57 @@ const BaslakeTable = ({
                 onClick={() => handleRowClick(item)}
                 {...provided.draggableProps}
                 {...provided.dragHandleProps}
-                style={getItemStyle(
-                  snapshot.isDragging,
-                  provided.draggableProps.style
-                )}
+                style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
               >
                 <When condition={bulk}>
                   {() => (
                     <td>
-                      <If condition={isParent}>
-                        <Then>
-                          {() => (
-                            <SelectCell
-                              input={{
-                                value:
-                                  selectedRows && selectedRows.includes(key),
-                                onChange: () => handleBulkActions(key),
-                                name: `check${i}`,
-                                id: `check${i}`,
-                              }}
-                              name={`check${i}`}
-                              disabled={
-                                loading === BaslakeLoading.actions ||
-                                bulkDisabled ||
-                                disabled
-                              }
-                              indeterminate={
-                                nested &&
-                                nested[key] &&
-                                selectedChildrenRows?.some((row) =>
-                                  nested[key]
-                                    .map((c: any) => c[0]?.id)
-                                    .includes(row)
-                                )
-                              }
-                            />
-                          )}
-                        </Then>
-                        <Else>
-                          <When condition={!isParent && !readyOnlyNest}>
-                            {() => (
-                              <SelectCell
-                                input={{
-                                  value:
-                                    selectedChildrenRows &&
-                                    selectedChildrenRows.includes(key),
-                                  onChange: () =>
-                                    handleBulkChildrenActions(key),
-                                  name: `check${i}`,
-                                  id: `check${i}`,
-                                }}
-                                name={`check${i}`}
-                                disabled={
-                                  loading === BaslakeLoading.actions || disabled
-                                }
-                              />
-                            )}
-                          </When>
-                        </Else>
-                      </If>
+                      <When condition={!hideBulkForValues.includes(key)}>
+                        {() => (
+                          <If condition={isParent}>
+                            <Then>
+                              {() => (
+                                <SelectCell
+                                  input={{
+                                    value: selectedRows && selectedRows.includes(key),
+                                    onChange: () => handleBulkActions(key),
+                                    name: `check${i}`,
+                                    id: `check${i}`,
+                                  }}
+                                  name={`check${i}`}
+                                  disabled={
+                                    loading === BaslakeLoading.actions || bulkDisabled || disabled
+                                  }
+                                  indeterminate={
+                                    nested &&
+                                    nested[key] &&
+                                    selectedChildrenRows?.some((row) =>
+                                      nested[key].map((c: any) => c[0]?.id).includes(row),
+                                    )
+                                  }
+                                />
+                              )}
+                            </Then>
+                            <Else>
+                              <When condition={!isParent && !readyOnlyNest}>
+                                {() => (
+                                  <SelectCell
+                                    input={{
+                                      value:
+                                        selectedChildrenRows && selectedChildrenRows.includes(key),
+                                      onChange: () => handleBulkChildrenActions(key),
+                                      name: `check${i}`,
+                                      id: `check${i}`,
+                                    }}
+                                    name={`check${i}`}
+                                    disabled={loading === BaslakeLoading.actions || disabled}
+                                  />
+                                )}
+                              </When>
+                            </Else>
+                          </If>
+                        )}
+                      </When>
                     </td>
                   )}
                 </When>
@@ -673,37 +626,25 @@ const BaslakeTable = ({
                   </If>
                 </When>
                 <When condition={alignmentOn('left') && nested}>
-                  {() => (
-                    <td width="60">{renderCollapsibleButton(key, isParent)}</td>
-                  )}
+                  {() => <td width="60">{renderCollapsibleButton(key, isParent)}</td>}
                 </When>
                 {item
-                  ?.filter(
-                    (obj: any) => obj?.id === null || obj?.id === undefined
-                  )
+                  ?.filter((obj: any) => obj?.id === null || obj?.id === undefined)
                   .map((field: any, index: any) => (
                     <td
-                      className={`${
-                        headers[index]?.style ? headers[index]?.style : ''
-                      }`}
+                      className={`${headers[index]?.style ? headers[index]?.style : ''}`}
                       key={`${headers[index]?.key}-${index}-${i}`}
                     >
                       {field}
                     </td>
                   ))}
                 <When condition={alignmentOn('right') && nested && isParent}>
-                  {() => (
-                    <td width="60">{renderCollapsibleButton(key, isParent)}</td>
-                  )}
+                  {() => <td width="60">{renderCollapsibleButton(key, isParent)}</td>}
                 </When>
                 <When condition={actions}>
                   {() => (
                     <td width="60">
-                      <Loader
-                        inline="centered"
-                        size="small"
-                        active={isActionItemActive(key)}
-                      />
+                      <Loader inline="centered" size="small" active={isActionItemActive(key)} />
                       <When condition={!isActionItemActive(key)}>
                         {() => (
                           <>
@@ -717,41 +658,28 @@ const BaslakeTable = ({
                               }
                               direction="left"
                               className={`${styleDropdown}`}
-                              disabled={
-                                mapActions(item, isParent).length === 0 ||
-                                disabled
-                              }
+                              disabled={mapActions(item, isParent).length === 0 || disabled}
                             >
                               <Dropdown.Menu>
-                                {mapActions(item, isParent).map(
-                                  (action: any) => (
-                                    <BaslakeTableActionItem
-                                      key={`action-item-${key}-${action.label}`}
-                                      item={getItemData(item, i)}
-                                      label={action.label}
-                                      icon={action.icon}
-                                      disabled={
-                                        action?.shouldDisable && item[0]
-                                          ? action?.shouldDisable(item[0])
-                                          : null
-                                      }
-                                      clickHandler={
-                                        action.confirm
-                                          ? () =>
-                                              setActiveConfirm(
-                                                `${key}-${action.label}`
-                                              )
-                                          : (params: any) =>
-                                              clickAction(
-                                                key,
-                                                action.action,
-                                                params,
-                                                i
-                                              )
-                                      }
-                                    />
-                                  )
-                                )}
+                                {mapActions(item, isParent).map((action: any) => (
+                                  <BaslakeTableActionItem
+                                    key={`action-item-${key}-${action.label}`}
+                                    item={getItemData(item, i)}
+                                    label={action.label}
+                                    icon={action.icon}
+                                    disabled={
+                                      action?.shouldDisable && item[0]
+                                        ? action?.shouldDisable(item[0])
+                                        : null
+                                    }
+                                    clickHandler={
+                                      action.confirm
+                                        ? () => setActiveConfirm(`${key}-${action.label}`)
+                                        : (params: any) =>
+                                            clickAction(key, action.action, params, i)
+                                    }
+                                  />
+                                ))}
                               </Dropdown.Menu>
                             </Dropdown>
                             {mapActions(item, isParent)
@@ -759,18 +687,11 @@ const BaslakeTable = ({
                               .map((action: any) => (
                                 <ModalConfirm
                                   key={`action-item-${key}-${action.label}-confirm`}
-                                  open={
-                                    activeConfirm === `${key}-${action.label}`
-                                  }
+                                  open={activeConfirm === `${key}-${action.label}`}
                                   size={action.confirmationSize}
                                   onDismiss={setActiveConfirmFalse}
                                   onConfirm={() => {
-                                    clickAction(
-                                      key,
-                                      action.action,
-                                      getItemData(item, i),
-                                      i
-                                    );
+                                    clickAction(key, action.action, getItemData(item, i), i);
                                     setActiveConfirmFalse();
                                   }}
                                   confirmText={action.confirmationText}
@@ -794,11 +715,7 @@ const BaslakeTable = ({
                   !snapshot.isDragging
                 }
               >
-                {() =>
-                  nested[key].map((child: any, i2: any) =>
-                    renderRows(child, i2, false)
-                  )
-                }
+                {() => nested[key].map((child: any, i2: any) => renderRows(child, i2, false))}
               </When>
             </>
           ))}
@@ -833,7 +750,7 @@ const BaslakeTable = ({
       enableDragAndDrop,
       renderDraggable,
       styleName,
-    ]
+    ],
   );
 
   useEffect(() => {
@@ -859,11 +776,7 @@ const BaslakeTable = ({
                             id: 'selectAll',
                           }}
                           name="selectAll"
-                          disabled={
-                            loading === BaslakeLoading.actions ||
-                            bulkDisabled ||
-                            disabled
-                          }
+                          disabled={loading === BaslakeLoading.actions || bulkDisabled || disabled}
                         />
                       </td>
                     </When>
@@ -872,11 +785,7 @@ const BaslakeTable = ({
                     </When>
                     {headers.map((item: any) => (
                       <th key={item.key || item.label}>
-                        <If
-                          condition={
-                            (item.sortable || item.actions) && !disabled
-                          }
-                        >
+                        <If condition={(item.sortable || item.actions) && !disabled}>
                           <Then>
                             <When condition={item.sortable}>
                               {() => (
@@ -887,16 +796,13 @@ const BaslakeTable = ({
                                   onSort={handleDataSorting}
                                   isActive={order?.field === item.key}
                                   isLoading={
-                                    order?.field === item.key &&
-                                    loading === BaslakeLoading.sorting
+                                    order?.field === item.key && loading === BaslakeLoading.sorting
                                   }
                                   direction={order?.direction}
                                 />
                               )}
                             </When>
-                            <When condition={item.actions}>
-                              {() => renderHeaderActions(item)}
-                            </When>
+                            <When condition={item.actions}>{() => renderHeaderActions(item)}</When>
                           </Then>
                           <Else>{item.label}</Else>
                         </If>
@@ -906,10 +812,7 @@ const BaslakeTable = ({
                             .map((action: any) => (
                               <ModalConfirm
                                 key={`action-item-${item.key}-${action.label}-confirm`}
-                                open={
-                                  activeConfirm ===
-                                  `${item.key}-${action.label}`
-                                }
+                                open={activeConfirm === `${item.key}-${action.label}`}
                                 size={action.confirmationSize}
                                 onDismiss={setActiveConfirmFalse}
                                 onConfirm={() => {
@@ -927,11 +830,7 @@ const BaslakeTable = ({
                 </thead>
                 <tbody {...provided.droppableProps}>
                   <If condition={listData?.length > 0}>
-                    <Then>
-                      {() =>
-                        listData.map((row: any, i: any) => renderRows(row, i))
-                      }
-                    </Then>
+                    <Then>{() => listData.map((row: any, i: any) => renderRows(row, i))}</Then>
                     <Else>
                       <tr>
                         <td colSpan={100}>{noDataMsg}</td>
@@ -950,6 +849,6 @@ const BaslakeTable = ({
       </div>
     </Segment>
   );
-};
+}
 
 export default BaslakeTable;

@@ -1,11 +1,4 @@
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useMemo,
-  useState,
-  ReactNode,
-} from 'react';
+import { createContext, useCallback, useContext, useMemo, useState, ReactNode } from 'react';
 
 import TypeOf from '@constants/typeOfConstants';
 
@@ -35,7 +28,7 @@ interface FilterProviderProps {
   context: string;
 }
 
-const FilterProvider = ({ children, context }: FilterProviderProps) => {
+function FilterProvider({ children, context }: FilterProviderProps) {
   // eslint-disable-next-line no-console
   console.log({ context });
   const [isBarVisible, setIsBarVisible] = useState(false);
@@ -68,7 +61,7 @@ const FilterProvider = ({ children, context }: FilterProviderProps) => {
         },
       });
     },
-    [filters, context]
+    [filters, context],
   );
 
   const setFacetsByContext = useCallback(
@@ -81,7 +74,7 @@ const FilterProvider = ({ children, context }: FilterProviderProps) => {
         },
       });
     },
-    [context, facets]
+    [context, facets],
   );
 
   const setFilterByContext = useCallback(
@@ -94,7 +87,7 @@ const FilterProvider = ({ children, context }: FilterProviderProps) => {
         },
       });
     },
-    [filters, context]
+    [filters, context],
   );
 
   const setOldFiltersByContext = useCallback(
@@ -104,12 +97,12 @@ const FilterProvider = ({ children, context }: FilterProviderProps) => {
         [context]: filter,
       });
     },
-    [context]
+    [context],
   );
 
   const getFiltersByContext = useCallback(
     () => (filters ? filters[context] : {}),
-    [filters, context]
+    [filters, context],
   );
 
   const getAppliedFiltersByContext = useCallback(() => {
@@ -147,14 +140,10 @@ const FilterProvider = ({ children, context }: FilterProviderProps) => {
       setFacetsByContext,
       setSuggestionsByContext,
       getAppliedFiltersByContext,
-    ]
+    ],
   );
 
-  return (
-    <FilterContext.Provider value={providerValue}>
-      {children}
-    </FilterContext.Provider>
-  );
-};
+  return <FilterContext.Provider value={providerValue}>{children}</FilterContext.Provider>;
+}
 
 export { FilterProvider, useFilter };

@@ -6,7 +6,7 @@ import { useAuth } from '@hooks/Auth';
 import { css } from 'glamor';
 import { Grid, Header, Form, Image, Message } from 'semantic-ui-react';
 
-const Login = () => {
+function Login() {
   const [email, setEmail] = useState<string | null>(null);
   const [password, setPassword] = useState<string | null>(null);
   const { loginHandler } = useAuth();
@@ -20,11 +20,7 @@ const Login = () => {
 
   return (
     <Segment>
-      <Grid
-        textAlign="center"
-        style={{ height: '100vh' }}
-        verticalAlign="middle"
-      >
+      <Grid textAlign="center" style={{ height: '100vh' }} verticalAlign="middle">
         <Grid.Column style={{ maxWidth: 450 }}>
           <Header as="h2" textAlign="center">
             <Image src="/images/logo/baslake-logo.png" /> Log-in to your account
@@ -47,12 +43,7 @@ const Login = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
 
-              <Button
-                pill
-                size="large"
-                className={`${css({ width: '100%' })}`}
-                onClick={doLogin}
-              >
+              <Button pill size="large" className={`${css({ width: '100%' })}`} onClick={doLogin}>
                 Login
               </Button>
             </Segment>
@@ -64,6 +55,6 @@ const Login = () => {
       </Grid>
     </Segment>
   );
-};
+}
 
 export default Login;

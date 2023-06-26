@@ -50,7 +50,7 @@ interface ContentGroupProps {
   children: ReactNode;
 }
 
-const ContentGroup = ({
+function ContentGroup({
   children,
   caption = undefined,
   captionColor = 'primary',
@@ -64,7 +64,7 @@ const ContentGroup = ({
   className = '',
   contentClassName = '',
   ...rest
-}: ContentGroupProps) => {
+}: ContentGroupProps) {
   const styleCaption = useMemo(
     () =>
       css(fontSizes[captionSize], margin.none, flex.fill, {
@@ -72,7 +72,7 @@ const ContentGroup = ({
         fontWeight: captionWeights[captionWeight],
         cursor: onCaptionClick ? 'pointer' : 'default',
       }),
-    [captionSize, captionColor, captionWeight, onCaptionClick]
+    [captionSize, captionColor, captionWeight, onCaptionClick],
   );
 
   return (
@@ -80,24 +80,18 @@ const ContentGroup = ({
     <div className={`${className} ${disabled ? styleDisabled : ''}`} {...rest}>
       <div className={`${css(display.flex, flex.alignItemsCenter)}`}>
         <When condition={!!leftComponent}>
-          {() => (
-            <div className={`${css(padding.rightSm)}`}>{leftComponent}</div>
-          )}
+          {() => <div className={`${css(padding.rightSm)}`}>{leftComponent}</div>}
         </When>
         <p className={`${styleCaption}`} onClick={onCaptionClick}>
           {caption}
         </p>
         <When condition={!!rightComponent}>
-          {() => (
-            <div className={`${css(padding.leftSm)}`}>{rightComponent}</div>
-          )}
+          {() => <div className={`${css(padding.leftSm)}`}>{rightComponent}</div>}
         </When>
       </div>
-      <When condition={collapsed}>
-        {() => <div className={contentClassName}>{children}</div>}
-      </When>
+      <When condition={collapsed}>{() => <div className={contentClassName}>{children}</div>}</When>
     </div>
   );
-};
+}
 
 export default ContentGroup;

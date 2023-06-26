@@ -3,7 +3,8 @@ export interface PolicyCheckProps {
   policy: boolean;
 }
 
-const PolicyCheck = ({ policy, children }: PolicyCheckProps): JSX.Element =>
-  policy ? children : <div />;
+function PolicyCheck({ policy, children }: PolicyCheckProps): JSX.Element {
+  return policy ? children : <div />;
+}
 
 export default PolicyCheck;

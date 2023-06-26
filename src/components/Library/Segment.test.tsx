@@ -7,16 +7,9 @@ import Segment from './Segment';
 describe('Segment component', () => {
   it('should display children.', () => {
     const { queryByText } = render(
-      <Segment
-        box
-        boxPadding={{ style: 'any' }}
-        borders
-        shadow
-        borderRadius="xl"
-        marginBottom="xl"
-      >
+      <Segment box boxPadding={{ style: 'any' }} borders shadow borderRadius="xl" marginBottom="xl">
         Text Example
-      </Segment>
+      </Segment>,
     );
 
     const textElement = queryByText('Text Example');

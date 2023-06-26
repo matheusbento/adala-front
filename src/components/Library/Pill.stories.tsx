@@ -20,16 +20,7 @@ export default {
       },
       control: {
         type: 'select',
-        options: [
-          'primary',
-          'warning',
-          'danger',
-          'success',
-          'disabled',
-          'light',
-          'dark',
-          'purple',
-        ],
+        options: ['primary', 'warning', 'danger', 'success', 'disabled', 'light', 'dark', 'purple'],
       },
     },
     active: {

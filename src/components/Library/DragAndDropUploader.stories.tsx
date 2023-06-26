@@ -121,8 +121,7 @@ export default {
       },
     },
     accept: {
-      description:
-        'Allowed extensions on file browser (allow any type if not set)',
+      description: 'Allowed extensions on file browser (allow any type if not set)',
       type: {
         required: false,
       },

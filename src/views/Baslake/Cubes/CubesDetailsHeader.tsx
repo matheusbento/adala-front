@@ -3,21 +3,15 @@ import { useMemo } from 'react';
 import IconList from '@components/Library/IconList/IconList';
 import SvgIcon from '@components/Library/SvgIcon';
 import Text from '@components/Library/Text';
+import { statusLabel } from '@constants/cubesConstants';
 import { css } from 'glamor';
 import moment from 'moment';
 import { When } from 'react-if';
 import { List } from 'semantic-ui-react';
 
-import {
-  colors,
-  padding,
-  margin,
-  fontWeight,
-  fontSizes,
-  display,
-} from '../../../utils/theme';
+import { colors, padding, margin, fontWeight, fontSizes, display } from '../../../utils/theme';
 
-const CubeDetailsHeader = ({
+function CubeDetailsHeader({
   titleSize = 'lg',
   cube = null,
   title = null,
@@ -25,7 +19,7 @@ const CubeDetailsHeader = ({
   titleSize?: string;
   cube?: any;
   title?: string | null;
-}) => {
+}) {
   const styleHeader = useMemo(
     () =>
       css(
@@ -34,23 +28,21 @@ const CubeDetailsHeader = ({
             fontWeight: fontWeight.w600,
             color: `${colors.primary} !important`,
             ...fontSizes[titleSize],
+
             ...padding.bottomXs,
           },
         },
-        display.flex
+        display.flex,
       ),
-    [titleSize]
+    [titleSize],
   );
 
   const startDate = useMemo(
     () => cube?.metadata?.find((e: any) => e.field === 'start_date'),
-    [cube]
+    [cube],
   );
 
-  const endDate = useMemo(
-    () => cube?.metadata?.find((e: any) => e.field === 'end_date'),
-    [cube]
-  );
+  const endDate = useMemo(() => cube?.metadata?.find((e: any) => e.field === 'end_date'), [cube]);
 
   return (
     <>
@@ -73,6 +65,7 @@ const CubeDetailsHeader = ({
           icon="icon-star-line"
           label={cube?.category?.name ?? 'No category'}
         />
+        <IconList.Item size="xs" icon="icon-clock" label={statusLabel[cube?.current_status]} />
 
         <IconList.Item
           size="xs"
@@ -87,9 +80,7 @@ const CubeDetailsHeader = ({
               <When condition={startDate}>
                 {() => (
                   <>
-                    {startDate
-                      ? moment(startDate?.value).format('MMM DD, YYYY')
-                      : 'n/a'}
+                    {startDate ? moment(startDate?.value).format('MMM DD, YYYY') : 'n/a'}
 
                     {endDate ? (
                       <>
@@ -113,6 +104,6 @@ const CubeDetailsHeader = ({
       </IconList>
     </>
   );
-};
+}
 
 export default CubeDetailsHeader;

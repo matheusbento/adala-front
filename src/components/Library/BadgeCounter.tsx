@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 
 import { css } from 'glamor';
 import { Label } from 'semantic-ui-react';
@@ -25,7 +25,7 @@ interface BadgeCounterProps {
   onClick?: any;
 }
 
-const BadgeCounter = ({
+function BadgeCounter({
   count = '0',
   size = 'sm',
   color = 'white',
@@ -33,7 +33,7 @@ const BadgeCounter = ({
   className = '',
   verticalAlign = 'bottom',
   onClick = null,
-}: BadgeCounterProps) => {
+}: BadgeCounterProps) {
   const styles = css({
     ...display.inlineBlock,
     fontSize: `${badgeSizes[size] || size} !important`,
@@ -49,15 +49,10 @@ const BadgeCounter = ({
   }, [onClick]);
 
   return (
-    <Label
-      className={`${styles} ${className}`}
-      circular
-      key={color}
-      onClick={clickHandler}
-    >
+    <Label className={`${styles} ${className}`} circular key={color} onClick={clickHandler}>
       {count}
     </Label>
   );
-};
+}
 
 export default BadgeCounter;
