@@ -1,11 +1,16 @@
 import { Component, useMemo } from 'react';
 
+import { display, flex, margin } from '@/utils/themeConstants';
 import buildFormField from '@utils/buildFormField';
 import { spacing } from '@utils/theme';
 import { css } from 'glamor';
 import { get } from 'lodash';
 import { useFormContext } from 'react-hook-form';
+import { When } from 'react-if';
+import { Segment } from 'semantic-ui-react';
 import { InputFile as FileInput } from 'semantic-ui-react-input-file';
+import Button from './Button';
+import Text from './Text';
 
 const styleSpaced = css({
   '& input': {
@@ -38,13 +43,13 @@ const FieldForm = buildFormField(
   }),
 );
 
-export interface RestProps {
+export interface IRestProps {
   label?: string;
   disabled?: boolean;
   fluid?: boolean;
 }
 
-export interface InputFileProps {
+export interface IInputFileProps {
   width?: string;
   className?: string;
   placeholder?: string;
@@ -72,7 +77,7 @@ function InputFile({
   required = false,
   formProps = {},
   ...rest
-}: InputFileProps & Partial<RestProps>) {
+}: IInputFileProps & Partial<IRestProps>) {
   const { register, setValue, formState, watch } = useFormContext();
 
   const styleField = css(
@@ -100,13 +105,41 @@ function InputFile({
   }, [formState, name, required]);
 
   const handleUpload = (act: any) => {
-    setValue('file', act.target.files, {
+    setValue(name, act.target.files, {
       shouldDirty: true,
     });
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const currentFile = useMemo(() => Array.from(watch(name) ?? {}), [watch()]);
+
+  console.log({ currentFile });
+
   return (
     <>
+      <When condition={currentFile?.length}>
+        {currentFile?.map((file: any) => {
+          return (
+            <Segment className={`${css(display.flex, flex.alignItemsCenter)}`}>
+              <Text>{file.name}</Text>
+              <div>
+                <Button
+                  outline
+                  color="default"
+                  fluid
+                  pill
+                  onClick={() => {
+                    setValue(name, null, { shouldDirty: true });
+                  }}
+                  type="button"
+                  icon="icon-trash-line"
+                  className={`${css(margin.leftSm)}`}
+                />
+              </div>
+            </Segment>
+          );
+        })}
+      </When>
       <FieldForm
         {...rest}
         {...register(name, {
@@ -117,7 +150,7 @@ function InputFile({
         required={required}
         error={message}
         input={{
-          id: 'file',
+          id: name,
           onChange: handleUpload,
         }}
         // value={fileNames ?? ''}

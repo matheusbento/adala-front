@@ -12,10 +12,6 @@ module.exports = {
     'plugin:chai-friendly/recommended',
     'plugin:prettier/recommended',
   ],
-  globals: {
-    $: 'readonly',
-    _: 'readonly',
-  },
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaFeatures: {
@@ -143,8 +139,9 @@ module.exports = {
   },
   settings: {
     'import/resolver': {
-      'babel-module': {},
-      typescript: {},
+      node: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      },
     },
   },
   overrides: [

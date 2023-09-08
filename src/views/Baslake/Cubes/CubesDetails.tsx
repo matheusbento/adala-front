@@ -16,12 +16,14 @@ import { CubeMetadataType } from 'types/CubeMetadataType';
 import { DimensionType } from 'types/DimensionType';
 
 import { beautifyJson } from 'utils/formatting';
-import { fontWeight, spacing, margin, padding, colors } from 'utils/themeConstants';
+import { fontWeight, spacing, margin, colors } from 'utils/themeConstants';
 
 import TextEllipsis from '@components/Library/TextEllipsis';
 import { flatten } from 'lodash';
 import { When } from 'react-if';
 
+import { useDashboard } from '@hooks/Dashboard';
+import CubeDashboardModalContainer from './CubeDashboard/CubeDashboardModalContainer';
 import CubesDetailsHeader from './CubesDetailsHeader';
 
 const styleNote = css({
@@ -32,30 +34,6 @@ const styleNote = css({
 const styleButton = css(margin.rightXs, {
   fontWeight: fontWeight.w500,
   backgroundColor: colors.primary,
-});
-
-const styleHistory = css(padding.bottomMd);
-
-const styleTable = css({
-  ' i': {
-    ...margin.rightXs,
-  },
-});
-
-const styleLockIcon = css({
-  '&.inverted.circular.lock.icon': {
-    color: colors.greyIcon,
-  },
-});
-
-const styleUnlockIcon = css({
-  '&.inverted.circular.lock.icon': {
-    color: colors.green,
-  },
-});
-
-const styleName = css({
-  minWidth: 150,
 });
 
 const styleSubHeaders = css({
@@ -77,16 +55,9 @@ const styleDetailColumn = css({
 function CubesDetails() {
   const { session } = useAuth();
 
-  const {
-    isLoadingCube,
-    isUpdating,
-    cube,
-    cubeModel,
-    setIsOpenCubeViewerModal,
-    setShowModal,
-    fetchCubeViewerHandler,
-    setInitialValues,
-  } = useCubes();
+  const { isLoadingCube, isUpdating, cube, cubeModel, setShowModal, setInitialValues } = useCubes();
+
+  const { setShowDashboard } = useDashboard();
 
   const windowSize = useWindowWidth();
 
@@ -120,9 +91,8 @@ function CubesDetails() {
   }, []);
 
   const handleDataVisualize = useCallback(() => {
-    fetchCubeViewerHandler();
-    setIsOpenCubeViewerModal(true);
-  }, []);
+    setShowDashboard(true);
+  }, [setShowDashboard]);
 
   return (
     <>
@@ -415,6 +385,7 @@ function CubesDetails() {
         onConfirm={handleConfirmDeleteNote}
         onDismiss={() => setDeletingNote(null)}
       /> */}
+      <CubeDashboardModalContainer />
     </>
   );
 }

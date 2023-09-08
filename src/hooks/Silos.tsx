@@ -15,8 +15,8 @@ import api from '../helpers/api';
 import { SiloFileAttributeType } from '../types/SiloFileAttributeType';
 import { useOrganization } from './Organization';
 
-const uploadTimeout = process.env.MIX_FILE_UPLOAD_TIMEOUT || 60 * 1000;
-const downloadTimeout = process.env.MIXMIX_FILE_DOWNLOAD_TIMEOUT || 60 * 1000;
+const uploadTimeout = import.meta.env.MIX_FILE_UPLOAD_TIMEOUT || 60 * 1000;
+const downloadTimeout = import.meta.env.MIXMIX_FILE_DOWNLOAD_TIMEOUT || 60 * 1000;
 
 export type SilosType = {
   showModal: string | null;
@@ -31,6 +31,7 @@ export type SilosType = {
   fetchSiloFilesAttributesHandler: (silo: number, params?: any) => void;
   fetchSiloFileAttributesHandler: (siloId: number, fileId: number, params?: any) => void;
   saveSiloHandler: (folderId: number, data: SiloFileType) => void;
+  deleteSiloFolderHandler: (folderId: number) => void;
   saveSiloFolderHandler: (data: SiloType) => void;
   handleBulkSelectColumn: (file: any, attribute: any, items: string[]) => void;
   setFilesToUpload: (files: FileList | null) => void;
@@ -39,6 +40,7 @@ export type SilosType = {
   isLoadingSilo: boolean;
   isLoadingSiloFilesAttributes: boolean;
   isLoadingSave: boolean;
+  isDeletingFolder: boolean;
   isLoadingSaveSiloFolder: boolean;
   isLoadingSiloFileAttributes: boolean;
   initialValues: any;
@@ -51,6 +53,7 @@ export type SilosType = {
   siloFileAttributes: SiloFileAttributeType[] | null;
   files: SiloFileType[] | null;
   downloadSiloFile: (siloFile: SiloFileType) => void;
+  setDeletingFolder: (val: boolean) => void;
   fetchSilosHandler: (search: string | null, params?: PaginateParams | null) => void;
   setInitialValues: (obj: any) => void;
 };
@@ -86,6 +89,7 @@ function SiloProvider({ children, organizationId }: ISiloProviderProps) {
   const [silos, setSilos] = useState([]);
   const [files, setFiles] = useState<SiloFileType[] | null>(null);
   const [siloFilesAttributes, setSiloFilesAttributes] = useState<SiloFileType[] | null>(null);
+  const [isDeletingFolder, setDeletingFolder] = useState(false);
   const [siloFileAttributes, setSiloFileAttributes] = useState<SiloFileAttributeType[] | null>(
     null,
   );
@@ -347,7 +351,6 @@ function SiloProvider({ children, organizationId }: ISiloProviderProps) {
   const saveSiloFolderHandler = useCallback(
     async (data: SiloType) => {
       try {
-        console.log({ organization });
         setIsLoadingSaveSiloFolder(true);
         const method = data?.id ? 'put' : 'post';
         const url = data?.id
@@ -360,7 +363,37 @@ function SiloProvider({ children, organizationId }: ISiloProviderProps) {
           data,
         });
         setFormSuccess(['Silo Folder created!']);
-        fetchSilosHandler(null);
+        fetchSilosHandler();
+        setShowModal(null);
+        // setSiloView(response?.data);
+      } catch (e) {
+        // setSiloView(null);
+        // [todo]
+        // toaster(
+        //   dispatch,
+        //   'Error while trying to load the departmentSources',
+        //   'error'
+        // );
+      } finally {
+        setIsLoadingSaveSiloFolder(false);
+      }
+    },
+    [fetchSilosHandler, organization],
+  );
+
+  const deleteSiloFolderHandler = useCallback(
+    async (siloFolderId: number) => {
+      try {
+        console.log({ organization });
+        setIsLoadingSaveSiloFolder(true);
+        const url = `organizations/${organization?.id}/folders/${siloFolderId}`
+
+        await api({
+          method: 'delete',
+          url,
+        });
+        setFormSuccess(['Silo Folder deleted!']);
+        fetchSilosHandler();
         // setSiloView(response?.data);
       } catch (e) {
         // setSiloView(null);
@@ -414,8 +447,14 @@ function SiloProvider({ children, organizationId }: ISiloProviderProps) {
       isLoadingSiloFileAttributes,
       fetchSiloFileAttributesHandler,
       siloFileAttributes,
+      deleteSiloFolderHandler,
+      setDeletingFolder,
+      isDeletingFolder,
     }),
     [
+      setDeletingFolder,
+      isDeletingFolder,
+      deleteSiloFolderHandler,
       siloFileAttributes,
       fetchSiloFileAttributesHandler,
       isLoadingSiloFileAttributes,

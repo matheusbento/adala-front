@@ -20,6 +20,7 @@ export type CubesType = {
   fetchCubeViewerHandler: (dimension?: string, params?: any) => void;
   fetchCubesHandler: (search?: string | undefined | null, params?: PaginateParams | null) => void;
   setSelectedTemplate: (template: CubeTemplateType | null) => void;
+  deleteCubeHandler: (cubeId: number) => void;
   saveCubeHandler: (data: any) => void;
   loadingOverview: boolean;
   showCube: number | string | null;
@@ -53,12 +54,12 @@ const useCubes = () => {
   return context;
 };
 
-interface CubesProviderProps {
+interface ICubesProviderProps {
   children: ReactNode;
   organizationId: number;
 }
 
-function CubesProvider({ children, organizationId }: CubesProviderProps) {
+function CubesProvider({ children, organizationId }: ICubesProviderProps) {
   const [showModal, setShowModal] = useState<string | null>(null);
   const [order, setOrder] = useState<OrderType>();
   const [isLoadingCubes, setIsLoadingCubes] = useState(false);
@@ -141,7 +142,7 @@ function CubesProvider({ children, organizationId }: CubesProviderProps) {
         setIsLoadingCubeView(false);
       }
     },
-    [setLoadingOverview, cube],
+    [cube],
   );
 
   const saveCubeHandler = useCallback(
@@ -159,6 +160,7 @@ function CubesProvider({ children, organizationId }: CubesProviderProps) {
           data,
         });
         setFormSuccess(['Cube created!']);
+        setShowModal(null);
         // setCubeView(response?.data);
       } catch (e) {
         // setCubeView(null);
@@ -174,6 +176,7 @@ function CubesProvider({ children, organizationId }: CubesProviderProps) {
     },
     [setLoadingOverview, organizationId, cube],
   );
+
 
   const fetchCubesHandler = useCallback(
     async (
@@ -225,6 +228,36 @@ function CubesProvider({ children, organizationId }: CubesProviderProps) {
     [order, organizationId],
   );
 
+
+  const deleteCubeHandler = useCallback(
+    async (cubeId: number) => {
+      try {
+        setIsLoadingSave(true);
+        const method = 'delete';
+        const url = `organizations/${organizationId}/cubes/${cubeId}`;
+
+        const response = await api({
+          method,
+          url,
+        });
+        setFormSuccess(['Cube delete!']);
+        fetchCubesHandler();
+        // setCubeView(response?.data);
+      } catch (e) {
+        // setCubeView(null);
+        // [todo]
+        // toaster(
+        //   dispatch,
+        //   'Error while trying to load the departmentSources',
+        //   'error'
+        // );
+      } finally {
+        setIsLoadingSave(false);
+      }
+    },
+    [fetchCubesHandler, organizationId],
+  );
+
   const providerValue = useMemo(
     () => ({
       showModal,
@@ -256,8 +289,10 @@ function CubesProvider({ children, organizationId }: CubesProviderProps) {
       setInitialValues,
       siloFilesAttributes,
       setSiloFilesAttributes,
+      deleteCubeHandler,
     }),
     [
+      deleteCubeHandler,
       setSiloFilesAttributes,
       siloFilesAttributes,
       setInitialValues,

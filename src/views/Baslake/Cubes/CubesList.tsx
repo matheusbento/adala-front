@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 
 import Button from '@components/Library/Button';
 import Header from '@components/Library/Header';
@@ -16,6 +16,7 @@ import { List, Loader } from 'semantic-ui-react';
 import { CubeType } from 'types/CubeType';
 
 import { colors, margin, padding, styles, utils, display, tables, fontSizes } from 'utils/theme';
+import ModalConfirm from '@/components/Library/ModalConfirm';
 
 const styleCubes = css({
   '&.ui.header': {
@@ -52,13 +53,26 @@ function CubesList() {
     showCube,
     setIsOpenCubeViewerModal,
     fetchCubeHandler,
+    deleteCubeHandler,
   } = useCubes();
+
+  const [confirmDelete, setConfirmDelete] = useState<null | number>(null);
 
   const { t } = useTranslation();
 
-  const handleShowCube = useCallback((item: CubeType) => {
-    fetchCubeHandler(item.id);
-  }, []);
+  const handleShowCube = useCallback(
+    (item: CubeType) => {
+      fetchCubeHandler(item.id);
+    },
+    [fetchCubeHandler],
+  );
+
+  const handleConfirmDeleteFolder = useCallback(() => {
+    if (confirmDelete) {
+      deleteCubeHandler(confirmDelete);
+      setConfirmDelete(null);
+    }
+  }, [confirmDelete, deleteCubeHandler]);
 
   return (
     <If condition={isLoadingCubes || loadingOverview}>
@@ -195,11 +209,30 @@ function CubesList() {
                         >
                           {t('Data visualize')}
                         </Button>
+                        <Button
+                          pill
+                          className={`${styleButton}`}
+                          size="xs"
+                          onClick={() => setConfirmDelete(item.id)}
+                          color="disabled"
+                          outline
+                        >
+                          {t('Delete')}
+                        </Button>
                       </div>
                     </List.Content>
                   </List.Item>
                 ))}
             </List>
+
+            <ModalConfirm
+              open={!!confirmDelete}
+              header="Delete Silo"
+              confirmText="Are you sure you want to delete this silo?"
+              labelConfirm="Delete"
+              onConfirm={handleConfirmDeleteFolder}
+              onDismiss={() => setConfirmDelete(null)}
+            />
           </>
         )}
 

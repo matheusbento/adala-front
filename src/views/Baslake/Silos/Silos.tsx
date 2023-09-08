@@ -49,7 +49,7 @@ function Silos() {
 
   useEffect(() => {
     fetchSilosHandler(null);
-  }, [organization]);
+  }, [fetchSilosHandler, organization]);
 
   return (
     <div className={`${styleContainer}`}>

@@ -1,13 +1,14 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 
 import Button from '@components/Library/Button';
 import Header from '@components/Library/Header';
 import IconList from '@components/Library/IconList/IconList';
+import ModalConfirm from '@components/Library/ModalConfirm';
 import Text from '@components/Library/Text';
 import { useSilo } from '@hooks/Silos';
 import { css } from 'glamor';
 import { useTranslation } from 'react-i18next';
-import { Else, If, Then } from 'react-if';
+import { Else, If, Then, When } from 'react-if';
 import { List, Loader } from 'semantic-ui-react';
 
 import { SiloType } from 'types/SiloType';
@@ -42,13 +43,23 @@ const styleListItem = css(styles.pointer, padding.sm, {
 const styleButton = css(margin.rightXxs, margin.bottomXxs);
 
 function SilosList() {
-  const { isLoadingSilos, silos, showSilo, fetchSiloHandler } = useSilo();
+  const [confirmDeleteSilo, setConfirmDeleteSilo] = useState<null | number>(null);
+  const { isLoadingSilos, silos, showSilo, fetchSiloHandler, deleteSiloFolderHandler } = useSilo();
 
   const { t } = useTranslation();
 
-  const handleShowSilo = useCallback((item: SiloType) => {
-    fetchSiloHandler(item);
-  }, []);
+  const handleShowSilo = useCallback(
+    (item: SiloType) => {
+      fetchSiloHandler(item);
+    },
+    [fetchSiloHandler],
+  );
+
+  const handleConfirmDeleteFolder = useCallback(() => {
+    if (confirmDeleteSilo) {
+      deleteSiloFolderHandler(confirmDeleteSilo);
+    }
+  }, [confirmDeleteSilo, deleteSiloFolderHandler]);
 
   return (
     <If condition={isLoadingSilos}>
@@ -99,16 +110,28 @@ function SilosList() {
                     className={`${css(item.secondary_status ? margin.bottomXxs : margin.bottomSm)}`}
                     size="xs"
                   >
-                    {/* <IconList.Item
+                    <When condition={item?.category}>
+                      <IconList.Item
+                        size="xs"
+                        icon="icon-info"
+                        textAlign="left"
+                        label={
+                          <Text size="xs" weight="bold">
+                            {item?.category?.name}
+                          </Text>
+                        }
+                      />
+                    </When>
+                    <IconList.Item
                       size="xs"
-                      icon="icon-folder"
+                      icon="icon-forward"
                       textAlign="left"
                       label={
                         <Text size="xs" weight="bold">
-                          {item.name}
+                          {t('Is Dataflow:')} {item.is_dataflow ? 'Yes' : 'No'}
                         </Text>
                       }
-                    /> */}
+                    />
                     <IconList.Item
                       size="xs"
                       icon="icon-book"
@@ -128,14 +151,34 @@ function SilosList() {
                       // onClick={() => setIsOpenSiloViewerModal(true)}
                       color="primary"
                       outline
+                      icon="icon-edit-line"
                     >
                       {t('Edit')}
+                    </Button>
+                    <Button
+                      pill
+                      className={`${styleButton}`}
+                      size="xs"
+                      icon="icon-trash-line"
+                      onClick={() => setConfirmDeleteSilo(item.id)}
+                      color="disabled"
+                      outline
+                    >
+                      {t('Remove')}
                     </Button>
                   </div>
                 </List.Content>
               </List.Item>
             ))}
         </List>
+        <ModalConfirm
+          open={!!confirmDeleteSilo}
+          header="Delete Silo"
+          confirmText="Are you sure you want to delete this silo?"
+          labelConfirm="Delete"
+          onConfirm={handleConfirmDeleteFolder}
+          onDismiss={() => setConfirmDeleteSilo(null)}
+        />
 
         {/* <Pagination
           isLoading={isLoadingSilos}

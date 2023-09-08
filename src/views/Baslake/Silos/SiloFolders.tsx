@@ -59,6 +59,8 @@ function SilosOverview({ context }: { context: string }) {
   const { showSilo, isLoadingSilos } = useSilo();
   const { t } = useTranslation();
 
+  console.log({ showSilo });
+
   const appliedFilters = getAppliedFiltersByContext();
 
   const handleShowSilo = useCallback((siloId: number | string | null) => {

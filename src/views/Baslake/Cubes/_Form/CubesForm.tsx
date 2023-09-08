@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { useOrganization } from '@/hooks/Organization';
 import Button from '@components/Library/Button';
 import FieldArray from '@components/Library/FieldArray';
 import FileIcon from '@components/Library/FileIcon';
@@ -19,42 +18,34 @@ import { map } from 'lodash';
 import moment from 'moment';
 import { useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { When } from 'react-if';
+import { Else, If, Then, When } from 'react-if';
 import { animateScroll } from 'react-scroll';
-import {
-  Divider,
-  Dropdown,
-  Form as SemanticForm,
-  Step,
-} from 'semantic-ui-react';
+import { Divider, Dropdown, Form as SemanticForm, Step } from 'semantic-ui-react';
 
 // import ReduxField from '@components/Library/ReduxField';
 // import ReduxInputCheckbox from '@components/Library/ReduxInputCheckbox';
 
 import TextEllipsis from 'components/Library/TextEllipsis';
 
-import {
-  cubeActionLabel,
-  filterAttributes,
-  lastStep,
-  steps,
-} from 'constants/cubesConstants';
+import { cubeActionLabel, filterAttributes, lastStep, steps } from 'constants/cubesConstants';
 
 import { parseFileSize, toggleValueInArray } from 'helpers/index';
 
 import FileType from 'types/FileType';
-import SiloFileAttributeType, {
-  SiloFileInnerAttributeType,
-} from 'types/SiloFileAttributeType';
+import SiloFileAttributeType, { SiloFileInnerAttributeType } from 'types/SiloFileAttributeType';
 import SiloFileType from 'types/SiloFileType';
 import { SiloType } from 'types/SiloType';
 import TagType from 'types/TagType';
 
 import { fontWeight, margin, padding } from 'utils/themeConstants';
+import { useOrganization } from '@/hooks/Organization';
 
 import { colors } from '../../../../utils/themeConstants';
 import CubesFormReviewContainer from './CubesFormReviewContainer';
 import CubeMetadataItemBulkForm from './Metadatas/CubeMetadataItemBulkForm';
+import InputCheckbox from '@/components/Library/InputCheckbox';
+import InputDropdown from '@/components/Library/InputDropdown';
+import { useCategory } from '@/hooks/Category';
 
 // import CubesNotesForm from 'views/Vms/Cubes/CubesNotesForm';
 
@@ -104,6 +95,8 @@ function CubesForm() {
 
   const isNewOrder = useMemo(() => showModal === 'new', [showModal]);
 
+  const { fetchAllCategoriesHandler, categories } = useCategory();
+
   // const isEditOrder = useMemo(() => showModal === 'edit', [showModal]);
 
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -113,7 +106,11 @@ function CubesForm() {
       all: true,
       status: fileStatus.ready_for_use,
     });
-  }, [folder]);
+  }, [fetchSiloHandler, folder, silos]);
+
+  useEffect(() => {
+    fetchAllCategoriesHandler();
+  }, [fetchAllCategoriesHandler]);
 
   const rows = useMemo(
     () =>
@@ -151,20 +148,22 @@ function CubesForm() {
 
   useEffect(() => {
     fetchSilosHandler(null, { all: true });
-  }, [organization]);
+  }, [fetchSilosHandler, organization]);
+
+  const isDataflow = useMemo(() => watch('is_dataflow'), [watch()]);
 
   const canNext = useCallback(
     (step: number) => {
       const can = {
         [steps.details]: () => true,
-        [steps.files]: () => !!folder && selectedFiles.length,
+        [steps.files]: () => !!folder && (isDataflow || selectedFiles.length),
         [steps.mapping]: () => true,
         [steps.confirm]: () => true,
       };
 
       return can[step]();
     },
-    [selectedFiles, folder],
+    [folder, isDataflow, selectedFiles.length],
   );
 
   const foldersOptions = useMemo(
@@ -177,7 +176,11 @@ function CubesForm() {
   );
 
   const setStepHandler = useCallback(
-    (step: number) => {
+    (s: number) => {
+      let step = s;
+      if (step === steps.mapping && isDataflow) {
+        step = steps.confirm;
+      }
       const functions = {
         [steps.details]: () => {},
         [steps.files]: () => {},
@@ -188,10 +191,11 @@ function CubesForm() {
         },
         [steps.confirm]: () => {},
       };
+      console.log({ step });
       functions[step]();
       setFormStep(step);
     },
-    [folder, selectedFiles, fetchSiloFilesAttributesHandler],
+    [isDataflow, fetchSiloFilesAttributesHandler, folder, selectedFiles],
   );
 
   // todo
@@ -290,7 +294,7 @@ function CubesForm() {
         sortable: false,
       },
     ],
-    [],
+    [t],
   );
 
   const renderSubmitControls = useCallback<any>(
@@ -366,25 +370,50 @@ function CubesForm() {
         </SemanticForm.Group>
       </>
     ),
-    [isLoadingSave, valid, showModal, isNewOrder],
+    [
+      isLoadingSave,
+      selectedColumns,
+      valid,
+      showModal,
+      isNewOrder,
+      submitAndSaveTemplate,
+      setStepHandler,
+      formStep,
+    ],
   );
 
   const renderControls = useCallback<any>(
     () => (
-      <>
-        <SemanticForm.Group>
-          <Button
-            color="success"
-            fluid
-            pill
-            loading={isLoadingSave}
-            onClick={() => setStepHandler(formStep + 1)}
-            disabled={isLoadingSave || !canNext(formStep)}
-            type={!valid ? 'submit' : 'button'}
-          >
-            {showModal ? `Next` : 'Loading'}
-          </Button>
-        </SemanticForm.Group>
+      <If condition={formStep === steps.confirm}>
+        <Then>
+          <SemanticForm.Group>
+            <Button
+              color="success"
+              fluid
+              pill
+              loading={isLoadingSave}
+              disabled={isLoadingSave}
+              type="submit"
+            >
+              {t('Submit')}
+            </Button>
+          </SemanticForm.Group>
+        </Then>
+        <Else>
+          <SemanticForm.Group>
+            <Button
+              color="success"
+              fluid
+              pill
+              loading={isLoadingSave}
+              onClick={() => setStepHandler(formStep + 1)}
+              disabled={isLoadingSave || !canNext(formStep)}
+              type={!valid ? 'submit' : 'button'}
+            >
+              {showModal ? `Next` : 'Loading'}
+            </Button>
+          </SemanticForm.Group>
+        </Else>
         <When condition={formStep > 0}>
           <SemanticForm.Group>
             <Button
@@ -400,9 +429,9 @@ function CubesForm() {
             </Button>
           </SemanticForm.Group>
         </When>
-      </>
+      </If>
     ),
-    [isLoadingSave, valid, formStep, canNext, showModal],
+    [formStep, isLoadingSave, t, canNext, valid, showModal, setStepHandler],
   );
 
   const handleBulkAction = useCallback(
@@ -441,16 +470,18 @@ function CubesForm() {
               </Step.Content>
             </Step>
 
-            <Step
-              active={formStep === steps.mapping}
-              completed={formStep > steps.mapping}
-              disabled={formStep < steps.mapping}
-            >
-              <Step.Content>
-                <Step.Title>{t('Mapping')}</Step.Title>
-                <Step.Description>Map your data</Step.Description>
-              </Step.Content>
-            </Step>
+            <When condition={!isDataflow}>
+              <Step
+                active={formStep === steps.mapping}
+                completed={formStep > steps.mapping}
+                disabled={formStep < steps.mapping}
+              >
+                <Step.Content>
+                  <Step.Title>{t('Mapping')}</Step.Title>
+                  <Step.Description>Map your data</Step.Description>
+                </Step.Content>
+              </Step>
+            </When>
 
             <Step
               active={formStep === steps.confirm}
@@ -514,6 +545,23 @@ function CubesForm() {
                 </SemanticForm.Field>
                 <SemanticForm.Field className={`${css(margin.bottomLg)}`}>
                   <Header as="h5" className={`${styleTitle}`}>
+                    {t('Data Category')}
+                  </Header>
+
+                  <InputDropdown
+                    name="category_id"
+                    key="category_id"
+                    laravelOptions={categories}
+                    placeholder="Category"
+                    disabled={false}
+                    fluid
+                    selection
+                    required
+                    search
+                  />
+                </SemanticForm.Field>
+                <SemanticForm.Field className={`${css(margin.bottomLg)}`}>
+                  <Header as="h5" className={`${styleTitle}`}>
                     Metadata
                   </Header>
 
@@ -539,9 +587,12 @@ function CubesForm() {
                     setSelectedFiles([]);
                     setFolder(vals.value);
                   }}
+                  className={`${css(margin.bottomMd)}`}
                 />
 
-                <When condition={files?.length}>
+                <InputCheckbox name="is_dataflow" text={t('Is dataflow?')} />
+
+                <When condition={files?.length && !isDataflow}>
                   {() => (
                     <>
                       <Header as="h5" className={`${styleFiles}`}>

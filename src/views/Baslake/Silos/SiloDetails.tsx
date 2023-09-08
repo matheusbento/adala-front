@@ -128,9 +128,12 @@ function SiloDetails() {
     [],
   );
 
-  const handleSiloFile = useCallback((item: SiloFileType) => {
-    downloadSiloFile(item);
-  }, []);
+  const handleSiloFile = useCallback(
+    (item: SiloFileType) => {
+      downloadSiloFile(item);
+    },
+    [downloadSiloFile],
+  );
 
   const rows = useMemo(
     () =>

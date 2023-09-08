@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 
 import Config from './config';
 
-const apiDefaultTimeout = (process.env.MIX_API_DEFAULT_TIMEOUT || 60, 10) * 1000;
+const apiDefaultTimeout = (import.meta.env.MIX_API_DEFAULT_TIMEOUT || 60, 10) * 1000;
 
 export const getSession = async () => {
   const userToken = await Cookies.get('userToken');
@@ -21,6 +21,15 @@ const api = axios.create({
 
 export const cubesAPI = axios.create({
   baseURL: Config.CUBES_URL,
+  timeout: apiDefaultTimeout,
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+  },
+});
+
+export const etlAPI = axios.create({
+  baseURL: Config.ETL_URL,
   timeout: apiDefaultTimeout,
   headers: {
     Accept: 'application/json',

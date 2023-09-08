@@ -26,7 +26,7 @@ const FieldForm = buildFormField(
   }),
 );
 
-export interface InputDropdownProps {
+export interface IInputDropdownProps {
   spaced?: boolean;
   options?: Record<any, any>;
   laravelOptions?: any;
@@ -37,6 +37,7 @@ export interface InputDropdownProps {
   onChange?: any;
   search?: boolean;
   fluid?: boolean;
+  loading?: boolean;
   useDescriptionAsValue?: boolean;
   name: string;
   formProps?: Record<any, any>;
@@ -46,7 +47,7 @@ export interface InputDropdownProps {
   id?: any;
 }
 
-export interface RestProps {
+export interface IRestProps {
   required?: boolean;
   multiple?: boolean;
 }
@@ -58,6 +59,7 @@ function InputDropdown({
   laravelOptions,
   arrayOptions,
   onChange,
+  loading,
   value,
   multiple = false,
   useDescriptionAsValue = false,
@@ -66,7 +68,7 @@ function InputDropdown({
   formProps,
   selection,
   ...childProps
-}: InputDropdownProps & Partial<RestProps>) {
+}: IInputDropdownProps & Partial<IRestProps>) {
   const styleField = css(spaced && styleSpaced);
 
   const { register, setValue, formState, watch } = useFormContext();
@@ -128,6 +130,7 @@ function InputDropdown({
   return (
     <FieldForm
       options={childOptions}
+      loading={loading}
       placeholder={placeholder || defaultPlaceholder}
       className={`${styleField}`}
       {...register(name, {

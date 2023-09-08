@@ -7,7 +7,7 @@ import { Button as SemanticButton, SemanticFLOATS } from 'semantic-ui-react';
 
 import Pill from './Pill';
 
-export interface ButtonProps {
+export interface IButtonProps {
   pill?: boolean;
   link?: boolean;
   className?: string;
@@ -34,7 +34,7 @@ const linkCss = css(margin.none, padding.none, border.none, {
   userSelect: 'text !important',
 });
 
-function Button({ pill = false, link = false, className, ...rest }: ButtonProps) {
+function Button({ pill = false, link = false, className, ...rest }: IButtonProps) {
   return pill ? (
     <Pill button className={className} {...rest} />
   ) : (

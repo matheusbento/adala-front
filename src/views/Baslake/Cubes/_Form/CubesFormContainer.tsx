@@ -1,8 +1,9 @@
 import { useCallback } from 'react';
 
-import { useOrganization } from '@/hooks/Organization';
 import Form from '@components/Library/Form';
+import { CategoryProvider } from '@hooks/Category';
 import { useCubes } from '@hooks/Cubes';
+import { useOrganization } from '@hooks/Organization';
 import { useSilo } from '@hooks/Silos';
 
 import CubesForm from './CubesForm';
@@ -27,9 +28,11 @@ function CubesFormContainer(props: any) {
   );
 
   return (
-    <Form onSubmit={handleSubmit} formArgs={{ defaultValues: initialValues }}>
-      <CubesForm {...props} />
-    </Form>
+    <CategoryProvider>
+      <Form onSubmit={handleSubmit} formArgs={{ defaultValues: initialValues }}>
+        <CubesForm {...props} />
+      </Form>
+    </CategoryProvider>
   );
 }
 

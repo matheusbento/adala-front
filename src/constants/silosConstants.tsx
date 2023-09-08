@@ -10,6 +10,7 @@ export const fileStatus = {
   ready_for_use: 'ready_for_use',
   processing: 'processing',
   invalid: 'invalid',
+  processing_error: 'processing_error',
 };
 
 export const acceptableFileTypes = ['text/plain', 'text/csv', 'application/json', ''];
@@ -20,6 +21,7 @@ export const statusLabel = {
   [fileStatus.ready_for_use]: 'Ready for Use',
   [fileStatus.processing]: 'Processing',
   [fileStatus.invalid]: 'Invalid',
+  [fileStatus.processing_error]: 'Processing Error',
 };
 
 export const statusIcon = {
@@ -28,6 +30,7 @@ export const statusIcon = {
   [fileStatus.ready_for_use]: 'icon-checkmark',
   [fileStatus.processing]: 'icon-refresh',
   [fileStatus.invalid]: 'icon-close',
+  [fileStatus.processing_error]: 'icon-close',
 };
 
 export const statusColor = {
@@ -36,6 +39,7 @@ export const statusColor = {
   [fileStatus.ready_for_use]: 'green',
   [fileStatus.processing]: 'yellow',
   [fileStatus.invalid]: 'red',
+  [fileStatus.processing_error]: 'red',
 };
 
 export const acceptableExtensions = ['.json', '.pkl', '.txt', '.csv'];
