@@ -1,12 +1,13 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
+import Segment from '@components/Library/Segment';
 import api from '@helpers/api';
 import { useCubes } from '@hooks/Cubes';
 import { useDashboard } from '@hooks/Dashboard';
 import { useOrganization } from '@hooks/Organization';
 import { useTranslation } from 'react-i18next';
-import { Dimmer, Loader, Segment } from 'semantic-ui-react';
+import { Dimmer, Loader } from 'semantic-ui-react';
 import HeatMap from './Charts/HeatMap';
 
 function CubeDashboardItem({ item, layout }: any) {
@@ -55,12 +56,12 @@ function CubeDashboardItem({ item, layout }: any) {
   );
 
   return (
-    <Dimmer.Dimmable as={Segment} blurring dimmed={isLoadingDashboard} basic>
+    <Segment basic>
       <Dimmer active={isLoadingDashboard}>
         <Loader inline="centered" />
       </Dimmer>
       {components[item.chart]}
-    </Dimmer.Dimmable>
+    </Segment>
   );
 }
 

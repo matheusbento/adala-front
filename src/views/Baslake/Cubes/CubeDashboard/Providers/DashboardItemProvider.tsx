@@ -1,32 +1,40 @@
 /* eslint-disable react/prop-types */
-import React, { useMemo } from 'react';
+import React from 'react';
+import Button from '@components/Library/Button';
+import SvgIcon from '@components/Library/SvgIcon';
+import Text from '@components/Library/Text';
+import { useDashboard } from '@hooks/Dashboard';
+import { display, flex, margin, padding } from '@utils/themeConstants';
 import { css } from 'glamor';
-import Button from '@/components/Library/Button';
-import SvgIcon from '@/components/Library/SvgIcon';
-import { display, flex, padding } from '@/utils/themeConstants';
-import { Link } from 'react-router-dom';
-import { Card, Menu } from 'semantic-ui-react';
+import { Card, Grid } from 'semantic-ui-react';
 
-function DashboardItemProviderDropdown({ itemId }: any) {
-  // console.log({ itemId });
-  const dashboardItemProviderDropdownMenu = useMemo(() => {
-    console.log({ itemId });
-    return (
-      <Menu>
-        <Menu.Item>
-          <Link to={`/explore?itemId=${itemId}`}>Edit</Link>
-        </Menu.Item>
-        <Menu.Item>Delete</Menu.Item>
-      </Menu>
-    );
-  }, [itemId]);
+function DashboardItemProviderDropdown({ itemId, title }: any) {
+  const { deleteDashboardItem } = useDashboard();
 
   return (
-    <div className={`${css(display.flex, flex.justifyContentEnd, padding.xxs)}`}>
-      <Button link color="default">
-        <SvgIcon path="icon-close" />
-      </Button>
-    </div>
+    <Grid>
+      <Grid.Row columns={3}>
+        <Grid.Column>
+          <div />
+        </Grid.Column>
+        <Grid.Column className={`${css(display.flex, flex.justifyContentCenter)}`}>
+          <Text>{title}</Text>
+        </Grid.Column>
+        <Grid.Column
+          className={`${css(display.flex, flex.justifyContentEnd, padding.xxs, padding.rightSm)}`}
+        >
+          <Button
+            link
+            color="default"
+            onClick={() => {
+              deleteDashboardItem(itemId);
+            }}
+          >
+            <SvgIcon path="icon-close" />
+          </Button>
+        </Grid.Column>
+      </Grid.Row>
+    </Grid>
   );
 }
 function DashboardItemProvider({ itemId, children, title }: any) {
@@ -39,7 +47,7 @@ function DashboardItemProvider({ itemId, children, title }: any) {
         border: '0px !important',
       }}
     >
-      <DashboardItemProviderDropdown itemId={itemId} />
+      <DashboardItemProviderDropdown itemId={itemId} title={title} />
       {children}
     </Card>
   );

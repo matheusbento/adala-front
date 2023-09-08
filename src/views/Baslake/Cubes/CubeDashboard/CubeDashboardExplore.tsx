@@ -1,14 +1,14 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import Button from '@components/Library/Button';
 import FieldArray from '@components/Library/FieldArray';
 import InputDropdown from '@components/Library/InputDropdown';
+import InputText from '@components/Library/InputText';
 import { useCubes } from '@hooks/Cubes';
 import { useExplore } from '@hooks/Explore';
 import { fontWeight, margin } from '@utils/themeConstants';
 import { css } from 'glamor';
-import Cookies from 'js-cookie';
 import { useTranslation } from 'react-i18next';
 import { Else, If, Then } from 'react-if';
 import { Dimmer, Loader, Segment, Form as SemanticForm } from 'semantic-ui-react';
@@ -24,14 +24,12 @@ const styleTitle = css(margin.topNone, {
 function CubeDashboardExplore() {
   const [showFilter, setShowFilter] = useState(false);
   const { cube } = useCubes();
-  const { columns, isLoadingColumns, fetchColumnsHandler } = useExplore();
+  const { columns, isLoadingColumns, isLoadingExplore, fetchColumnsHandler } = useExplore();
   const { t } = useTranslation();
 
   useEffect(() => {
     fetchColumnsHandler(cube);
   }, [cube, fetchColumnsHandler]);
-
-  const { showExplore, isLoadingExplore, fetchExploreHandler } = useExplore();
 
   // useEffect(() => {
   //   if (showExplore) {
@@ -48,6 +46,17 @@ function CubeDashboardExplore() {
       </Dimmer>
 
       <SemanticForm.Group widths="equal">
+        <SemanticForm.Field>
+          <InputText
+            name="name"
+            key="name"
+            placeholder="name"
+            label="Name"
+            disabled={false}
+            fluid
+            required
+          />
+        </SemanticForm.Field>
         <SemanticForm.Field>
           <InputDropdown
             name="chart"

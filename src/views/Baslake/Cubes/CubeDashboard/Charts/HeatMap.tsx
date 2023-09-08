@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef } from 'react';
 import Plotly, { Data } from 'plotly.js/dist/plotly';
 import Plot from 'react-plotly.js';
+import { Loader } from 'semantic-ui-react';
 
 function HeatMap({ dataset, gridLayout, loading }: any) {
   const plotDivRef = useRef(null);
@@ -26,12 +27,11 @@ function HeatMap({ dataset, gridLayout, loading }: any) {
 
   // Layout para o heatmap
   const layout = {
-    title: 'Simple Heatmap Example',
     autosize: true,
   };
 
   return loading ? (
-    <>Loading</>
+    <Loader disabled />
   ) : (
     <Plot
       ref={plotDivRef}

@@ -8,7 +8,7 @@ function CubeDashboardExploreContainer() {
   const handleSubmit = useCallback(async (values: any) => {
     const store = await Cookies.get('dashItems');
     const dashItems = JSON.parse(store ?? '{}');
-    const temp = { ...values, id: uniqueId(), layout: JSON.stringify({}) };
+    const temp = { ...values, id: uniqueId(), layout: {} };
     const items = dashItems?.length ? [...dashItems, temp] : [temp];
     Cookies.set('dashItems', JSON.stringify(items));
   }, []);

@@ -1,9 +1,8 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
-import { useEffect, useCallback, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useCubes } from '@hooks/Cubes';
 import { useDashboard } from '@hooks/Dashboard';
-import Cookies from 'js-cookie';
 import RGL, { WidthProvider } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
@@ -17,26 +16,23 @@ import DashboardProvider from './Providers/DashboardProvider';
 
 const ReactGridLayout = WidthProvider(RGL);
 
-const defaultLayout = (i: any) => ({
-  x: i?.layout?.x || 0,
-  y: i?.layout?.y || 0,
-  w: i?.layout?.w || 4,
-  h: i?.layout?.h || 8,
-  minW: 4,
-  minH: 8,
-});
+const defaultLayout = (i: any) => {
+  console.log({ i });
+  return {
+    x: i?.layout?.x || 0,
+    y: i?.layout?.y || 0,
+    w: i?.layout?.w || 4,
+    h: i?.layout?.h || 8,
+    minW: 4,
+    minH: 8,
+  };
+};
 
 function CubeDashboard() {
   const { cube } = useCubes();
   const { t } = useTranslation();
-  const [dashboardItems, setDashboardItems] = useState<any>([]);
-
+  const { getItems, dashboardItems } = useDashboard();
   const { isLoadingDashboard } = useDashboard();
-
-  const getItems = useCallback(async () => {
-    const items = await Cookies.get('dashItems');
-    setDashboardItems(JSON.parse(items ?? '[]'));
-  }, []);
 
   useEffect(() => {
     getItems();
