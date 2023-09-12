@@ -29,4 +29,6 @@ export const statusLabel = {
   [statuses.invalid]: 'Invalid',
 };
 
+export const dataProcessingMethods = ['none', 'mean'];
+
 export default cubeActionLabel;

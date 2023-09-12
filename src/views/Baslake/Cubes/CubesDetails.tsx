@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import Button from '@components/Library/Button';
 import DetailsList from '@components/Library/DetailsList';
@@ -25,6 +25,7 @@ import { When } from 'react-if';
 import { useDashboard } from '@hooks/Dashboard';
 import CubeDashboardModalContainer from './CubeDashboard/CubeDashboardModalContainer';
 import CubesDetailsHeader from './CubesDetailsHeader';
+import { statuses } from '@/constants/cubesConstants';
 
 const styleNote = css({
   fontWeight: fontWeight.w500,
@@ -57,7 +58,7 @@ function CubesDetails() {
 
   const { isLoadingCube, isUpdating, cube, cubeModel, setShowModal, setInitialValues } = useCubes();
 
-  const { setShowDashboard } = useDashboard();
+  const [showDashboard, setShowDashboard] = useState(false);
 
   const windowSize = useWindowWidth();
 
@@ -88,7 +89,7 @@ function CubesDetails() {
         (e: CubeMetadataType) => !['start_date', 'end_date'].includes(e.field),
       ),
     });
-  }, []);
+  }, [cube, setInitialValues, setShowModal]);
 
   const handleDataVisualize = useCallback(() => {
     setShowDashboard(true);
@@ -113,16 +114,18 @@ function CubesDetails() {
           <CubesDetailsHeader cube={cube} />
 
           <List.Item>
-            <Button
-              pill
-              className={`${styleButton}`}
-              size="xs"
-              onClick={handleDataVisualize}
-              color="primary"
-              outline
-            >
-              {t('Data visualize')}
-            </Button>
+            <When condition={cube?.current_status === statuses.ready_to_analysis}>
+              <Button
+                pill
+                className={`${styleButton}`}
+                size="xs"
+                onClick={handleDataVisualize}
+                color="primary"
+                outline
+              >
+                {t('Data visualize')}
+              </Button>
+            </When>
             <Button
               pill
               className={`${styleButton}`}
@@ -385,7 +388,7 @@ function CubesDetails() {
         onConfirm={handleConfirmDeleteNote}
         onDismiss={() => setDeletingNote(null)}
       /> */}
-      <CubeDashboardModalContainer />
+      <CubeDashboardModalContainer showModal={showDashboard} setShowModal={setShowDashboard} />
     </>
   );
 }

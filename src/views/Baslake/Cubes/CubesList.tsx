@@ -199,7 +199,7 @@ function CubesList() {
                         />
                       </IconList>
                       <div>
-                        <Button
+                        {/* <Button
                           pill
                           className={`${styleButton}`}
                           size="xs"
@@ -208,7 +208,7 @@ function CubesList() {
                           outline
                         >
                           {t('Data visualize')}
-                        </Button>
+                        </Button> */}
                         <Button
                           pill
                           className={`${styleButton}`}

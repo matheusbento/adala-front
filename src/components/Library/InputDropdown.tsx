@@ -9,7 +9,7 @@ import { doubleEscapeSpecialChars, isSelectorValid } from '../../helpers';
 import buildFormField from '../../utils/buildFormField';
 import { padding, fontSizes } from '../../utils/theme';
 
-const styleSpaced = css(padding.ySm, padding.xMd, fontSizes.md);
+const styleSpaced = css(padding.ySm, padding.xMd, fontSizes.md, { zIndex: 1000 });
 
 const FieldForm = buildFormField(
   Dropdown,

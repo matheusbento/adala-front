@@ -5,6 +5,7 @@ import Button from '@components/Library/Button';
 import FieldArray from '@components/Library/FieldArray';
 import InputDropdown from '@components/Library/InputDropdown';
 import InputText from '@components/Library/InputText';
+import { dataProcessingMethods } from '@constants/cubesConstants';
 import { useCubes } from '@hooks/Cubes';
 import { useExplore } from '@hooks/Explore';
 import { fontWeight, margin } from '@utils/themeConstants';
@@ -37,7 +38,7 @@ function CubeDashboardExplore() {
   //   }
   // }, [fetchExploreHandler, showExplore]);
 
-  const charts = useMemo(() => ['heatmap'], []);
+  const charts = useMemo(() => ['heatmap', 'line', 'waterfall'], []);
 
   return (
     <Dimmer.Dimmable as={Segment} blurring dimmed={isLoadingExplore}>
@@ -64,6 +65,21 @@ function CubeDashboardExplore() {
             arrayOptions={charts}
             placeholder="chart"
             label="Chart"
+            disabled={false}
+            fluid
+            selection
+            required
+            search
+          />
+        </SemanticForm.Field>
+
+        <SemanticForm.Field>
+          <InputDropdown
+            name="data_processing_method"
+            key="data_processing_method"
+            label="Data Processing Method"
+            arrayOptions={dataProcessingMethods}
+            placeholder="Operation"
             disabled={false}
             fluid
             selection

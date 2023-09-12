@@ -114,7 +114,7 @@ function CubesProvider({ children, organizationId }: ICubesProviderProps) {
         setIsLoadingCube(false);
       }
     },
-    [setLoadingOverview, organizationId],
+    [organizationId],
   );
 
   const fetchCubeViewerHandler = useCallback(
@@ -144,39 +144,6 @@ function CubesProvider({ children, organizationId }: ICubesProviderProps) {
     },
     [cube],
   );
-
-  const saveCubeHandler = useCallback(
-    async (data: any) => {
-      try {
-        setIsLoadingSave(true);
-        const method = data?.id ? 'put' : 'post';
-        const url = data?.id
-          ? `organizations/${organizationId}/cubes/${data?.id}`
-          : `organizations/${organizationId}/cubes`;
-
-        const response = await api({
-          method,
-          url,
-          data,
-        });
-        setFormSuccess(['Cube created!']);
-        setShowModal(null);
-        // setCubeView(response?.data);
-      } catch (e) {
-        // setCubeView(null);
-        // [todo]
-        // toaster(
-        //   dispatch,
-        //   'Error while trying to load the departmentSources',
-        //   'error'
-        // );
-      } finally {
-        setIsLoadingSave(false);
-      }
-    },
-    [setLoadingOverview, organizationId, cube],
-  );
-
 
   const fetchCubesHandler = useCallback(
     async (
@@ -226,6 +193,39 @@ function CubesProvider({ children, organizationId }: ICubesProviderProps) {
       }
     },
     [order, organizationId],
+  );
+
+  const saveCubeHandler = useCallback(
+    async (data: any) => {
+      try {
+        setIsLoadingSave(true);
+        const method = data?.id ? 'put' : 'post';
+        const url = data?.id
+          ? `organizations/${organizationId}/cubes/${data?.id}`
+          : `organizations/${organizationId}/cubes`;
+
+        const response = await api({
+          method,
+          url,
+          data,
+        });
+        setFormSuccess(['Cube created!']);
+        setShowModal(null);
+        fetchCubesHandler();
+        // setCubeView(response?.data);
+      } catch (e) {
+        // setCubeView(null);
+        // [todo]
+        // toaster(
+        //   dispatch,
+        //   'Error while trying to load the departmentSources',
+        //   'error'
+        // );
+      } finally {
+        setIsLoadingSave(false);
+      }
+    },
+    [organizationId, fetchCubesHandler],
   );
 
 
