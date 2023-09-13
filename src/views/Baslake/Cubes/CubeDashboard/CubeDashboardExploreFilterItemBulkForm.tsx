@@ -9,6 +9,7 @@ import { useExplore } from '@hooks/Explore';
 import { fontWeight, margin } from '@utils/themeConstants';
 import BaslakeTable from '@views/Layout/BaslakeTable';
 import { css } from 'glamor';
+import { Else, If, Then } from 'react-if';
 import { Header } from 'semantic-ui-react';
 import { FieldArrayTypeSingle } from 'types/FieldArrayType';
 
@@ -73,7 +74,15 @@ function CubeDashboardExploreFilterItemBulkForm({
     [remove],
   );
   const operations = useMemo(() => {
-    return ['equals', 'does not equals', 'contains', 'does not contains', 'is set', 'is not set'];
+    return [
+      'between',
+      'equals',
+      'does not equals',
+      'contains',
+      'does not contains',
+      'is set',
+      'is not set',
+    ];
   }, []);
 
   console.log({ columns });
@@ -107,14 +116,36 @@ function CubeDashboardExploreFilterItemBulkForm({
           required
           search
         />,
-        <InputText
-          name={`${name}[${index}].value`}
-          key={`${name}[${item.id}].value`}
-          placeholder="Value"
-          disabled={false}
-          fluid
-          required
-        />,
+        <If condition={item.operation === 'between'}>
+          <Then>
+            <InputText
+              name={`${name}[${index}].min_value`}
+              key={`${name}[${item.id}].min_value`}
+              placeholder="Min Value"
+              disabled={false}
+              fluid
+              required
+            />
+            <InputText
+              name={`${name}[${index}].max_value`}
+              key={`${name}[${item.id}].max_value`}
+              placeholder="Max Value"
+              disabled={false}
+              fluid
+              required
+            />
+          </Then>
+          <Else>
+            <InputText
+              name={`${name}[${index}].value`}
+              key={`${name}[${item.id}].value`}
+              placeholder="Value"
+              disabled={false}
+              fluid
+              required
+            />
+          </Else>
+        </If>,
       ]),
     [columns, fields, isLoadingColumns, name, operations],
   );

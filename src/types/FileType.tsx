@@ -3,6 +3,7 @@ export type FileType = {
   size: number;
   mime: string;
   original: string;
+  name: string;
 };
 
 export default FileType;

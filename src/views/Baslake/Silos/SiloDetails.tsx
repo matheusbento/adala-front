@@ -125,7 +125,7 @@ function SiloDetails() {
         sortable: false,
       },
     ],
-    [],
+    [t],
   );
 
   const handleSiloFile = useCallback(
@@ -152,6 +152,7 @@ function SiloDetails() {
 
             <div className={`${css(margin.leftXs)}`}>
               <div className={`${css({ fontWeight: 600 })}`}>{item.name}</div>
+              <div className={`${css({ color: colors.greyLabel })}`}>{file?.name}</div>
               <div className={`${css({ color: colors.greyLabel })}`}>
                 {parseFileSize(file?.size)}
               </div>
@@ -179,7 +180,7 @@ function SiloDetails() {
           </div>,
         ];
       }),
-    [files],
+    [files, handleSiloFile],
   );
 
   const handleDeleteSiloFile = useCallback(() => {

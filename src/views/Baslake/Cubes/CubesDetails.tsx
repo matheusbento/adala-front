@@ -201,7 +201,7 @@ function CubesDetails() {
                   </>
                 ))}
               </Grid.Column>
-              <Grid.Column className={`${styleDetailColumn}`}>
+              {/* <Grid.Column className={`${styleDetailColumn}`}>
                 <Header as="p" color="primary" line lineMargin={`${marginBlueHeaders}`}>
                   {t('Aggregations')}
                 </Header>
@@ -220,8 +220,8 @@ function CubesDetails() {
                     <Divider />
                   </>
                 ))}
-              </Grid.Column>
-              <Grid.Column className={`${styleDetailColumn}`}>
+              </Grid.Column> */}
+              {/* <Grid.Column className={`${styleDetailColumn}`}>
                 <Header as="p" color="primary" line lineMargin={`${marginBlueHeaders}`}>
                   {t('Mappings')}
                 </Header>
@@ -232,7 +232,7 @@ function CubesDetails() {
                     description={cubeModel?.mappings[key]}
                   />
                 ))}
-              </Grid.Column>
+              </Grid.Column> */}
               {/* <Grid.Column className={`${styleDetailColumn}`}>
                 <Header
                   as="p"
