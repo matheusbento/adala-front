@@ -362,3 +362,7 @@ export const isSelectorValid = (selector: any) => {
   }
   return true;
 };
+
+export const generateUniqueId = () => {
+  return Math.floor(10000 + Math.random() * 90000);
+};

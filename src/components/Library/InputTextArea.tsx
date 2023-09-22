@@ -5,6 +5,7 @@ import { spacing, input as InputStyles, padding, fontSizes } from '@utils/theme'
 import { css } from 'glamor';
 import { get } from 'lodash';
 import { useFormContext } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { TextArea as SemanticTextArea } from 'semantic-ui-react';
 
 const styleTextarea = css(InputStyles.select);
@@ -30,12 +31,12 @@ const FieldForm = buildFormField(
   }),
 );
 
-export interface RestProps {
+export interface IRestProps {
   label?: string;
   disabled?: boolean;
 }
 
-export interface InputTextAreaProps {
+export interface IInputTextAreaProps {
   width?: string;
   className?: string;
   placeholder?: string;
@@ -60,12 +61,15 @@ function InputTextArea({
   formProps,
   onChange,
   ...childProps
-}: InputTextAreaProps & RestProps) {
+}: IInputTextAreaProps & IRestProps) {
+  const { t } = useTranslation();
   const styleField = css(styleTextarea, spaced && styleSpaced, rounded && styleRounded);
 
   const { register, setValue, formState, watch } = useFormContext();
 
-  const defaultPlaceholder = `Enter ${childProps.label ? childProps.label.toLowerCase() : 'text'}`;
+  const defaultPlaceholder = t(
+    `Enter ${childProps.label ? childProps.label.toLowerCase() : 'text'}`,
+  );
 
   const message = useMemo(() => {
     const error = get<any, string>(formState?.errors, name);

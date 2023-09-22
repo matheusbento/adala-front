@@ -74,17 +74,17 @@ function SiloFileForm() {
     <>
       <SemanticForm.Field className={`${css(margin.bottomLg)}`}>
         <Header as="h5" className={`${styleTitle}`}>
-          File Name
+          {t('File Alias')}
         </Header>
 
-        <InputText name="name" placeholder="Enter Name" />
+        <InputText name="name" placeholder="Enter name" />
       </SemanticForm.Field>
       <SemanticForm.Field className={`${css(margin.bottomLg)}`}>
         <Header as="h5" className={`${styleTitle}`}>
-          Description
+          {t('Description')}
         </Header>
 
-        <InputTextArea name="description" placeholder="Enter Description" />
+        <InputTextArea name="description" placeholder="Enter description" />
       </SemanticForm.Field>
 
       <SemanticForm.Field className={`${css(margin.bottomLg)}`}>
@@ -94,7 +94,7 @@ function SiloFileForm() {
       <SemanticForm.Group>
         <Button outline color="primary" fluid pill loading={isLoadingSave} type="submit">
           <SvgIcon path="icon-arrow-circle-right-line" size="md" className={`${styleMr}`} />
-          Upload File
+          {t('Upload File')}
         </Button>
       </SemanticForm.Group>
 
@@ -109,7 +109,7 @@ function SiloFileForm() {
           type="button"
           className={`${styleButton}`}
         >
-          Cancel
+          {t('Cancel')}
         </Button>
       </SemanticForm.Group>
     </>

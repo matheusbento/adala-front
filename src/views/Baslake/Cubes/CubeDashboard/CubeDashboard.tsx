@@ -3,13 +3,12 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { useCubes } from '@hooks/Cubes';
 import { useDashboard } from '@hooks/Dashboard';
-import RGL, { WidthProvider } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
+import { css } from 'glamor';
 import { useTranslation } from 'react-i18next';
 import { If, Then, Else } from 'react-if';
 import { Dimmer, Loader, Segment } from 'semantic-ui-react';
-import { css } from 'glamor';
 import CubeDashboardItem from './CubeDashboardItem';
 import DashboardItemProvider from './Providers/DashboardItemProvider';
 import DashboardProvider from './Providers/DashboardProvider';
@@ -44,7 +43,7 @@ function CubeDashboard() {
         h: i?.layout?.h || 8,
         minW: 4,
         minH: 8,
-        isDraggable: isDraggable[i.id] ?? true,
+        draggable: isDraggable[i.id] ?? true,
       };
     },
     [isDraggable],
@@ -58,6 +57,7 @@ function CubeDashboard() {
             <CubeDashboardItem
               item={item}
               layout={layout.find((e: any) => e?.i === item?.id.toString())}
+              isDraggable={false}
             />
           </DashboardItemProvider>
         </div>

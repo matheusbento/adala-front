@@ -140,7 +140,7 @@ function Datepicker({
         required: required ? 'This field is required' : false,
         ...formProps,
       })}
-      displayFormat="YYYY-MM-DD"
+      displayFormat="DD-MM-YYYY"
       block
       noBorder
       numberOfMonths={1}

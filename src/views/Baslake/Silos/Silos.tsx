@@ -64,7 +64,7 @@ function Silos() {
                 icon="icon-folder-add"
                 onClick={() => setShowModal('new')}
               >
-                Create new Silo
+                {t('Create new Silo')}
               </Button>
             </Menu.Item>
           )}
@@ -73,7 +73,7 @@ function Silos() {
 
       <BaslakeModal
         size="small"
-        title={`${showModal === 'new' ? 'Create' : 'Edit'} Silo`}
+        title={t(`${showModal === 'new' ? 'Create' : 'Edit'} Silo`)}
         open={!!showModal}
         closeHandler={() => setShowModal(null)}
       >
@@ -86,7 +86,7 @@ function Silos() {
 
       <BaslakeModal
         size="small"
-        title={`${showModalFile === 'new' ? 'Upload' : 'Edit'} File`}
+        title={t(`${showModalFile === 'new' ? 'Upload' : 'Edit'} File`)}
         open={!!showModalFile}
         closeHandler={() => setShowModalFile(null)}
       >

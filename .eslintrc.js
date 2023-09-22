@@ -83,6 +83,7 @@ module.exports = {
     ],
     'import/no-unresolved': 'off',
     'object-curly-newline': 'off',
+    'react/require-default-props': 'off',
     'prettier/prettier': 'error',
     'react/jsx-filename-extension': [
       1,

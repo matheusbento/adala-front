@@ -1,5 +1,6 @@
-import { ReactNode } from 'react';
+import { ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
 
+import { css } from 'glamor';
 import { When } from 'react-if';
 import { Modal } from 'semantic-ui-react';
 
@@ -7,41 +8,68 @@ import BaslakeModalActions from './BaslakeModalActions';
 import BaslakeModalContent from './BaslakeModalContent';
 import BaslakeModalHeader from './BaslakeModalHeader';
 
-interface BaslakeModalProps {
-  className?: string;
-  size?: 'small' | 'mini' | 'tiny' | 'large' | 'fullscreen';
-  open?: boolean;
+interface IBaslakeModalProps {
   title?: string;
-  closeHandler: any;
-  onDismiss?: any;
-  onConfirm?: any;
+  size?: 'mini' | 'tiny' | 'small' | 'large' | 'fullscreen';
+  open?: boolean;
+  className?: string;
+  closeHandler?: () => void;
   isClosable?: boolean;
-  children?: ReactNode;
+  children?: React.ReactNode;
   closeByClickingOutside?: boolean;
   closeOnEscape?: boolean;
-  headerChildren?: ReactNode;
+  headerChildren?: React.ReactNode;
   linkTo?: string;
+  minWidth?: number;
+}
+
+interface IBaslakeModal {
+  (props: IBaslakeModalProps): ReactElement;
+  Header?: typeof BaslakeModalHeader;
+  Content?: typeof BaslakeModalContent;
+  Actions?: typeof BaslakeModalActions;
 }
 
 function BaslakeModal({
-  className = '',
-  size = undefined,
+  title,
+  size = 'small',
   open = false,
+  className,
   isClosable = true,
-  children = null,
+  children,
   closeByClickingOutside = false,
   closeOnEscape = false,
-  headerChildren = null,
-  title = undefined,
-  linkTo = undefined,
+  headerChildren,
+  linkTo,
+  minWidth,
   closeHandler,
   ...rest
-}: BaslakeModalProps) {
+}: IBaslakeModalProps) {
+  const calcModalSize = useCallback(
+    (width: number) => (minWidth && width <= minWidth ? 'fullscreen' : size),
+    [minWidth, size],
+  );
+
+  const [modalSize, setModalSize] = useState(calcModalSize(window?.innerWidth));
+
+  const minWidthStyle = useMemo(() => (minWidth ? css({ minWidth }) : null), [minWidth]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const newSize = calcModalSize(window?.innerWidth);
+      setModalSize((prev) => (prev !== newSize ? newSize : prev));
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, [calcModalSize]);
+
   return (
     <Modal
-      size={size}
+      size={minWidth ? modalSize : size}
       open={open}
-      className={`${className}`}
+      className={`${className} ${minWidthStyle}`}
       onClose={closeHandler}
       closeOnDimmerClick={isClosable ? closeByClickingOutside : false}
       closeOnEscape={isClosable ? closeOnEscape : false}

@@ -8,6 +8,8 @@ import { AuthProvider } from 'hooks/Auth';
 import PoliciesProvider from 'hooks/Policies';
 import { ToasterProvider } from 'hooks/Toaster/Toaster';
 
+import 'moment/locale/pt-br';
+import 'moment/dist/locale/pt-br';
 import { OrganizationProvider } from './hooks/Organization';
 import RoutesContainer from './routers/RoutesContainer';
 

@@ -128,7 +128,7 @@ function SilosList() {
                       textAlign="left"
                       label={
                         <Text size="xs" weight="bold">
-                          {t('Is Dataflow:')} {item.is_dataflow ? 'Yes' : 'No'}
+                          {t('Is dataflow?')} {item.is_dataflow ? t('Yes') : t('No')}
                         </Text>
                       }
                     />
@@ -164,7 +164,7 @@ function SilosList() {
                       color="disabled"
                       outline
                     >
-                      {t('Remove')}
+                      {t('Delete')}
                     </Button>
                   </div>
                 </List.Content>

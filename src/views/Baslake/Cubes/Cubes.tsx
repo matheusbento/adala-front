@@ -52,7 +52,7 @@ function Cubes() {
               {() => (
                 <Menu.Item position="right">
                   <Button pill outline color="success" onClick={() => setShowModal('new')}>
-                    Create new Cube
+                    {t('Create new Cube')}
                   </Button>
                 </Menu.Item>
               )}
@@ -61,7 +61,7 @@ function Cubes() {
 
           <BaslakeModal
             size="large"
-            title={`${showModal === 'new' ? 'Create' : 'Edit'} Cube`}
+            title={t(`${showModal === 'new' ? 'Create' : 'Edit'} Cube`)}
             open={!!showModal}
             closeHandler={() => setShowModal(null)}
           >

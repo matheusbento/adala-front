@@ -13,6 +13,7 @@ import { colors, display, fontSizes, padding, tables, utils, fontWeight } from '
 import { css } from 'glamor';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { createPortal } from 'react-dom';
+import { useTranslation } from 'react-i18next';
 import { Else, If, Then, When } from 'react-if';
 import { Dropdown, Loader } from 'semantic-ui-react';
 
@@ -113,7 +114,7 @@ const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
   ...draggableStyle,
 });
 
-export interface BaslakeTableProps {
+export interface IBaslakeTableProps {
   headers?: {
     label?: string;
     style?: string;
@@ -189,7 +190,7 @@ function BaslakeTable({
   enableDragAndDrop = false,
   onCallBackDragEnd = undefined,
   droppableId = undefined,
-}: BaslakeTableProps) {
+}: IBaslakeTableProps) {
   const [activeConfirm, setActiveConfirm] = useState<any>(null);
   const [collapsed, setCollapsed] = useState<any>([]);
   const [activeActionRow, setActiveActionRow] = useState<any>(0);
@@ -198,6 +199,8 @@ function BaslakeTable({
   const setDraggingTrue = useCallback(() => setDragging(true), []);
   const styleDroppable = css(dragging && styleDragging);
   const renderDraggable = useDraggableInPortal();
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     setListData(rows);
@@ -750,6 +753,7 @@ function BaslakeTable({
       enableDragAndDrop,
       renderDraggable,
       styleName,
+      hideBulkForValues,
     ],
   );
 
@@ -833,7 +837,7 @@ function BaslakeTable({
                     <Then>{() => listData.map((row: any, i: any) => renderRows(row, i))}</Then>
                     <Else>
                       <tr>
-                        <td colSpan={100}>{noDataMsg}</td>
+                        <td colSpan={100}>{t(noDataMsg)}</td>
                       </tr>
                     </Else>
                   </If>

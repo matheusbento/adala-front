@@ -6,11 +6,14 @@ import api from '@helpers/api';
 import { useCubes } from '@hooks/Cubes';
 import { useOrganization } from '@hooks/Organization';
 import { useQuery } from '@tanstack/react-query';
+import { margin } from '@utils/themeConstants';
+import { css } from 'glamor';
 import { useTranslation } from 'react-i18next';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import HeatMapChart from './Charts/HeatMapChart';
 import LineChart from './Charts/LineChart';
 import WaterFallChart from './Charts/WaterFallChart';
+import CubeDashboardExploreFilterContainer from './CubeDashboardExploreFilterContainer';
 
 function CubeDashboardItem({ item, layout }: any) {
   const { cube } = useCubes();
@@ -22,10 +25,14 @@ function CubeDashboardItem({ item, layout }: any) {
   const { data, isLoading } = useQuery({
     queryKey: [`dash-${item?.id}-${filter}`],
     queryFn: async () => {
-      const params = new URLSearchParams({
-        ...item,
-        filter,
-      }).toString();
+      const params = new URLSearchParams(
+        filter
+          ? {
+              ...item,
+              filter,
+            }
+          : item,
+      ).toString();
       const res = await api.get(
         `/organizations/${organization?.id}/cubes/${cube.id}/data?t=${item.id}&${params}`,
       );
@@ -64,7 +71,10 @@ function CubeDashboardItem({ item, layout }: any) {
       <Dimmer active={isLoadingDashboard}>
         <Loader inline="centered" />
       </Dimmer>
-      {components[item.chart]}
+      <div className={`${css(margin.sm)}`}>
+        <CubeDashboardExploreFilterContainer item={item} />
+      </div>
+      <Segment>{components[item.chart]}</Segment>
     </Segment>
   );
 }

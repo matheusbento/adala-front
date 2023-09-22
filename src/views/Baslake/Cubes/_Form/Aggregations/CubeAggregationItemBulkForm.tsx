@@ -6,6 +6,7 @@ import InputText from '@components/Library/InputText';
 import BaslakeTable from '@views/Layout/BaslakeTable';
 
 import { FieldArrayTypeSingle } from 'types/FieldArrayType';
+import { useTranslation } from 'react-i18next';
 
 const headers = [
   { label: 'Alias', sortable: false, key: 'name' },
@@ -18,6 +19,7 @@ const headers = [
 ];
 
 function CubeAggregationItemBulkForm({ fields, name, push, remove }: FieldArrayTypeSingle) {
+  const { t } = useTranslation();
   const baseAggregation = useMemo(
     () => ({
       name: '',
@@ -43,7 +45,7 @@ function CubeAggregationItemBulkForm({ fields, name, push, remove }: FieldArrayT
         <InputText
           name={`${name}[${index}].alias`}
           key={`${name}[${item.id}].alias`}
-          placeholder="Alias"
+          placeholder={t('Alias')}
           required
           disabled={false}
         />,
@@ -51,7 +53,7 @@ function CubeAggregationItemBulkForm({ fields, name, push, remove }: FieldArrayT
           name={`${name}[${index}].function`}
           key={`${name}[${item.id}].function`}
           laravelOptions={[]}
-          placeholder="Function"
+          placeholder={t('Function')}
           disabled={false}
           fluid
           selection
@@ -62,7 +64,7 @@ function CubeAggregationItemBulkForm({ fields, name, push, remove }: FieldArrayT
           name={`${name}[${index}].variable`}
           key={`${name}[${item.id}].variable`}
           laravelOptions={[]}
-          placeholder="Variable"
+          placeholder={t('Variable')}
           disabled={false}
           fluid
           selection

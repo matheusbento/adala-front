@@ -113,7 +113,7 @@ function SilosForm() {
           disabled={isLoadingSave}
           type="submit"
         >
-          {showModal ? `${siloActionLabel[showModal]} Folder` : 'Loading'}
+          {t(showModal ? `${siloActionLabel[showModal]} Silo` : 'Loading')}
         </Button>
       </SemanticForm.Group>
 
@@ -128,7 +128,7 @@ function SilosForm() {
           type="button"
           className={`${styleButton}`}
         >
-          Cancel
+          {t('Cancel')}
         </Button>
       </SemanticForm.Group>
     </>

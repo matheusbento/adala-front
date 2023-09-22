@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
 
+import ModalConfirm from '@/components/Library/ModalConfirm';
 import Button from '@components/Library/Button';
 import Header from '@components/Library/Header';
 import IconList from '@components/Library/IconList/IconList';
@@ -16,7 +17,6 @@ import { List, Loader } from 'semantic-ui-react';
 import { CubeType } from 'types/CubeType';
 
 import { colors, margin, padding, styles, utils, display, tables, fontSizes } from 'utils/theme';
-import ModalConfirm from '@/components/Library/ModalConfirm';
 
 const styleCubes = css({
   '&.ui.header': {
@@ -101,105 +101,110 @@ function CubesList() {
                 </table>
               )}
               {cubes &&
-                cubes.map((item: any, index: number) => (
-                  <List.Item
-                    key={item.id ? `cube-id-${item.id}` : `cube-index-${index}`}
-                    className={`${styleListItem} ${showCube === item.id ? 'active' : ''}`}
-                    onClick={() => handleShowCube(item)}
-                  >
-                    <List.Content className={`${css(utils.w100)}`}>
-                      <div
-                        className={`${css(display.flex, {
-                          justifyContent: 'space-between',
-                        })}`}
-                      >
-                        <Text size="xxs" color="dark" weight="regular">
-                          {item?.id ?? 'No ID'}
-                        </Text>
-                        <Text size="xs" weight="medium">
-                          {item?.category ?? 'No category'}
-                        </Text>
-                      </div>
+                cubes.map((item: any, index: number) => {
+                  const startDate = item?.metadata?.find((e: any) => e.field === 'start_date');
 
-                      <div className={`${css(display.flex)}`}>
-                        <Text
-                          className={`${css(margin.bottomXs, display.flex)}`}
-                          size="md"
-                          color="primary"
-                          weight="medium"
-                          as="p"
+                  const endDate = item?.metadata?.find((e: any) => e.field === 'end_date');
+
+                  return (
+                    <List.Item
+                      key={item.id ? `cube-id-${item.id}` : `cube-index-${index}`}
+                      className={`${styleListItem} ${showCube === item.id ? 'active' : ''}`}
+                      onClick={() => handleShowCube(item)}
+                    >
+                      <List.Content className={`${css(utils.w100)}`}>
+                        <div
+                          className={`${css(display.flex, {
+                            justifyContent: 'space-between',
+                          })}`}
                         >
-                          {item.label}
-                        </Text>
-                      </div>
-                      <IconList
-                        className={`${css(
-                          item.secondary_status ? margin.bottomXxs : margin.bottomSm,
-                        )}`}
-                        size="xs"
-                      >
-                        <IconList.Item
+                          <Text size="xxs" color="dark" weight="regular">
+                            {item?.id ?? 'No ID'}
+                          </Text>
+                          <Text size="xs" weight="medium">
+                            {item?.category?.name ?? 'No category'}
+                          </Text>
+                        </div>
+
+                        <div className={`${css(display.flex)}`}>
+                          <Text
+                            className={`${css(margin.bottomXs, display.flex)}`}
+                            size="md"
+                            color="primary"
+                            weight="medium"
+                            as="p"
+                          >
+                            {item.label}
+                          </Text>
+                        </div>
+                        <IconList
+                          className={`${css(
+                            item.secondary_status ? margin.bottomXxs : margin.bottomSm,
+                          )}`}
                           size="xs"
-                          icon="icon-cube"
-                          label={
-                            <Text size="xs" weight="bold">
-                              {item.name}
-                            </Text>
-                          }
-                        />
-                        <IconList.Item
-                          size="xs"
-                          icon="icon-clock"
-                          label={
-                            <Text size="xs" weight="bold">
-                              {statusLabel[item?.current_status]}
-                            </Text>
-                          }
-                        />
-                        <IconList.Item
-                          size="xs"
-                          icon="icon-book"
-                          textAlign="left"
-                          label={
-                            <Text size="xs" weight="bold">
-                              {item.description}
-                            </Text>
-                          }
-                        />
-                        <IconList.Item
-                          size="xs"
-                          icon="icon-calendar-line"
-                          label={
-                            <div
-                              className={`${css(display.flex, {
-                                alignItems: 'center',
-                                lineHeight: 1,
-                              })}`}
-                            >
-                              {item.info?.min_date
-                                ? moment(item.info?.min_date).format('MMM DD, YYYY')
-                                : 'n/a'}
-                              <When condition={item.info?.max_date}>
-                                {() => (
-                                  <>
-                                    <SvgIcon
-                                      className={`${css(margin.xXs)}`}
-                                      path="icon-arrow-forward"
-                                      size="xs"
-                                      color={colors.grey}
-                                    />
-                                    {item.info?.max_date
-                                      ? moment(item.info?.max_date).format('MMM DD, YYYY')
-                                      : 'n/a'}
-                                  </>
-                                )}
-                              </When>
-                            </div>
-                          }
-                        />
-                      </IconList>
-                      <div>
-                        {/* <Button
+                        >
+                          <IconList.Item
+                            size="xs"
+                            icon="icon-cube"
+                            label={
+                              <Text size="xs" weight="bold">
+                                {item.name}
+                              </Text>
+                            }
+                          />
+                          <IconList.Item
+                            size="xs"
+                            icon="icon-clock"
+                            label={
+                              <Text size="xs" weight="bold">
+                                {t(statusLabel[item?.current_status])}
+                              </Text>
+                            }
+                          />
+                          <IconList.Item
+                            size="xs"
+                            icon="icon-book"
+                            textAlign="left"
+                            label={
+                              <Text size="xs" weight="bold">
+                                {item.description}
+                              </Text>
+                            }
+                          />
+                          <IconList.Item
+                            size="xs"
+                            icon="icon-calendar-line"
+                            label={
+                              <div
+                                className={`${css(display.flex, {
+                                  alignItems: 'center',
+                                  lineHeight: 1,
+                                })}`}
+                              >
+                                {startDate?.value
+                                  ? moment(startDate?.value).format('MMM DD, YYYY')
+                                  : 'n/a'}
+                                <When condition={endDate?.value}>
+                                  {() => (
+                                    <>
+                                      <SvgIcon
+                                        className={`${css(margin.xXs)}`}
+                                        path="icon-arrow-forward"
+                                        size="xs"
+                                        color={colors.grey}
+                                      />
+                                      {endDate?.value
+                                        ? moment(endDate?.value).format('MMM DD, YYYY')
+                                        : 'n/a'}
+                                    </>
+                                  )}
+                                </When>
+                              </div>
+                            }
+                          />
+                        </IconList>
+                        <div>
+                          {/* <Button
                           pill
                           className={`${styleButton}`}
                           size="xs"
@@ -209,20 +214,21 @@ function CubesList() {
                         >
                           {t('Data visualize')}
                         </Button> */}
-                        <Button
-                          pill
-                          className={`${styleButton}`}
-                          size="xs"
-                          onClick={() => setConfirmDelete(item.id)}
-                          color="disabled"
-                          outline
-                        >
-                          {t('Delete')}
-                        </Button>
-                      </div>
-                    </List.Content>
-                  </List.Item>
-                ))}
+                          <Button
+                            pill
+                            className={`${styleButton}`}
+                            size="xs"
+                            onClick={() => setConfirmDelete(item.id)}
+                            color="disabled"
+                            outline
+                          >
+                            {t('Delete')}
+                          </Button>
+                        </div>
+                      </List.Content>
+                    </List.Item>
+                  );
+                })}
             </List>
 
             <ModalConfirm

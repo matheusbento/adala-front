@@ -41,7 +41,12 @@ function CubeDashboardExplore() {
   const charts = useMemo(() => ['heatmap', 'line', 'waterfall'], []);
 
   return (
-    <Dimmer.Dimmable as={Segment} blurring dimmed={isLoadingExplore}>
+    <Dimmer.Dimmable
+      as={Segment}
+      blurring
+      dimmed={isLoadingExplore}
+      className={`${css({ minHeight: 250, overflow: 'initial' })}`}
+    >
       <Dimmer active={isLoadingExplore}>
         <Loader inline="centered" />
       </Dimmer>
@@ -52,7 +57,7 @@ function CubeDashboardExplore() {
             name="name"
             key="name"
             placeholder="name"
-            label="Name"
+            label={t('Name')}
             disabled={false}
             fluid
             required
@@ -64,7 +69,7 @@ function CubeDashboardExplore() {
             key="chart"
             arrayOptions={charts}
             placeholder="chart"
-            label="Chart"
+            label={t('Chart')}
             disabled={false}
             fluid
             selection
@@ -77,7 +82,7 @@ function CubeDashboardExplore() {
           <InputDropdown
             name="data_processing_method"
             key="data_processing_method"
-            label="Data Processing Method"
+            label={t('Data Processing Method')}
             arrayOptions={dataProcessingMethods}
             placeholder="Operation"
             disabled={false}
@@ -92,7 +97,7 @@ function CubeDashboardExplore() {
           <InputDropdown
             name="data_column"
             key="data_column"
-            label="Data Column"
+            label={t('Dimension')}
             arrayOptions={columns ?? []}
             loading={isLoadingColumns}
             placeholder="Column"
@@ -124,11 +129,9 @@ function CubeDashboardExplore() {
         </Else>
       </If>
       <div>
-        <SemanticForm.Group>
-          <Button color="success" fluid pill type="submit">
-            {t('Add to dashboard')}
-          </Button>
-        </SemanticForm.Group>
+        <Button color="success" pill type="submit">
+          {t('Add to dashboard')}
+        </Button>
       </div>
     </Dimmer.Dimmable>
   );

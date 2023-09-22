@@ -66,7 +66,7 @@ function SiloDetails() {
   const headers = useMemo(
     () => [
       {
-        label: 'Name',
+        label: t('Name'),
         key: 'name',
         sortable: false,
         style: `${css({
@@ -76,7 +76,7 @@ function SiloDetails() {
         })}`,
       },
       {
-        label: 'Description',
+        label: t('Description'),
         key: 'description',
         sortable: false,
         style: `${css({
@@ -86,19 +86,19 @@ function SiloDetails() {
         })}`,
       },
       {
-        label: 'Tags',
+        label: t('Tags'),
         key: 'tags_count',
         sortable: false,
         style: `${css({ minWidth: 200, maxWidth: 0 })}`,
       },
       {
-        label: 'Added',
+        label: t('Added'),
         key: 'created_at',
         sortable: false,
       },
       { label: '', key: 'actions', sortable: false },
     ],
-    [],
+    [t],
   );
 
   const headerTableType = useMemo(
@@ -110,17 +110,17 @@ function SiloDetails() {
         style: `${css({ width: 50 })}`,
       },
       {
-        label: 'Name',
+        label: t('Name'),
         key: 'name',
         sortable: false,
       },
       {
-        label: 'Size',
+        label: t('Size'),
         key: 'size',
         sortable: false,
       },
       {
-        label: 'Type',
+        label: t('Type'),
         key: 'type',
         sortable: false,
       },
@@ -170,7 +170,7 @@ function SiloDetails() {
               textAlign="left"
               label={
                 <Text size="xs" weight="bold">
-                  {statusLabel[item?.status]}
+                  {t(statusLabel[item?.status])}
                 </Text>
               }
             />
@@ -180,7 +180,7 @@ function SiloDetails() {
           </div>,
         ];
       }),
-    [files, handleSiloFile],
+    [files, handleSiloFile, t],
   );
 
   const handleDeleteSiloFile = useCallback(() => {
@@ -204,19 +204,19 @@ function SiloDetails() {
   const actions = useMemo(
     () => [
       {
-        label: 'See Attributes',
+        label: t('See Attributes'),
         action: showAttributes,
         shouldShow: (item: SiloFileType) => item.status === fileStatus.ready_for_use,
       },
       {
-        label: 'Delete',
+        label: t('Delete'),
         action: handleDeleteSiloFile,
         confirm: true,
         shouldShow: (item: SiloFileType) =>
           item.status !== fileStatus.pre_processing && item.status !== fileStatus.processing,
       },
     ],
-    [handleDeleteSiloFile, showAttributes],
+    [handleDeleteSiloFile, showAttributes, t],
   );
 
   // eslint-disable-next-line no-console
@@ -238,7 +238,7 @@ function SiloDetails() {
                 icon="icon-file-csv"
                 onClick={() => setShowModalFile('new')}
               >
-                Upload new File
+                {t('Upload new File')}
               </Button>
             }
           >
@@ -255,7 +255,7 @@ function SiloDetails() {
 
             <BaslakeModal
               size="large"
-              title={`${modalAttributes?.name} File Attributes`}
+              title={t('{{name}} - File Attributes', { name: modalAttributes?.name })}
               open={!!modalAttributes}
               closeHandler={() => setModalAttributes(null)}
             >

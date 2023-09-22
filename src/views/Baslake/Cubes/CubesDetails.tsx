@@ -13,19 +13,15 @@ import '@translations/i18n';
 import { useAuth } from 'hooks/Auth';
 
 import { CubeMetadataType } from 'types/CubeMetadataType';
-import { DimensionType } from 'types/DimensionType';
 
 import { beautifyJson } from 'utils/formatting';
 import { fontWeight, spacing, margin, colors } from 'utils/themeConstants';
 
-import TextEllipsis from '@components/Library/TextEllipsis';
-import { flatten } from 'lodash';
 import { When } from 'react-if';
 
-import { useDashboard } from '@hooks/Dashboard';
+import { statuses } from '@constants/cubesConstants';
 import CubeDashboardModalContainer from './CubeDashboard/CubeDashboardModalContainer';
 import CubesDetailsHeader from './CubesDetailsHeader';
-import { statuses } from '@/constants/cubesConstants';
 
 const styleNote = css({
   fontWeight: fontWeight.w500,
@@ -167,7 +163,7 @@ function CubesDetails() {
                   <DetailsList key={`info-${val.id}`} title={val.field} description={val.value} />
                 ))}
               </Grid.Column>
-              <Grid.Column className={`${styleDetailColumn}`}>
+              {/* <Grid.Column className={`${styleDetailColumn}`}>
                 <Header as="p" color="primary" line lineMargin={`${marginBlueHeaders}`}>
                   {t('Dimensions')}
                 </Header>
@@ -200,7 +196,7 @@ function CubesDetails() {
                     <Divider />
                   </>
                 ))}
-              </Grid.Column>
+              </Grid.Column> */}
               {/* <Grid.Column className={`${styleDetailColumn}`}>
                 <Header as="p" color="primary" line lineMargin={`${marginBlueHeaders}`}>
                   {t('Aggregations')}

@@ -1,8 +1,8 @@
 import { Component, useMemo } from 'react';
 
-import { display, flex, margin } from '@/utils/themeConstants';
 import buildFormField from '@utils/buildFormField';
 import { spacing } from '@utils/theme';
+import { display, flex, margin } from '@utils/themeConstants';
 import { css } from 'glamor';
 import { get } from 'lodash';
 import { useFormContext } from 'react-hook-form';
@@ -112,8 +112,6 @@ function InputFile({
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const currentFile = useMemo(() => Array.from(watch(name) ?? {}), [watch()]);
-
-  console.log({ currentFile });
 
   return (
     <>

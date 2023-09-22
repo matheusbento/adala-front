@@ -16,6 +16,8 @@ export type DashboardType = {
   getItems: () => void;
   setIsDraggable: any;
   isDraggable: any;
+  setIsEditing: any;
+  isEditing: any;
 };
 
 export const DashboardContext = createContext<DashboardType | null>(null);
@@ -38,6 +40,7 @@ function DashboardProvider({ children, organizationId }: IDashboardProviderProps
   const [showDashboard, setShowDashboard] = useState(false);
   const [isLoadingDashboardItem, setIsLoadingDashboardItem] = useState<any>({});
   const [isDraggable, setIsDraggable] = useState<any>({});
+  const [isEditing, setIsEditing] = useState<any>({});
 
   const [dashboardItems, setDashboardItems] = useState<any>([]);
   const [isLoadingDashboardItems, setIsLoadingDashboardItems] = useState(false);
@@ -47,14 +50,14 @@ function DashboardProvider({ children, organizationId }: IDashboardProviderProps
 
   const getItems = useCallback(async () => {
     const items = await Cookies.get(`dashItems-${cube.id}`);
-    console.log({ id: `dashItems-${cube.id}`, items });
     setDashboardItems(JSON.parse(items ?? '[]'));
   }, [cube?.id]);
 
   const deleteDashboardItem = useCallback(
     (itemId: string) => {
       setDashboardItems((prev: any) => {
-        const filtered = prev.filter((e: any) => e.id !== itemId);
+        const filtered = prev.filter((e: any) => e.id !== +itemId);
+        console.log({ filtered, itemId });
         Cookies.set(`dashItems-${cube.id}`, JSON.stringify(filtered));
         return filtered;
       });
@@ -117,8 +120,12 @@ function DashboardProvider({ children, organizationId }: IDashboardProviderProps
       isLoadingDashboardItems,
       setIsDraggable,
       isDraggable,
+      setIsEditing,
+      isEditing,
     }),
     [
+      isEditing,
+      setIsEditing,
       isDraggable,
       setIsDraggable,
       clearDashboardItems,

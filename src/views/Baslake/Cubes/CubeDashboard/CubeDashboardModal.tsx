@@ -27,8 +27,6 @@ function CubeDashboardModal({ showModal, setShowModal }: any) {
     setActiveIndex(i);
   }, []);
 
-  console.log({activeIndex})
-
   const panes = useMemo(
     () => [
       {
@@ -63,7 +61,9 @@ function CubeDashboardModal({ showModal, setShowModal }: any) {
       title={modalTitle}
       closeHandler={() => closeModal()}
       open={showModal}
-      size="large"
+      className={`${css({ minHeight: 250, overflow: 'initial' })}`}
+      // size="large"
+      minWidth={1600}
     >
       <BaslakeModal.Content className={`${css({ flex: 1, overflow: 'auto' })}`}>
         <If condition={!cube}>

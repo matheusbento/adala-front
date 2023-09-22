@@ -36,7 +36,7 @@
     "react/jsx-props-no-spreading": ["off"],
     "react/no-unescaped-entities": ["off"],
     "react-hooks/exhaustive-deps": ["off"],
-    "react/require-default-props": ["off"],
+    // "react/require-default-props": ["off"],
     "react/function-component-definition": [
       2,
       {

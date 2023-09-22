@@ -2,14 +2,13 @@ import { useEffect, useMemo, useRef } from 'react';
 import Button from '@components/Library/Button';
 import Segment from '@components/Library/Segment';
 import Text from '@components/Library/Text';
-import { display, flex, margin } from '@utils/themeConstants';
+import { display, flex } from '@utils/themeConstants';
 import { css } from 'glamor';
 import { mean, range } from 'lodash';
 import Plotly, { Data } from 'plotly.js/dist/plotly';
 import { useTranslation } from 'react-i18next';
 import Plot from 'react-plotly.js';
 import { Loader } from 'semantic-ui-react';
-import CubeDashboardExploreFilterContainer from '../CubeDashboardExploreFilterContainer';
 
 function WaterFallChart({ dataset, item, gridLayout, loading }: any) {
   const plotWaterfallRef = useRef(null);
@@ -85,9 +84,6 @@ function WaterFallChart({ dataset, item, gridLayout, loading }: any) {
     <Loader disabled />
   ) : (
     <Segment>
-      <div className={`${css(margin.sm)}`}>
-        <CubeDashboardExploreFilterContainer item={item} />
-      </div>
       <Plot
         ref={plotLineRef}
         data={meanData}

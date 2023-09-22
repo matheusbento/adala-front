@@ -21,7 +21,7 @@ function CubeDashboardExploreFilterContainer(props: any) {
 
   return (
     <Form onSubmit={handleSubmit} formArgs={{ defaultValues: item }}>
-      <CubeDashboardExploreFilter />
+      <CubeDashboardExploreFilter item={item} />
     </Form>
   );
 }

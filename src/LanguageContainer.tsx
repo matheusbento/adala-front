@@ -2,15 +2,17 @@ import * as React from 'react';
 import { useEffect, useMemo } from 'react';
 
 import { i18n } from '@translations/i18n';
+import Cookies from 'js-cookie';
+import moment from 'moment';
 import { IntlProvider } from 'react-intl';
 
 import App from './App';
 import { useSystem } from './hooks/System';
-import * as messages_br from './translations/locales/br.json';
+import * as messagesBr from './translations/locales/br.json';
 
 const messages: Record<string, any> = {
   en: null,
-  'pt-BR': messages_br,
+  'pt-BR': messagesBr,
 };
 
 function LanguageContainer() {
@@ -18,12 +20,16 @@ function LanguageContainer() {
 
   useEffect(() => {
     const loc: any = Object.values(locales).find((e: any) => e.flag === locale);
+    console.log({ loc });
     i18n.changeLanguage(loc?.id ?? locale);
-  }, [locale]);
+    moment.locale(loc?.moment ?? locale);
+    Cookies.set('language', loc?.id ?? locale);
+  }, [locale, locales]);
 
   useEffect(() => {
-    setLocale(navigator.language);
-  }, []);
+    const lang = Cookies.get('language') ?? navigator.language;
+    setLocale(lang);
+  }, [locale, setLocale]);
 
   const msg = useMemo(() => messages[locale], [locale]);
 

@@ -3,6 +3,7 @@ import Plotly, { Data } from 'plotly.js/dist/plotly';
 import Plot from 'react-plotly.js';
 import { Loader } from 'semantic-ui-react';
 import { range } from 'lodash';
+import Segment from '@/components/Library/Segment';
 
 function LineChart({ dataset, gridLayout, loading }: any) {
   const plotDivRef = useRef(null);
@@ -45,14 +46,16 @@ function LineChart({ dataset, gridLayout, loading }: any) {
   return loading ? (
     <Loader disabled />
   ) : (
-    <Plot
-      ref={plotDivRef}
-      data={data}
-      layout={layout}
-      config={{ responsive: true }}
-      responsive
-      style={{ width: '100%', height: '100%' }}
-    />
+    <Segment>
+      <Plot
+        ref={plotDivRef}
+        data={data}
+        layout={layout}
+        config={{ responsive: true }}
+        responsive
+        style={{ width: '100%', height: '100%' }}
+      />
+    </Segment>
   );
 }
 

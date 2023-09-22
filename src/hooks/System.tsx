@@ -19,20 +19,22 @@ const useSystem = () => {
   return context;
 };
 
-interface SystemProviderProps {
+interface ISystemProviderProps {
   children: ReactNode;
 }
 
-function SystemProvider({ children }: SystemProviderProps) {
+function SystemProvider({ children }: ISystemProviderProps) {
   const locales: Record<string, any> = {
     en: {
       id: 'en',
       flag: 'us',
       label: 'English',
+      moment: 'us',
     },
     br: {
       id: 'pt-BR',
       flag: 'br',
+      moment: 'pt-br',
       label: 'Portuguese (Brasil)',
     },
   };

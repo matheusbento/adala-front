@@ -9,7 +9,7 @@ import { css } from 'glamor';
 import { Card, Grid } from 'semantic-ui-react';
 
 function DashboardItemProviderDropdown({ itemId, title }: any) {
-  const { deleteDashboardItem, setIsDraggable } = useDashboard();
+  const { deleteDashboardItem, setIsDraggable, setIsEditing } = useDashboard();
 
   return (
     <Grid>
@@ -23,6 +23,18 @@ function DashboardItemProviderDropdown({ itemId, title }: any) {
         <Grid.Column
           className={`${css(display.flex, flex.justifyContentEnd, padding.xxs, padding.rightSm)}`}
         >
+          <Button
+            link
+            color="default"
+            onClick={() => {
+              setIsEditing((prev: any) => ({
+                ...prev,
+                [itemId]: !prev?.[itemId] ?? false,
+              }));
+            }}
+          >
+            <SvgIcon path="icon-edit-line" />
+          </Button>
           <Button
             link
             color="default"
@@ -59,7 +71,7 @@ function DashboardItemProvider({ itemId, children, title }: any) {
         border: '0px !important',
       }}
     >
-      <DashboardItemProviderDropdown itemId={itemId} title={title} />
+      <DashboardItemProviderDropdown itemId={`${itemId}`} title={title} />
       {children}
     </Card>
   );

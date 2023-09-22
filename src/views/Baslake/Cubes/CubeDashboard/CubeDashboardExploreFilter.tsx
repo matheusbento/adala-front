@@ -1,22 +1,25 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import Button from '@components/Library/Button';
 import FieldArray from '@components/Library/FieldArray';
 import InputText from '@components/Library/InputText';
 import { useCubes } from '@hooks/Cubes';
+import { useDashboard } from '@hooks/Dashboard';
 import { useExplore } from '@hooks/Explore';
 import { margin } from '@utils/themeConstants';
 import { css } from 'glamor';
 import { useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Accordion, Dimmer, Icon, Loader, Form as SemanticForm } from 'semantic-ui-react';
+import { When } from 'react-if';
+import { Dimmer, Loader, Segment, Form as SemanticForm } from 'semantic-ui-react';
 import CubeDashboardExploreFilterItemBulkForm from './CubeDashboardExploreFilterItemBulkForm';
 
-function CubeDashboardExploreFilter() {
+function CubeDashboardExploreFilter({ item }: any) {
   const [showFilter, setShowFilter] = useState(false);
   const { cube } = useCubes();
   const { isLoadingExplore, fetchColumnsHandler } = useExplore();
+  const { isEditing } = useDashboard();
   const { formState } = useFormContext();
 
   const { isDirty } = formState;
@@ -32,46 +35,43 @@ function CubeDashboardExploreFilter() {
     setOpen((prev) => !prev);
   }, []);
 
-  return (
-    <Dimmer.Dimmable as={Accordion} blurring dimmed={isLoadingExplore}>
-      <Dimmer active={isLoadingExplore}>
-        <Loader inline="centered" />
-      </Dimmer>
+  console.log({isEditing})
 
-      <Accordion fluid styled>
-        <Accordion.Title active={open} index={0} onClick={handleClick}>
-          <Icon name="dropdown" />
-          {t('Update')}
-        </Accordion.Title>
-        <Accordion.Content active={open} className={`${css(margin.sm)}`}>
-          <SemanticForm.Field>
-            <InputText
-              name="resolution"
-              key="resolution"
-              label="Data Resolution"
-              placeholder="Resolution"
-              disabled={false}
+  const showEdit = useMemo(() => !!isEditing?.[Number(item?.id)], [isEditing, item?.id]);
+
+  return (
+    <When condition={!!showEdit}>
+      <Dimmer.Dimmable as={Segment} blurring dimmed={isLoadingExplore}>
+        <Dimmer active={isLoadingExplore}>
+          <Loader inline="centered" />
+        </Dimmer>
+        <SemanticForm.Field>
+          <InputText
+            name="resolution"
+            key="resolution"
+            label={t('Data Resolution')}
+            placeholder="Resolution"
+            disabled={false}
+            fluid
+          />
+        </SemanticForm.Field>
+        <FieldArray name="filter" component={CubeDashboardExploreFilterItemBulkForm} />
+        <div>
+          <SemanticForm.Group>
+            <Button
+              color="success"
               fluid
-            />
-          </SemanticForm.Field>
-          <FieldArray name="filter" component={CubeDashboardExploreFilterItemBulkForm} />
-          <div>
-            <SemanticForm.Group>
-              <Button
-                color="success"
-                fluid
-                pill
-                type="submit"
-                disabled={!isDirty}
-                className={`${css(margin.bottomSm)}`}
-              >
-                {t('Update Filters')}
-              </Button>
-            </SemanticForm.Group>
-          </div>
-        </Accordion.Content>
-      </Accordion>
-    </Dimmer.Dimmable>
+              pill
+              type="submit"
+              disabled={!isDirty}
+              className={`${css(margin.bottomSm)}`}
+            >
+              {t('Update Filters')}
+            </Button>
+          </SemanticForm.Group>
+        </div>
+      </Dimmer.Dimmable>
+    </When>
   );
 }
 

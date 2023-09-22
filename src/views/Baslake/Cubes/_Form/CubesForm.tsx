@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
+import { useOrganization } from '@/hooks/Organization';
 import Button from '@components/Library/Button';
 import FieldArray from '@components/Library/FieldArray';
 import FileIcon from '@components/Library/FileIcon';
@@ -38,7 +39,6 @@ import { SiloType } from 'types/SiloType';
 import TagType from 'types/TagType';
 
 import { fontWeight, margin, padding } from 'utils/themeConstants';
-import { useOrganization } from '@/hooks/Organization';
 
 import { colors } from '../../../../utils/themeConstants';
 import CubesFormReviewContainer from './CubesFormReviewContainer';
@@ -240,12 +240,12 @@ function CubesForm() {
   const headers = useMemo(
     () => [
       {
-        label: 'Name',
+        label: t('Name'),
         key: 'name',
         sortable: false,
       },
       {
-        label: 'Description',
+        label: t('Description'),
         key: 'description',
         sortable: false,
         style: `${css({
@@ -255,19 +255,19 @@ function CubesForm() {
         })}`,
       },
       {
-        label: 'Tags',
+        label: t('Tags'),
         key: 'tags_count',
         sortable: false,
         style: `${css({ minWidth: 150, maxWidth: 0 })}`,
       },
       {
-        label: 'Added',
+        label: t('Added'),
         key: 'created_at',
         sortable: false,
       },
       { label: '', key: 'actions', sortable: false },
     ],
-    [],
+    [t],
   );
 
   const headerTableType = useMemo(
@@ -410,7 +410,7 @@ function CubesForm() {
               disabled={isLoadingSave || !canNext(formStep)}
               type={!valid ? 'submit' : 'button'}
             >
-              {showModal ? `Next` : 'Loading'}
+              {showModal ? t(`Next`) : t('Loading')}
             </Button>
           </SemanticForm.Group>
         </Else>
@@ -425,7 +425,7 @@ function CubesForm() {
               disabled={isLoadingSave}
               type={!valid ? 'submit' : 'button'}
             >
-              {showModal ? `Previous` : 'Loading'}
+              {showModal ? t(`Previous`) : t('Loading')}
             </Button>
           </SemanticForm.Group>
         </When>
@@ -454,8 +454,8 @@ function CubesForm() {
           <Step.Group ordered stackable="tablet" className={`${styleSteps}`}>
             <Step active={formStep === steps.details} completed={formStep > steps.details}>
               <Step.Content>
-                <Step.Title>Details</Step.Title>
-                <Step.Description>Set your cube details</Step.Description>
+                <Step.Title>{t('Details')}</Step.Title>
+                <Step.Description>{t('Set your cube details')}</Step.Description>
               </Step.Content>
             </Step>
 
@@ -465,8 +465,8 @@ function CubesForm() {
               disabled={formStep < steps.files}
             >
               <Step.Content>
-                <Step.Title>Files</Step.Title>
-                <Step.Description>Choose the files to analyse</Step.Description>
+                <Step.Title>{t('Files')}</Step.Title>
+                <Step.Description>{t('Choose the files to analyse')}</Step.Description>
               </Step.Content>
             </Step>
 
@@ -478,7 +478,7 @@ function CubesForm() {
               >
                 <Step.Content>
                   <Step.Title>{t('Mapping')}</Step.Title>
-                  <Step.Description>Map your data</Step.Description>
+                  <Step.Description>{t('Map your data')}</Step.Description>
                 </Step.Content>
               </Step>
             </When>
@@ -489,7 +489,7 @@ function CubesForm() {
               disabled={formStep < steps.confirm}
             >
               <Step.Content>
-                <Step.Title>Confirm</Step.Title>
+                <Step.Title>{t('Confirm')}</Step.Title>
               </Step.Content>
             </Step>
           </Step.Group>
@@ -498,21 +498,21 @@ function CubesForm() {
               <>
                 <SemanticForm.Field className={`${css(margin.bottomLg)}`}>
                   <Header as="h5" className={`${styleTitle}`}>
-                    Name
+                    {t('Name')}
                   </Header>
 
-                  <InputText name="name" placeholder="Enter Name" />
+                  <InputText name="name" placeholder="Enter name" />
                 </SemanticForm.Field>
                 <SemanticForm.Field className={`${css(margin.bottomLg)}`}>
                   <Header as="h5" className={`${styleTitle}`}>
-                    Description
+                    {t('Description')}
                   </Header>
 
-                  <InputTextArea name="description" placeholder="Enter Description" />
+                  <InputTextArea name="description" placeholder="Enter description" />
                 </SemanticForm.Field>
                 <SemanticForm.Field className={`${css(margin.bottomLg)}`}>
                   <Header as="h5" className={`${styleTitle}`}>
-                    Cube Info
+                    {t('Cube Info')}
                   </Header>
                   <SemanticForm.Group widths="equal">
                     <SemanticForm.Field>
@@ -562,7 +562,7 @@ function CubesForm() {
                 </SemanticForm.Field>
                 <SemanticForm.Field className={`${css(margin.bottomLg)}`}>
                   <Header as="h5" className={`${styleTitle}`}>
-                    Metadata
+                    {t('Metadata')}
                   </Header>
 
                   <FieldArray name="metadata" component={CubeMetadataItemBulkForm} />
@@ -574,14 +574,14 @@ function CubesForm() {
             {() => (
               <SemanticForm.Field className={`${css(margin.bottomLg)}`}>
                 <Header as="h5" className={`${styleTitle}`}>
-                  {t('Folders')}
+                  {t('Silo')}
                 </Header>
 
                 <Dropdown
                   fluid
                   selection
                   name="folders"
-                  placeholder="Select folders name"
+                  placeholder={t('Select the silo')}
                   options={foldersOptions}
                   onChange={(_: any, vals: any) => {
                     setSelectedFiles([]);

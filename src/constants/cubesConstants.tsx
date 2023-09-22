@@ -31,4 +31,14 @@ export const statusLabel = {
 
 export const dataProcessingMethods = ['none', 'mean'];
 
+export const filterOperations = [
+  'between',
+  'equals',
+  'does not equals',
+  'contains',
+  'does not contains',
+  'is set',
+  'is not set',
+];
+
 export default cubeActionLabel;

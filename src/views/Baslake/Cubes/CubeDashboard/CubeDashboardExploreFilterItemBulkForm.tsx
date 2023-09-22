@@ -4,11 +4,13 @@ import AddItem from '@components/Library/AddItem';
 import InputDropdown from '@components/Library/InputDropdown';
 
 import InputText from '@components/Library/InputText';
+import { filterOperations } from '@constants/cubesConstants';
 import { useCubes } from '@hooks/Cubes';
 import { useExplore } from '@hooks/Explore';
 import { fontWeight, margin } from '@utils/themeConstants';
 import BaslakeTable from '@views/Layout/BaslakeTable';
 import { css } from 'glamor';
+import { useTranslation } from 'react-i18next';
 import { Else, If, Then } from 'react-if';
 import { Header } from 'semantic-ui-react';
 import { FieldArrayTypeSingle } from 'types/FieldArrayType';
@@ -20,34 +22,6 @@ const styleTitle = css(margin.topNone, {
   },
 });
 
-const headers = [
-  {
-    label: 'Name',
-    sortable: false,
-    key: 'name',
-    style: `${css({
-      minWidth: 50,
-      maxWidth: 0,
-      wordBreak: 'break-word',
-    })}`,
-  },
-  {
-    label: 'Operation',
-    sortable: false,
-    key: 'operation',
-    style: `${css({
-      minWidth: 150,
-      maxWidth: 0,
-      wordBreak: 'break-word',
-    })}`,
-  },
-  {
-    label: 'Value',
-    sortable: false,
-  },
-  { label: '', key: 'actions', sortable: false },
-];
-
 function CubeDashboardExploreFilterItemBulkForm({
   fields,
   name,
@@ -55,6 +29,7 @@ function CubeDashboardExploreFilterItemBulkForm({
   remove,
 }: FieldArrayTypeSingle) {
   const { columns, isLoadingColumns } = useExplore();
+  const { t } = useTranslation();
   const { cube } = useCubes();
 
   const baseAggregation = useMemo(
@@ -74,18 +49,39 @@ function CubeDashboardExploreFilterItemBulkForm({
     [remove],
   );
   const operations = useMemo(() => {
-    return [
-      'between',
-      'equals',
-      'does not equals',
-      'contains',
-      'does not contains',
-      'is set',
-      'is not set',
-    ];
-  }, []);
+    return filterOperations.map((e) => ({ id: e, name: t(e) }));
+  }, [t]);
 
-  console.log({ columns });
+  const headers = useMemo(
+    () => [
+      {
+        label: t('Name'),
+        sortable: false,
+        key: 'name',
+        style: `${css({
+          minWidth: 50,
+          maxWidth: 0,
+          wordBreak: 'break-word',
+        })}`,
+      },
+      {
+        label: t('Operation'),
+        sortable: false,
+        key: 'operation',
+        style: `${css({
+          minWidth: 150,
+          maxWidth: 0,
+          wordBreak: 'break-word',
+        })}`,
+      },
+      {
+        label: t('Value'),
+        sortable: false,
+      },
+      { label: '', key: 'actions', sortable: false },
+    ],
+    [t],
+  );
 
   const fieldsList = useMemo(
     () =>
@@ -98,7 +94,7 @@ function CubeDashboardExploreFilterItemBulkForm({
           key={`${name}[${item.id}].column`}
           arrayOptions={columns ?? []}
           loading={isLoadingColumns}
-          placeholder="Column"
+          placeholder={t('Column')}
           disabled={false}
           fluid
           selection
@@ -108,8 +104,8 @@ function CubeDashboardExploreFilterItemBulkForm({
         <InputDropdown
           name={`${name}[${index}].operation`}
           key={`${name}[${item.id}].operation`}
-          arrayOptions={operations}
-          placeholder="Operation"
+          laravelOptions={operations}
+          placeholder={t('Operation')}
           disabled={false}
           fluid
           selection
@@ -121,7 +117,7 @@ function CubeDashboardExploreFilterItemBulkForm({
             <InputText
               name={`${name}[${index}].min_value`}
               key={`${name}[${item.id}].min_value`}
-              placeholder="Min Value"
+              placeholder={t('Min Value')}
               disabled={false}
               fluid
               required
@@ -129,7 +125,7 @@ function CubeDashboardExploreFilterItemBulkForm({
             <InputText
               name={`${name}[${index}].max_value`}
               key={`${name}[${item.id}].max_value`}
-              placeholder="Max Value"
+              placeholder={t('Max Value')}
               disabled={false}
               fluid
               required
@@ -139,7 +135,7 @@ function CubeDashboardExploreFilterItemBulkForm({
             <InputText
               name={`${name}[${index}].value`}
               key={`${name}[${item.id}].value`}
-              placeholder="Value"
+              placeholder={t('Value')}
               disabled={false}
               fluid
               required
@@ -147,7 +143,7 @@ function CubeDashboardExploreFilterItemBulkForm({
           </Else>
         </If>,
       ]),
-    [columns, fields, isLoadingColumns, name, operations],
+    [columns, fields, isLoadingColumns, name, operations, t],
   );
 
   const actions = useMemo(
@@ -165,7 +161,7 @@ function CubeDashboardExploreFilterItemBulkForm({
   return (
     <>
       <Header as="h5" className={`${styleTitle}`}>
-        Filter
+        {t('Filter')}
       </Header>
       <BaslakeTable rows={fieldsList} headers={headers} actions={actions} />
       <AddItem label="Add new filter" addHandler={fieldsPush} />

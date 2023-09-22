@@ -17,7 +17,7 @@ function SiloFileFormContainer(props: any) {
         file: values.file[0],
       });
     },
-    [showSilo],
+    [saveSiloHandler, showSilo?.id],
   );
 
   return (

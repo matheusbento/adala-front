@@ -7,6 +7,7 @@ import { colors, display, fontSizes, padding, margin } from '../../utils/themeCo
 import Segment from './Segment';
 import SvgIcon from './SvgIcon';
 import Text from './Text';
+import { useTranslation } from 'react-i18next';
 
 const styleSpan = css(fontSizes.sm, {
   color: colors.greyLabel,
@@ -40,6 +41,7 @@ function AddItem({
   className?: string;
   disabled?: boolean;
 }) {
+  const { t } = useTranslation();
   const styleContainer = useMemo(() => css(styleSegment, disabled && styleDisabled), [disabled]);
 
   const onClickHandler = useCallback(() => {
@@ -56,7 +58,7 @@ function AddItem({
         size={size}
         color={colors.primary}
       />
-      <Text className={`${styleSpan}`}>{label}</Text>
+      <Text className={`${styleSpan}`}>{t(label)}</Text>
     </Segment>
   );
 }

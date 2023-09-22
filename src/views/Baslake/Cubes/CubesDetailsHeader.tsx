@@ -6,6 +6,7 @@ import Text from '@components/Library/Text';
 import { statusLabel } from '@constants/cubesConstants';
 import { css } from 'glamor';
 import moment from 'moment';
+import { useTranslation } from 'react-i18next';
 import { When } from 'react-if';
 import { List } from 'semantic-ui-react';
 
@@ -20,6 +21,7 @@ function CubeDetailsHeader({
   cube?: any;
   title?: string | null;
 }) {
+  const { t } = useTranslation();
   const styleHeader = useMemo(
     () =>
       css(
@@ -65,7 +67,7 @@ function CubeDetailsHeader({
           icon="icon-star-line"
           label={cube?.category?.name ?? 'No category'}
         />
-        <IconList.Item size="xs" icon="icon-clock" label={statusLabel[cube?.current_status]} />
+        <IconList.Item size="xs" icon="icon-clock" label={t(statusLabel[cube?.current_status])} />
 
         <IconList.Item
           size="xs"

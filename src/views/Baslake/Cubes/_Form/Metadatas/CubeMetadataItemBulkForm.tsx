@@ -4,6 +4,7 @@ import AddItem from '@components/Library/AddItem';
 import InputText from '@components/Library/InputText';
 import BaslakeTable from '@views/Layout/BaslakeTable';
 
+import { useTranslation } from 'react-i18next';
 import { FieldArrayTypeSingle } from 'types/FieldArrayType';
 
 const headers = [
@@ -16,6 +17,7 @@ const headers = [
 ];
 
 function CubeMetadataItemBulkForm({ fields, name, push, remove }: FieldArrayTypeSingle) {
+  const { t } = useTranslation();
   const baseMetadata = useMemo(
     () => ({
       field: '',
@@ -40,19 +42,19 @@ function CubeMetadataItemBulkForm({ fields, name, push, remove }: FieldArrayType
         <InputText
           name={`${name}[${index}].field`}
           key={`${name}[${item.id}].field`}
-          placeholder="Field"
+          placeholder={t('Field')}
           required
           disabled={false}
         />,
         <InputText
           name={`${name}[${index}].value`}
           key={`${name}[${item.id}].value`}
-          placeholder="Value"
+          placeholder={t('Value')}
           disabled={false}
           required
         />,
       ]),
-    [fields, name],
+    [fields, name, t],
   );
 
   const actions = useMemo(
