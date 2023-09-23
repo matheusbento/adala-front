@@ -87,5 +87,11 @@
   "Upload File": "Subir Arquivo",
   "Select file": "Selecionar arquivo",
   "Do you need the fits from this data? you can download it.": "Você precisa do .FITS desses dados? você pode baixá-lo.",
-  "Download .FITS": "Baixar .FITS"
+  "Download .FITS": "Baixar .FITS",
+  "Organization": "Instituição",
+  "Organization: {{name}}": "Instituição: {{name}}",
+  "Users": "Usuários",
+  "Manage organization users": "Gerenciar usuarios da instituição",
+  "Organization Menu": "Menu da Instituição",
+  "Organizations": "Instituições"
 }

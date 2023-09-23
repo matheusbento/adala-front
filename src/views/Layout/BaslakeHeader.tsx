@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useMemo } from 'react';
 
-import { useOrganization } from '@/hooks/Organization';
 import BadgeCounter from '@components/Library/BadgeCounter';
 import Button from '@components/Library/Button';
+import iconUser from '@components/Library/img/icon-user.svg';
 import Segment from '@components/Library/Segment';
 import SvgIcon from '@components/Library/SvgIcon';
-import iconUser from '@components/Library/img/icon-user.svg';
+import { useOrganization } from '@hooks/Organization';
 import { useSystem } from '@hooks/System';
 import {
   buttons,
@@ -99,7 +99,7 @@ const styleNotificationsBadge = css(position.absolute, {
 
 const styleUserName = css(fontSizes.xs, margin.rightSm, display.none, display.mdInline);
 
-interface BaslakeHeaderProps {
+interface IBaslakeHeaderProps {
   session: SessionType | null;
   logoutHandler: () => void;
   setIsBarVisible: (status: boolean) => void;
@@ -113,10 +113,10 @@ function BaslakeHeader({
   searchContext,
   setIsBarVisible,
   isBarVisible,
-}: BaslakeHeaderProps) {
+}: IBaslakeHeaderProps) {
   const location = useLocation();
   const { setLocale, locales } = useSystem();
-  const { organizations, organization, handleSetOrganization, initOrganization } =
+  const { organizations, currentOrganization, handleSetOrganization, initOrganization } =
     useOrganization();
   // const location: any = null;
   const disableSearchPaths = ['/', '/login'];
@@ -163,7 +163,7 @@ function BaslakeHeader({
           clearable
           options={organizationOptions}
           onChange={setOrganizationHandle}
-          value={organization?.id}
+          value={currentOrganization?.id}
         />
       </Segment>
       <When condition={session && !!session.user}>

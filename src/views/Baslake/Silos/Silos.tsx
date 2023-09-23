@@ -43,13 +43,13 @@ function Silos() {
     formSuccess,
   } = useSilo();
 
-  const { organization } = useOrganization();
+  const { currentOrganization } = useOrganization();
 
   const { t } = useTranslation();
 
   useEffect(() => {
     fetchSilosHandler(null);
-  }, [fetchSilosHandler, organization]);
+  }, [fetchSilosHandler, currentOrganization]);
 
   return (
     <div className={`${styleContainer}`}>

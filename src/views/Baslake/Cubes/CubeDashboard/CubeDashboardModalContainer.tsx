@@ -3,9 +3,9 @@ import { useOrganization } from '@hooks/Organization';
 import CubeDashboardModal from './CubeDashboardModal';
 
 function CubeDashboardModalContainer({ showModal, setShowModal }: any) {
-  const { organization } = useOrganization();
+  const { currentOrganization } = useOrganization();
   return (
-    <DashboardProvider organizationId={organization?.id as unknown as number}>
+    <DashboardProvider organizationId={currentOrganization?.id as unknown as number}>
       <CubeDashboardModal showModal={showModal} setShowModal={setShowModal} />
     </DashboardProvider>
   );

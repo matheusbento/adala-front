@@ -63,7 +63,7 @@ function CubeDashboardModal({ showModal, setShowModal }: any) {
       open={showModal}
       className={`${css({ minHeight: 250, overflow: 'initial' })}`}
       // size="large"
-      minWidth={1600}
+      minWidth={1500}
     >
       <BaslakeModal.Content className={`${css({ flex: 1, overflow: 'auto' })}`}>
         <If condition={!cube}>

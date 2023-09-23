@@ -46,7 +46,9 @@ function BaslakeModal({
   ...rest
 }: IBaslakeModalProps) {
   const calcModalSize = useCallback(
-    (width: number) => (minWidth && width <= minWidth ? 'fullscreen' : size),
+    (width: number) => {
+      return width <= minWidth ? 'fullscreen' : size;
+    },
     [minWidth, size],
   );
 

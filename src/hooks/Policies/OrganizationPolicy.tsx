@@ -8,15 +8,16 @@ export type OrganizationPolicyContextType = {
   canCreate: () => boolean;
   canEdit: () => boolean;
   canDelete: () => boolean;
+  canManage: () => boolean;
 };
 
 const OrganizationPolicyContext = createContext<OrganizationPolicyContextType | null>(null);
 
-export interface OrganizationPolicyProps {
+export interface IOrganizationPolicyProps {
   children: ReactNode;
 }
 
-function OrganizationPolicyProvider({ children }: OrganizationPolicyProps) {
+function OrganizationPolicyProvider({ children }: IOrganizationPolicyProps) {
   const { hasPermission } = useAuth();
 
   const canAccess = useCallback(
@@ -34,6 +35,11 @@ function OrganizationPolicyProvider({ children }: OrganizationPolicyProps) {
     [hasPermission],
   );
 
+  const canManage = useCallback(
+    () => hasPermission(AuthConstants.permissions.organization.manage),
+    [hasPermission],
+  );
+
   const canDelete = useCallback(
     () => hasPermission(AuthConstants.permissions.organization.manage),
     [hasPermission],
@@ -45,8 +51,9 @@ function OrganizationPolicyProvider({ children }: OrganizationPolicyProps) {
       canCreate,
       canDelete,
       canEdit,
+      canManage,
     }),
-    [canAccess, canCreate, canDelete, canEdit],
+    [canAccess, canManage, canCreate, canDelete, canEdit],
   );
 
   return (

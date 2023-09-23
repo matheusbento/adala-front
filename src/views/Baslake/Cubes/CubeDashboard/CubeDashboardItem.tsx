@@ -17,7 +17,7 @@ import CubeDashboardExploreFilterContainer from './CubeDashboardExploreFilterCon
 
 function CubeDashboardItem({ item, layout }: any) {
   const { cube } = useCubes();
-  const { organization } = useOrganization();
+  const { currentOrganization } = useOrganization();
   const { t } = useTranslation();
 
   const filter = useMemo(() => JSON.stringify(item.filter), [item.filter]);
@@ -34,7 +34,7 @@ function CubeDashboardItem({ item, layout }: any) {
           : item,
       ).toString();
       const res = await api.get(
-        `/organizations/${organization?.id}/cubes/${cube.id}/data?t=${item.id}&${params}`,
+        `/organizations/${currentOrganization?.id}/cubes/${cube.id}/data?t=${item.id}&${params}`,
       );
       return res.data;
     },

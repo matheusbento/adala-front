@@ -74,7 +74,7 @@ const styleFiles = css(margin.topMd, {
 function CubesForm() {
   const { cube, showModal, setFormState, isLoadingSave, formState } = useCubes();
 
-  const { organization } = useOrganization();
+  const { currentOrganization } = useOrganization();
 
   const {
     fetchSilosHandler,
@@ -148,7 +148,7 @@ function CubesForm() {
 
   useEffect(() => {
     fetchSilosHandler(null, { all: true });
-  }, [fetchSilosHandler, organization]);
+  }, [fetchSilosHandler, currentOrganization]);
 
   const isDataflow = useMemo(() => watch('is_dataflow'), [watch()]);
 

@@ -32,7 +32,7 @@ interface IExploreProviderProps {
 }
 
 function ExploreProvider({ children, organizationId }: IExploreProviderProps) {
-  const { organization } = useOrganization();
+  const { currentOrganization } = useOrganization();
   const [showExplore, setShowExplore] = useState(false);
   const [Explore, setExplore] = useState<any>(null);
   const [isLoadingExplore, setIsLoadingExplore] = useState(false);
@@ -60,7 +60,7 @@ function ExploreProvider({ children, organizationId }: IExploreProviderProps) {
       try {
         setisLoadingColumns(true);
         const response = await api.get(
-          `/organizations/${organization?.id}/cubes/${cube.id}/attributes`,
+          `/organizations/${currentOrganization?.id}/cubes/${cube.id}/attributes`,
         );
         setColumns(response?.data?.attributes);
       } catch (e) {
@@ -75,7 +75,7 @@ function ExploreProvider({ children, organizationId }: IExploreProviderProps) {
         setisLoadingColumns(false);
       }
     },
-    [organization],
+    [currentOrganization],
   );
 
   const providerValue = useMemo(

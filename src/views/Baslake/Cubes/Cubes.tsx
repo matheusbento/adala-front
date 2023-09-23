@@ -32,20 +32,20 @@ function Cubes() {
 
   const { showModal, setShowModal, fetchCubesHandler, formSuccess } = useCubes();
 
-  const { organization } = useOrganization();
+  const { currentOrganization } = useOrganization();
 
   const { t } = useTranslation();
 
   useEffect(() => {
     fetchCubesHandler();
-  }, [organization]);
+  }, [currentOrganization]);
 
   return (
     <div className={`${styleContainer}`}>
-      <Dimmer active={!organization} inverted>
+      <Dimmer active={!currentOrganization} inverted>
         <Loader active />
       </Dimmer>
-      <When condition={!!organization}>
+      <When condition={!!currentOrganization}>
         <>
           <BaslakeTitle title={t('Cubes')}>
             <When condition={canCreate()}>

@@ -11,7 +11,7 @@ import CubesForm from './CubesForm';
 function CubesFormContainer(props: any) {
   const { saveCubeHandler, initialValues } = useCubes();
   const { selectedColumns, folder } = useSilo();
-  const { organization } = useOrganization();
+  const { currentOrganization } = useOrganization();
 
   const handleSubmit = useCallback(
     (values: Record<string, any>) => {

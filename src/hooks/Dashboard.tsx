@@ -46,7 +46,7 @@ function DashboardProvider({ children, organizationId }: IDashboardProviderProps
   const [isLoadingDashboardItems, setIsLoadingDashboardItems] = useState(false);
 
   const { cube } = useCubes();
-  const { organization } = useOrganization();
+  const { currentOrganization } = useOrganization();
 
   const getItems = useCallback(async () => {
     const items = await Cookies.get(`dashItems-${cube.id}`);

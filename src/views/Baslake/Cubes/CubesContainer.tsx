@@ -8,14 +8,14 @@ import { SiloProvider } from '@hooks/Silos';
 import Cubes from './Cubes';
 
 function CubesContainer(props: any) {
-  const { organization } = useOrganization();
+  const { currentOrganization } = useOrganization();
 
   return (
     <FilterProvider context="cubes">
       <CubesTemplateProvider>
-        <SiloProvider organizationId={organization?.id as unknown as number}>
-          <ExploreProvider organizationId={organization?.id as unknown as number}>
-            <CubesProvider organizationId={organization?.id as unknown as number}>
+        <SiloProvider organizationId={currentOrganization?.id as unknown as number}>
+          <ExploreProvider organizationId={currentOrganization?.id as unknown as number}>
+            <CubesProvider organizationId={currentOrganization?.id as unknown as number}>
               <Cubes {...props} />
             </CubesProvider>
           </ExploreProvider>

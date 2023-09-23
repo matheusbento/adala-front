@@ -45,7 +45,7 @@ function BaslakeSidebar() {
       </Link>
       {loggedIn && (
         <>
-          <BaslakeSidebarMenuItem active to="/" icon="icon-dashboard" label={t('Dashboard')} />
+          {/* <BaslakeSidebarMenuItem active to="/" icon="icon-dashboard" label={t('Dashboard')} /> */}
 
           <Menu.Menu className={`${styleSubMenu}`}>
             <PolicyCheck policy={CubesPolicy.canAccess()}>
@@ -72,7 +72,7 @@ function BaslakeSidebar() {
           </Menu.Menu>
 
           <Menu.Menu className={`${styleSubMenu}`}>
-            <PolicyCheck policy={OrganizationPolicy.canAccess()}>
+            <PolicyCheck policy={OrganizationPolicy.canManage()}>
               <BaslakeSidebarMenuItem
                 subItem
                 active={!!matchPath(pathname, '/organizations')}

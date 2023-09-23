@@ -75,7 +75,7 @@ interface ISiloProviderProps {
 }
 
 function SiloProvider({ children, organizationId }: ISiloProviderProps) {
-  const { organization } = useOrganization();
+  const { currentOrganization } = useOrganization();
   const [showModal, setShowModal] = useState<string | null>(null);
   const [showModalFile, setShowModalFile] = useState<string | null>(null);
   const [order, setOrder] = useState<OrderType>();
@@ -242,11 +242,11 @@ function SiloProvider({ children, organizationId }: ISiloProviderProps) {
     async (folderId: number, data: SiloFileType) => {
       try {
         setIsLoadingSave(true);
-        console.log({ organization });
+        console.log({ currentOrganization });
         const method = data?.id ? 'put' : 'post';
         const url = data?.id
-          ? `organizations/${organization?.id}/folders/${folderId}/files/${data?.id}`
-          : `organizations/${organization?.id}/folders/${folderId}/files`;
+          ? `organizations/${currentOrganization?.id}/folders/${folderId}/files/${data?.id}`
+          : `organizations/${currentOrganization?.id}/folders/${folderId}/files`;
 
         const formData = new FormData();
         formData.append('name', data.name);
@@ -274,7 +274,7 @@ function SiloProvider({ children, organizationId }: ISiloProviderProps) {
         setIsLoadingSave(false);
       }
     },
-    [fetchSiloHandler, organization, silos],
+    [fetchSiloHandler, currentOrganization, silos],
   );
 
   const downloadSiloFile = useCallback(
@@ -354,8 +354,8 @@ function SiloProvider({ children, organizationId }: ISiloProviderProps) {
         setIsLoadingSaveSiloFolder(true);
         const method = data?.id ? 'put' : 'post';
         const url = data?.id
-          ? `organizations/${organization?.id}/folders/${data?.id}`
-          : `organizations/${organization?.id}/folders`;
+          ? `organizations/${currentOrganization?.id}/folders/${data?.id}`
+          : `organizations/${currentOrganization?.id}/folders`;
 
         await api({
           method,
@@ -378,15 +378,15 @@ function SiloProvider({ children, organizationId }: ISiloProviderProps) {
         setIsLoadingSaveSiloFolder(false);
       }
     },
-    [fetchSilosHandler, organization],
+    [fetchSilosHandler, currentOrganization],
   );
 
   const deleteSiloFolderHandler = useCallback(
     async (siloFolderId: number) => {
       try {
-        console.log({ organization });
+        console.log({ currentOrganization });
         setIsLoadingSaveSiloFolder(true);
-        const url = `organizations/${organization?.id}/folders/${siloFolderId}`
+        const url = `organizations/${currentOrganization?.id}/folders/${siloFolderId}`
 
         await api({
           method: 'delete',
@@ -407,7 +407,7 @@ function SiloProvider({ children, organizationId }: ISiloProviderProps) {
         setIsLoadingSaveSiloFolder(false);
       }
     },
-    [fetchSilosHandler, organization],
+    [fetchSilosHandler, currentOrganization],
   );
 
   const providerValue = useMemo(
