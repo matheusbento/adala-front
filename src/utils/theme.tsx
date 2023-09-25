@@ -548,7 +548,7 @@ export const icons = {
   },
 };
 
-export const avatarSizes = {
+export const avatarSizes: Record<string, any> = {
   xs: {
     width: 38,
     height: 38,

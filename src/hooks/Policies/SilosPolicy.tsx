@@ -12,11 +12,11 @@ export type SilosPolicyContextType = {
 
 const SilosPolicyContext = createContext<SilosPolicyContextType | null>(null);
 
-export interface SilosPolicyProps {
+export interface ISilosPolicyProps {
   children: ReactNode;
 }
 
-function SilosPolicyProvider({ children }: SilosPolicyProps) {
+function SilosPolicyProvider({ children }: ISilosPolicyProps) {
   const { hasPermission } = useAuth();
 
   const canAccess = useCallback(

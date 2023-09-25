@@ -3,13 +3,15 @@ import Header from '@components/Library/Header';
 import Text from '@components/Library/Text';
 import { css } from 'glamor';
 import { useTranslation } from 'react-i18next';
-import { useLocation, useMatch, useNavigate } from 'react-router-dom';
+import { useLocation, useMatch, useNavigate, useParams } from 'react-router-dom';
 import { Menu } from 'semantic-ui-react';
 
 function OrganizationMenu() {
   const { t } = useTranslation();
   const { pathname } = useLocation();
   const navigate = useNavigate();
+
+  const { organizationId } = useParams();
 
   const move = useCallback(
     (url: string) => {
@@ -25,7 +27,7 @@ function OrganizationMenu() {
         <Menu.Item
           name="users"
           active={!!useMatch('/organizations/:organizationId/users')}
-          onClick={() => move('users')}
+          onClick={() => move(`/organizations/${organizationId}/users`)}
         >
           <Header as="h4">{t('Users')}</Header>
           <p>{t('Manage organization users')}</p>

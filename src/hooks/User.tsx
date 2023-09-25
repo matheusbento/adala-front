@@ -9,8 +9,13 @@ export type UserType = {
   user: any;
   users: any[] | null;
   isLoadingUsers: boolean;
-  fetchUserHandler: (identifier: string, params?: any) => void;
+  fetchUserHandler: (organizationId: number, userId: number) => void;
   fetchUsersHandler: (organizationId: number) => void;
+  saveUserHandler: (organizationId: number, values: any) => void;
+  setShowUserModal: (val: string | null) => void;
+  initialValues: any;
+  showUserModal: string | null;
+  isLoadingSaveUser: boolean;
 };
 
 export const UserContext = createContext<UserType | null>(null);
@@ -31,13 +36,21 @@ interface IUserProviderProps {
 function UserProvider({ children }: IUserProviderProps) {
   const [showUser, setShowUser] = useState(false);
   const [user, setUser] = useState<any>(null);
+  const [isLoadingSaveUser, setIsLoadingSaveUser] = useState(false);
   const [isLoadingUser, setIsLoadingUser] = useState(false);
   const [users, setUsers] = useState<any[] | null>(null);
   const [isLoadingUsers, setisLoadingUsers] = useState(false);
+  const [showUserModal, setShowUserModal] = useState<string | null>(null);
+  const [initialValues, setInitialValues] = useState({});
 
-  const fetchUserHandler = useCallback(async (identifier?: string, params: any = {}) => {
+  const fetchUserHandler = useCallback(async (orgId?: number, userId?: number) => {
     try {
       setIsLoadingUser(true);
+      const response = await api.get(`/organizations/${orgId}/users/${userId}`);
+      const { permissions } = response.data.data;
+
+      const direct = permissions.reduce((a: any, v: any) => ({ ...a, [v]: true }), {});
+      setUser({ ...response.data.data, direct_permissions: direct });
     } catch (e) {
       setUser(null);
       // [todo]
@@ -69,6 +82,27 @@ function UserProvider({ children }: IUserProviderProps) {
     }
   }, []);
 
+  const saveUserHandler = useCallback(
+    async (orgId: number, values: any) => {
+      try {
+        setisLoadingUsers(true);
+        const response = await api.post(`/organizations/${orgId}/users`, values);
+        fetchUserHandler(orgId, response.data.data.id);
+      } catch (e) {
+        setUsers(null);
+        // [todo]
+        // toaster(
+        //   dispatch,
+        //   'Error while trying to load the departmentSources',
+        //   'error'
+        // );
+      } finally {
+        setisLoadingUsers(false);
+      }
+    },
+    [fetchUserHandler],
+  );
+
   const providerValue = useMemo(
     () => ({
       showUser,
@@ -80,8 +114,26 @@ function UserProvider({ children }: IUserProviderProps) {
       isLoadingUsers,
       user,
       users,
+      setShowUserModal,
+      showUserModal,
+      isLoadingSaveUser,
+      saveUserHandler,
+      initialValues,
     }),
-    [showUser, users, isLoadingUsers, fetchUserHandler, fetchUsersHandler, user, isLoadingUser],
+    [
+      initialValues,
+      saveUserHandler,
+      isLoadingSaveUser,
+      showUser,
+      users,
+      showUserModal,
+      setShowUserModal,
+      isLoadingUsers,
+      fetchUserHandler,
+      fetchUsersHandler,
+      user,
+      isLoadingUser,
+    ],
   );
 
   return <UserContext.Provider value={providerValue}>{children}</UserContext.Provider>;

@@ -1,9 +1,7 @@
 import { useCallback } from 'react';
 
 import Button from '@components/Library/Button';
-// import DragAndDropUploader from '@components/Library/DragAndDropUploader';
 import Header from '@components/Library/Header';
-import InputFile from '@components/Library/InputFile';
 import InputText from '@components/Library/InputText';
 import InputTextArea from '@components/Library/InputTextArea';
 import SvgIcon from '@components/Library/SvgIcon';
@@ -11,10 +9,6 @@ import { useOrganization } from '@hooks/Organization';
 import { css } from 'glamor';
 import { useTranslation } from 'react-i18next';
 import { Form as SemanticForm } from 'semantic-ui-react';
-
-// import ReduxField from '@components/Library/ReduxField';
-// import ReduxInputCheckbox from '@components/Library/ReduxInputCheckbox';
-
 import { fontWeight, margin } from 'utils/themeConstants';
 
 const styleMr = css(margin.rightSm);

@@ -1,16 +1,21 @@
 import { useCallback, useEffect, useMemo } from 'react';
+import BaslakeModal from '@/components/Library/Baslake/BaslakeModal/BaslakeModal';
 import BaslakeTitle from '@components/Library/BaslakeTitle';
+import Button from '@components/Library/Button';
 import Segment from '@components/Library/Segment';
 import { useOrganization } from '@hooks/Organization';
+import { useUserPolicy } from '@hooks/Policies/UserPolicy';
 import { useUser } from '@hooks/User';
-import { display, margin, padding } from '@utils/themeConstants';
+import { display, margin } from '@utils/themeConstants';
 import BaslakeTable from '@views/Layout/BaslakeTable';
 import { css } from 'glamor';
 import moment from 'moment';
 import { useTranslation } from 'react-i18next';
+import { When } from 'react-if';
 import { useParams } from 'react-router-dom';
-import { Grid } from 'semantic-ui-react';
+import { Grid, Menu } from 'semantic-ui-react';
 import { UserType } from 'types/UserType';
+import OrganizationUsersFormContainer from './_Form/OrganizationUsersFormContainer';
 import OrganizationMenu from './OrganizationMenu';
 
 // import OrganizationsModalContainer from './OrganizationsModalContainer';
@@ -26,8 +31,9 @@ function OrganizationUsers() {
   const { t } = useTranslation();
   const { organizationId } = useParams();
   const { organization } = useOrganization();
+  const { canManage } = useUserPolicy();
 
-  const { fetchUsersHandler, users } = useUser();
+  const { fetchUsersHandler, users, setShowUserModal, showUserModal, fetchUserHandler } = useUser();
 
   useEffect(() => {
     if (organizationId) {
@@ -86,7 +92,15 @@ function OrganizationUsers() {
     [users],
   );
 
-  const handleEdit = useCallback(() => {}, []);
+  const handleEdit = useCallback(
+    (item: UserType) => {
+      if (organizationId) {
+        setShowUserModal('edit');
+        fetchUserHandler(+organizationId, +item.id);
+      }
+    },
+    [fetchUserHandler, organizationId, setShowUserModal],
+  );
 
   const handleDelete = useCallback(() => {}, []);
 
@@ -107,7 +121,23 @@ function OrganizationUsers() {
 
   return (
     <div className={`${styleContainer}`}>
-      <BaslakeTitle title={t('Organization: {{name}}', { name: organization?.name })} />
+      <BaslakeTitle title={t('Organization: {{name}}', { name: organization?.name })}>
+        <When condition={canManage()}>
+          {() => (
+            <Menu.Item position="right">
+              <Button
+                pill
+                outline
+                color="success"
+                icon="icon-person-add-line"
+                onClick={() => setShowUserModal('new')}
+              >
+                {t('Create new User')}
+              </Button>
+            </Menu.Item>
+          )}
+        </When>
+      </BaslakeTitle>
 
       <Segment className={`${styleSegment}`}>
         <Grid>
@@ -131,6 +161,16 @@ function OrganizationUsers() {
             </Grid.Column>
           </Grid.Row>
         </Grid>
+        <BaslakeModal
+          title={showUserModal === 'edit' ? 'Editing User' : 'New User'}
+          closeHandler={() => setShowUserModal(null)}
+          open={!!showUserModal}
+          size="large"
+        >
+          <BaslakeModal.Content>
+            <OrganizationUsersFormContainer />
+          </BaslakeModal.Content>
+        </BaslakeModal>
       </Segment>
     </div>
   );
