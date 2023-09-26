@@ -1,11 +1,12 @@
 import { useCallback, useState } from 'react';
 
-import ModalConfirm from '@/components/Library/ModalConfirm';
 import Button from '@components/Library/Button';
 import Header from '@components/Library/Header';
 import IconList from '@components/Library/IconList/IconList';
+import ModalConfirm from '@components/Library/ModalConfirm';
 import SvgIcon from '@components/Library/SvgIcon';
 import Text from '@components/Library/Text';
+import TextEllipsis from '@components/Library/TextEllipsis';
 import { statusLabel } from '@constants/cubesConstants';
 import { useCubes } from '@hooks/Cubes';
 import { css } from 'glamor';
@@ -171,6 +172,14 @@ function CubesList() {
                               </Text>
                             }
                           />
+                          <When condition={item.is_dataflow}>
+                            <IconList.Item
+                              size="xs"
+                              icon="icon-sync"
+                              textAlign="left"
+                              label={<TextEllipsis>{item.description}</TextEllipsis>}
+                            />
+                          </When>
                           <IconList.Item
                             size="xs"
                             icon="icon-calendar-line"

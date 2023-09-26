@@ -1,9 +1,5 @@
 import { useEffect, useMemo, useRef } from 'react';
-import Button from '@components/Library/Button';
 import Segment from '@components/Library/Segment';
-import Text from '@components/Library/Text';
-import { display, flex } from '@utils/themeConstants';
-import { css } from 'glamor';
 import { mean, range } from 'lodash';
 import Plotly, { Data } from 'plotly.js/dist/plotly';
 import { useTranslation } from 'react-i18next';
@@ -100,10 +96,6 @@ function WaterFallChart({ dataset, item, gridLayout, loading }: any) {
         responsive
         style={{ width: '100%', height: '100%' }}
       />
-      <Segment className={`${css(display.flex, flex.column, flex.alignItemsCenter)}`}>
-        <Text>{t('Do you need the fits from this data? you can download it.')}</Text>
-        <Button pill>{t('Download .FITS')}</Button>
-      </Segment>
     </Segment>
   );
 }

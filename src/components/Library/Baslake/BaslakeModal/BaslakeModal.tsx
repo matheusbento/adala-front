@@ -21,6 +21,7 @@ interface IBaslakeModalProps {
   headerChildren?: React.ReactNode;
   linkTo?: string;
   minWidth?: number;
+  centered?: boolean;
 }
 
 interface IBaslakeModal {
