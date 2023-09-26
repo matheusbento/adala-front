@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
+import { parseFileSize } from '@/helpers';
 import Button from '@components/Library/Button';
 // import DragAndDropUploader from '@components/Library/DragAndDropUploader';
 import Header from '@components/Library/Header';
@@ -19,6 +20,7 @@ import { Form as SemanticForm } from 'semantic-ui-react';
 import { siloActionLabel } from 'constants/silosConstants';
 
 import { fontWeight, margin } from 'utils/themeConstants';
+import DragAndDropUploader from '@components/Library/DragAndDropUploader';
 
 const styleMr = css(margin.rightSm);
 
@@ -41,6 +43,7 @@ const uploadMaxSize = parseInt(
 function SiloFileForm() {
   const { t } = useTranslation();
   const { showModalFile, setFormState, isLoadingSave, formState } = useSilo();
+  const [currentFiles, setCurrentFiles] = useState([]);
 
   const isNewOrder = useMemo(() => showModalFile === 'new', [showModalFile]);
 
@@ -70,6 +73,23 @@ function SiloFileForm() {
     console.log('äsdasdasdasd');
   }, []);
 
+  console.log(Array.from(currentFiles));
+
+  const fileFormats = ['.fits', '.fit'];
+
+  const allowedTypes = [
+    "",
+    'image/jpeg',
+    'image/png',
+    'image/gif',
+    'application/pdf',
+    'application/msword',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'application/vnd.oasis.opendocument.text',
+    'text/plain',
+    'application/zip',
+  ];
+
   return (
     <>
       <SemanticForm.Field className={`${css(margin.bottomLg)}`}>
@@ -88,7 +108,23 @@ function SiloFileForm() {
       </SemanticForm.Field>
 
       <SemanticForm.Field className={`${css(margin.bottomLg)}`}>
-        <InputFile type="file" name="file" />
+        {/* <InputFile type="file" name="file" multiple /> */}
+        <DragAndDropUploader
+          multiple
+          subtitle={`csv. Max size: ${parseFileSize(uploadMaxSize)}`}
+          maxSize={uploadMaxSize}
+          // allowedTypes={TimeSegments.acceptableFileTypes}
+          // accept={TimeSegments.acceptableExtensions.join(',')}
+          // isLoading={posting || fetching}
+          allowedTypes={allowedTypes}
+          errorMessage={null}
+          accept={fileFormats.join(',')}
+          onFileSelected={(files: any, previous: any) => {
+            console.log({files, previous});
+            setCurrentFiles(files);
+          }}
+          // loaderLabel={posting ? 'Uploading file' : 'Validating data'}
+        />
       </SemanticForm.Field>
 
       <SemanticForm.Group>

@@ -16,14 +16,14 @@ import DashboardProvider from './Providers/DashboardProvider';
 function CubeDashboard() {
   const { showCube } = useCubes();
   const { t } = useTranslation();
-  const { getItems, dashboardItems, isDraggable } = useDashboard();
+  const { fetchCubeItemsHandler, dashboardItems, isDraggable } = useDashboard();
   const { isLoadingDashboardItems } = useDashboard();
 
   useEffect(() => {
     if (showCube) {
-      getItems();
+      fetchCubeItemsHandler();
     }
-  }, [getItems, showCube]);
+  }, [fetchCubeItemsHandler, showCube]);
 
   const [layout, setLayout] = useState([]);
 
@@ -76,7 +76,7 @@ function CubeDashboard() {
         <If condition={dashboardItems?.length}>
           <Then>
             <DashboardProvider dashboardItems={dashboardItems} onLayoutChange={onLayoutChange}>
-              {dashboardItems.map(dashboardItem)}
+              {dashboardItems?.map(dashboardItem)}
             </DashboardProvider>
           </Then>
           <Else>

@@ -62,10 +62,10 @@ function WaterFallChart({ dataset, item, gridLayout, loading }: any) {
       [
         {
           type: 'scatter', // Tipo de gráfico
-          x: calculatedMean, // Valores do eixo X
-          y: range(0, calculatedMean?.length), // Valores do eixo Y
-          // x: range(0, calculatedMean?.length), // Valores do eixo X
-          // y: calculatedMean, // Valores do eixo Y
+          // x: calculatedMean, // Valores do eixo X
+          // y: range(0, calculatedMean?.length), // Valores do eixo Y
+          x: range(0, calculatedMean?.length), // Valores do eixo X
+          y: calculatedMean, // Valores do eixo Y
           mode: 'lines', // Configuração para exibir apenas as linhas
           line: {
             color: 'blue', // Cor da linha

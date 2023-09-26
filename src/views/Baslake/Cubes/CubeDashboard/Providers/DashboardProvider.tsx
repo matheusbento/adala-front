@@ -6,9 +6,10 @@ import 'react-resizable/css/styles.css';
 
 const ReactGridLayout = WidthProvider(RGL);
 function DashboardProvider({ children, dashboardItems, onLayoutChange }: any) {
-  const { updateDashboardItem } = useDashboard();
+  const { saveCubeItemHandler } = useDashboard();
   const onLayChange = (newLayout: any) => {
     newLayout.forEach((l: any) => {
+      console.log({ dashboardItems });
       const item = dashboardItems.find((i: any) => i.id.toString() === l.i);
       const toUpdate = {
         x: l.x,
@@ -19,7 +20,8 @@ function DashboardProvider({ children, dashboardItems, onLayoutChange }: any) {
 
       if (item && toUpdate !== item.layout) {
         console.log({ toUpdate });
-        updateDashboardItem(item.id, {
+        saveCubeItemHandler({
+          ...item,
           layout: toUpdate,
         });
       }

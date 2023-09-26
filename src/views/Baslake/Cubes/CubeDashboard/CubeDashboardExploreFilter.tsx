@@ -35,8 +35,6 @@ function CubeDashboardExploreFilter({ item }: any) {
     setOpen((prev) => !prev);
   }, []);
 
-  console.log({isEditing})
-
   const showEdit = useMemo(() => !!isEditing?.[Number(item?.id)], [isEditing, item?.id]);
 
   return (

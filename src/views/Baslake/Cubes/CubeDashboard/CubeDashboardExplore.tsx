@@ -80,9 +80,9 @@ function CubeDashboardExplore() {
 
         <SemanticForm.Field>
           <InputDropdown
-            name="data_processing_method"
-            key="data_processing_method"
-            label={t('Data Processing Method')}
+            name="processing_method"
+            key="processing_method"
+            label={t('Select Processing Method')}
             arrayOptions={dataProcessingMethods}
             placeholder="Operation"
             disabled={false}
@@ -95,8 +95,8 @@ function CubeDashboardExplore() {
 
         <SemanticForm.Field>
           <InputDropdown
-            name="data_column"
-            key="data_column"
+            name="select"
+            key="select"
             label={t('Dimension')}
             arrayOptions={columns ?? []}
             loading={isLoadingColumns}

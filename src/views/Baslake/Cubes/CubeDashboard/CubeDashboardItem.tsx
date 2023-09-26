@@ -38,6 +38,7 @@ function CubeDashboardItem({ item, layout }: any) {
       );
       return res.data;
     },
+    staleTime: 3_600_00,
   });
 
   const dashboard = useMemo(() => data?.data ?? null, [data]);
