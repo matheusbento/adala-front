@@ -26,6 +26,7 @@ function DashboardItemProviderDropdown({ itemId, title }: any) {
           className={`${css(display.flex, flex.justifyContentEnd, padding.xxs, padding.rightSm)}`}
         >
           <CubeDashboardItemDownload
+            itemId={itemId}
             open={showDownloadFormats === itemId}
             closeHandler={() => {
               setShowDownloadFormats(null);

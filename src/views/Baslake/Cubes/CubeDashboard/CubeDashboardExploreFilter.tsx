@@ -43,7 +43,7 @@ function CubeDashboardExploreFilter({ item }: any) {
         <Dimmer active={isLoadingExplore}>
           <Loader inline="centered" />
         </Dimmer>
-        <SemanticForm.Field>
+        {/* <SemanticForm.Field>
           <InputText
             name="resolution"
             key="resolution"
@@ -52,7 +52,7 @@ function CubeDashboardExploreFilter({ item }: any) {
             disabled={false}
             fluid
           />
-        </SemanticForm.Field>
+        </SemanticForm.Field> */}
         <FieldArray name="filter" component={CubeDashboardExploreFilterItemBulkForm} />
         <div>
           <SemanticForm.Group>

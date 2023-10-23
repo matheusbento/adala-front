@@ -48,7 +48,7 @@
   "Value": "Valor",
   "Enter description": "Digite a descrição",
   "Select the silo": "Selecione o silo",
-  "Is dataflow?": "É fluxo de continuo?",
+  "Is dataflow?": "É fluxo de dados continuo?",
   "Added": "Adicionado",
   "Edit": "Editar",
   "Delete": "Deletar",
@@ -84,7 +84,7 @@
   "Create Silo": "Criar Silo",
   "Cancel": "Cancelar",
   "File Alias": "Apelido do arquivo",
-  "Upload File": "Subir Arquivo",
+  "Upload Files": "Subir Arquivos",
   "Select file": "Selecionar arquivo",
   "Do you need the fits from this data? you can download it.": "Você precisa do .FITS desses dados? você pode baixá-lo.",
   "Download .FITS": "Baixar .FITS",
@@ -93,5 +93,7 @@
   "Users": "Usuários",
   "Manage organization users": "Gerenciar usuarios da instituição",
   "Organization Menu": "Menu da Instituição",
-  "Organizations": "Instituições"
+  "Organizations": "Instituições",
+  "Create new Organization": "Criar nova instituição",
+  "Create new User": "Criar novo Usuário"
 }

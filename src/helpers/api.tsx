@@ -1,14 +1,9 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import Cookies from 'js-cookie';
 
+import { getSession } from '.';
 import Config from './config';
 
-const apiDefaultTimeout = (import.meta.env.MIX_API_DEFAULT_TIMEOUT || 60, 10) * 1000;
-
-export const getSession = async () => {
-  const userToken = await Cookies.get('userToken');
-  return userToken ? JSON.parse(userToken) : null;
-};
+const apiDefaultTimeout = (import.meta.env.MIX_API_DEFAULT_TIMEOUT || 60 * 60, 10) * 1000;
 
 const api = axios.create({
   baseURL: Config.SERVER_URL,

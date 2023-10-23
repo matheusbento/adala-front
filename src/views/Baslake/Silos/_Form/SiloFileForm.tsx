@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { parseFileSize } from '@/helpers';
 import Button from '@components/Library/Button';
 // import DragAndDropUploader from '@components/Library/DragAndDropUploader';
 import Header from '@components/Library/Header';
@@ -21,6 +20,9 @@ import { siloActionLabel } from 'constants/silosConstants';
 
 import { fontWeight, margin } from 'utils/themeConstants';
 import DragAndDropUploader from '@components/Library/DragAndDropUploader';
+import { parseFileSize } from '@/helpers';
+import InputDragDropFile from '@/components/Library/InputDragDropFile';
+import { useFormContext } from 'react-hook-form';
 
 const styleMr = css(margin.rightSm);
 
@@ -47,7 +49,7 @@ function SiloFileForm() {
 
   const isNewOrder = useMemo(() => showModalFile === 'new', [showModalFile]);
 
-  const valid = true;
+  const { reset } = useFormContext();
 
   useEffect(() => {
     document.getElementsByClassName('dimmer')[0].id = 'dimmer';
@@ -69,8 +71,7 @@ function SiloFileForm() {
   }, [setFormState]);
 
   const onCancel = useCallback(() => {
-    // eslint-disable-next-line no-console
-    console.log('äsdasdasdasd');
+    reset();
   }, []);
 
   console.log(Array.from(currentFiles));
@@ -78,7 +79,7 @@ function SiloFileForm() {
   const fileFormats = ['.fits', '.fit'];
 
   const allowedTypes = [
-    "",
+    '',
     'image/jpeg',
     'image/png',
     'image/gif',
@@ -94,10 +95,10 @@ function SiloFileForm() {
     <>
       <SemanticForm.Field className={`${css(margin.bottomLg)}`}>
         <Header as="h5" className={`${styleTitle}`}>
-          {t('File Alias')}
+          {t('Files Alias')}
         </Header>
 
-        <InputText name="name" placeholder="Enter name" />
+        <InputText name="name" placeholder="Enter name" required />
       </SemanticForm.Field>
       <SemanticForm.Field className={`${css(margin.bottomLg)}`}>
         <Header as="h5" className={`${styleTitle}`}>
@@ -109,20 +110,24 @@ function SiloFileForm() {
 
       <SemanticForm.Field className={`${css(margin.bottomLg)}`}>
         {/* <InputFile type="file" name="file" multiple /> */}
-        <DragAndDropUploader
+        <InputDragDropFile
           multiple
-          subtitle={`csv. Max size: ${parseFileSize(uploadMaxSize)}`}
+          showFiles
+          type="file"
+          name="files"
+          required
+          subtitle={`.fits | Max size: ${parseFileSize(uploadMaxSize)}`}
           maxSize={uploadMaxSize}
+          isOpen
           // allowedTypes={TimeSegments.acceptableFileTypes}
           // accept={TimeSegments.acceptableExtensions.join(',')}
           // isLoading={posting || fetching}
           allowedTypes={allowedTypes}
-          errorMessage={null}
           accept={fileFormats.join(',')}
-          onFileSelected={(files: any, previous: any) => {
-            console.log({files, previous});
-            setCurrentFiles(files);
-          }}
+          // onFileSelected={(files: any, previous: any) => {
+          //   console.log({ files, previous });
+          //   setCurrentFiles(files);
+          // }}
           // loaderLabel={posting ? 'Uploading file' : 'Validating data'}
         />
       </SemanticForm.Field>
@@ -130,7 +135,7 @@ function SiloFileForm() {
       <SemanticForm.Group>
         <Button outline color="primary" fluid pill loading={isLoadingSave} type="submit">
           <SvgIcon path="icon-arrow-circle-right-line" size="md" className={`${styleMr}`} />
-          {t('Upload File')}
+          {t('Upload Files')}
         </Button>
       </SemanticForm.Group>
 

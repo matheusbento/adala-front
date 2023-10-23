@@ -14,7 +14,6 @@ function SiloFileFormContainer(props: any) {
       console.log(values);
       return saveSiloHandler(showSilo?.id as number, {
         ...values,
-        file: values.file[0],
       });
     },
     [saveSiloHandler, showSilo?.id],

@@ -5,6 +5,7 @@ import * as fileTypes from '@constants/fileTypesConstants';
 import { toasterTypes } from '@constants/toasterConstants';
 import TypeOf from '@constants/typeOfConstants';
 import usStates from '@constants/usStatesConstants';
+import Cookies from 'js-cookie';
 import { isArray, isNaN } from 'lodash';
 import moment from 'moment-timezone';
 
@@ -365,4 +366,9 @@ export const isSelectorValid = (selector: any) => {
 
 export const generateUniqueId = () => {
   return Math.floor(10000 + Math.random() * 90000);
+};
+
+export const getSession = async () => {
+  const userToken = await Cookies.get('userToken');
+  return userToken ? JSON.parse(userToken) : null;
 };

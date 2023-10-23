@@ -62,6 +62,7 @@ export interface IInputFileProps {
   required?: boolean;
   formProps?: Record<string, any>;
   type?: string;
+  multiple?: boolean;
   min?: number;
 }
 

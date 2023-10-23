@@ -38,7 +38,7 @@ function CubeDashboardExplore() {
   //   }
   // }, [fetchExploreHandler, showExplore]);
 
-  const charts = useMemo(() => ['heatmap', 'line', 'waterfall'], []);
+  const charts = useMemo(() => ['heatmap', 'line', 'waterfall', 'psd'], []);
 
   return (
     <Dimmer.Dimmable
@@ -100,7 +100,7 @@ function CubeDashboardExplore() {
             label={t('Dimension')}
             arrayOptions={columns ?? []}
             loading={isLoadingColumns}
-            placeholder="Column"
+            placeholder="Dimension"
             disabled={false}
             fluid
             selection

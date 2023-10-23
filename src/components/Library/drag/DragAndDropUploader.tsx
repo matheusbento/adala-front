@@ -1,7 +1,10 @@
-import React, { useState, useCallback, useRef, useEffect } from 'react';
+/* eslint-disable no-console */
+import { useState, useCallback, useRef, useEffect, ChangeEvent } from 'react';
+
 import { css } from 'glamor';
 import { When } from 'react-if';
 import { Dimmer, Loader } from 'semantic-ui-react';
+
 import TypeOf from '../../constants/typeOfConstants';
 import {
   colors,
@@ -28,87 +31,90 @@ const containerStyle = css(text.center, styles.dashedBorder);
 const svgIconStyle = css(margin.bottomXs);
 const styleComputerLabel = css(styleLabel, display.none, display.lgBlock);
 const styleMobileLabel = css(styleLabel, display.lgNone);
+
 const styleSubtitle = css(fontSizes.sm, margin.topXs, margin.bottomNone, {
   color: colors.grey,
 });
+
 const fileInputStyle = css(display.none);
 const styleButton = css(buttons.pill, buttons.primary, margin.topLg);
+
 const styleHasError = css({
   borderColor: `${colors.danger} !important`,
   color: colors.danger,
 });
 
-interface IInputProp {
-  onChange: (files: File[] | string[]) => void;
-  value: (File | string)[];
-}
-
-interface IDragAndDropUploaderProps {
-  icon?: string;
-  label?: string;
-  mobileLabel?: string;
-  subtitle?: string | null;
-  buttonText?: string;
-  multiple?: boolean;
-  maxSize?: number | null;
-  allowedTypes?: string[] | null;
-  accept?: string | null;
-  previousFiles?: string[];
-  onFileSelected?: (files: FileList, previousFiles: string[]) => void;
-  isLoading?: boolean;
-  errorMessage?: string | null;
-  loaderLabel?: string;
-  name?: string;
-  input?: IInputProp | null;
-  showFiles?: boolean;
-  [key: string]: any; // for the ...props spread
+interface DragAndDropUploaderType {
+  icon: string | null | undefined;
+  label: string | null | undefined;
+  mobileLabel: string | null | undefined;
+  subtitle: string | null | undefined;
+  buttonText: string | null | undefined;
+  multiple: boolean;
+  maxSize: number | null | undefined;
+  allowedTypes: string[] | null | undefined;
+  accept: string | null | undefined;
+  previousFiles: string[];
+  onFileSelected: any | null | undefined;
+  input:
+    | {
+        onChange: any;
+        value: any;
+      }
+    | null
+    | undefined;
+  isLoading: boolean;
+  errorMessage: string | null | undefined;
+  loaderLabel: string | null | undefined;
+  showFiles: boolean;
+  name: string | null | undefined;
 }
 
 function DragAndDropUploader({
   icon = 'icon-cloud-upload',
   label = 'Drag & Drop your file',
   mobileLabel = 'Select your file',
-  subtitle = null,
   buttonText = 'Browse to Upload',
+  subtitle = null,
   multiple = false,
   maxSize = null,
   allowedTypes = null,
   accept = null,
   previousFiles = [],
-  onFileSelected = null,
   isLoading = false,
   errorMessage = null,
   loaderLabel = 'Uploading',
+  showFiles = false,
+  onFileSelected = null,
   name = 'file',
   input = null,
-  showFiles = false,
   ...props
-}: IDragAndDropUploaderProps) {
-  const [isDragging, setDragging] = useState<boolean>(false);
-  const [dragCount, setDragCount] = useState<number>(0);
-  const [internalErrorMessage, setErrorMessage] = useState<string | null>(errorMessage);
-  const dropArea = useRef<HTMLDivElement>(null);
-  const fileInput = useRef<HTMLInputElement>(null);
+}: DragAndDropUploaderType & Partial<{ uploadMaxSize: any }>) {
+  const [isDragging, setDragging] = useState(false);
+  const [dragCount, setDragCount] = useState(0);
+  const [internalErrorMessage, setErrorMessage] = useState(errorMessage);
 
-  const handleDrag = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+  const fileInput = useRef<any>();
+
+  const handleDrag = useCallback((e: DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    if (e.dataTransfer.items && e.dataTransfer.items.length > 0) {
+    if (e?.dataTransfer?.items && e.dataTransfer.items.length > 0) {
       setDragging(true);
     }
   }, []);
 
-  const handleDragIn = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+  const handleDragIn = useCallback((e: DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
     setDragCount((prev) => prev + 1);
-    if (e.dataTransfer.items && e.dataTransfer.items.length > 0) {
+    if (e?.dataTransfer?.items && e.dataTransfer.items.length > 0) {
       setDragging(true);
     }
   }, []);
 
   const handleDragOut = useCallback(
-    (e: React.DragEvent<HTMLDivElement>) => {
+    (e: DragEvent) => {
       e.preventDefault();
       e.stopPropagation();
       setErrorMessage(null);
@@ -120,59 +126,69 @@ function DragAndDropUploader({
   );
 
   const handleFilesSelected = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>, files: FileList) => {
-      if (maxSize && Array.from(files).filter((file) => file.size > maxSize).length) {
-        setErrorMessage('File size is too large. Please try again.');
-        return;
-      }
-
-      if (
-        allowedTypes &&
-        Array.from(files).filter((file) => allowedTypes.includes(file.type)).length !== files.length
-      ) {
-        setErrorMessage(
-          files.length > 1 ? 'One or more file types are not allowed' : 'File type not allowed',
-        );
-        return;
+    (e: ChangeEvent<HTMLInputElement>, files: FileList | undefined) => {
+      console.log({ files });
+      if (files?.length) {
+        if (maxSize && Array.from(files).filter((file) => file.size > maxSize).length) {
+          setErrorMessage('File size is too large. Please try again.');
+          return;
+        }
+        if (
+          allowedTypes &&
+          Array.from(files).filter((file) => allowedTypes.includes(file.type)).length !==
+            files.length
+        ) {
+          setErrorMessage(
+            files.length > 1 ? 'One or more file types are not allowed' : 'File type not allowed',
+          );
+          return;
+        }
       }
 
       if (onFileSelected) {
         onFileSelected(files, previousFiles);
         return;
       }
-      input?.onChange([...e.target.files]);
+      const target = e.target as HTMLInputElement;
+      const f = target.files as FileList;
+
+      input?.onChange([...(f ?? [])]);
     },
     [allowedTypes, maxSize, onFileSelected, input, previousFiles],
   );
 
   const handleDrop = useCallback(
-    (e: React.DragEvent<HTMLDivElement>) => {
+    (e: any) => {
       e.preventDefault();
       e.stopPropagation();
       setErrorMessage(null);
       setDragging(false);
       setDragCount(0);
-      if (!multiple && e.dataTransfer.files.length > 1) {
+      if (!multiple && e?.dataTransfer?.files && e?.dataTransfer?.files?.length > 1) {
         setErrorMessage('You cannot select multiple files');
       } else {
-        handleFilesSelected(e, e.dataTransfer.files);
+        handleFilesSelected(e, e?.dataTransfer?.files);
       }
-      e.dataTransfer.clearData();
+      e?.dataTransfer?.clearData();
     },
     [handleFilesSelected, multiple],
   );
 
   const handleFileInputChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
+    (e: ChangeEvent<HTMLInputElement>) => {
       setErrorMessage(null);
 
-      if (typeof fileInput.current.files === TypeOf.object && fileInput.current.files.length > 0) {
+      if (
+        typeof fileInput?.current?.files === TypeOf.object &&
+        fileInput?.current?.files &&
+        fileInput?.current?.files?.length > 0
+      ) {
         if (!multiple && fileInput.current.files.length > 1) {
           setErrorMessage('You cannot select multiple files');
         } else {
           handleFilesSelected(e, fileInput.current.files);
         }
-        fileInput.current.value = null;
+        fileInput.current.value = '';
       }
     },
     [handleFilesSelected, multiple],
@@ -183,37 +199,42 @@ function DragAndDropUploader({
   }, [errorMessage]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    const div = dropArea.current;
-    div.addEventListener('dragenter', handleDragIn);
-    div.addEventListener('dragleave', handleDragOut);
-    div.addEventListener('dragover', handleDrag);
-    div.addEventListener('drop', handleDrop);
-
-    return () => {
-      div.removeEventListener('dragenter', handleDragIn);
-      div.removeEventListener('dragleave', handleDragOut);
-      div.removeEventListener('dragover', handleDrag);
-      div.removeEventListener('drop', handleDrop);
-      setDragCount(0);
-    };
+    const div = document.getElementById('drag');
+    if (div) {
+      // eslint-disable-next-line no-console
+      console.log(div);
+      div?.addEventListener('dragenter', handleDragIn);
+      div?.addEventListener('dragleave', handleDragOut);
+      div?.addEventListener('dragover', handleDrag);
+      div?.addEventListener('drop', handleDrop);
+      return () => {
+        div?.removeEventListener('dragenter', handleDragIn);
+        div?.removeEventListener('dragleave', handleDragOut);
+        div?.removeEventListener('dragover', handleDrag);
+        div?.removeEventListener('drop', handleDrop);
+        setDragCount(0);
+      };
+    }
+    return () => {};
   }, [previousFiles]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const renderFiles = useCallback(() => {
-    const values = Array.isArray(input.value) ? input.value : [input.value];
-    return values?.map((e) => {
-      return <div key={e.name}>{e?.name}</div>;
-    });
+    const values = Array.isArray(input?.value) ? input?.value : [input?.value];
+    return values?.map((e) => <div key={e.name}>{e?.name}</div>);
   }, [input]);
+
+  // eslint-disable-next-line no-console
+  console.log(showFiles, fileInput?.current?.files);
 
   return (
     <>
       <div
-        ref={dropArea}
+        id="drag"
         className={`${css(containerStyle, {
           borderColor: isDragging ? colors.primary : colors.silver,
         })} ${internalErrorMessage ? styleHasError : ''}`}
       >
-        <When condition={showFiles && input?.value?.length}>
+        <When condition={showFiles && !!fileInput?.current?.files.length}>
           {() => (
             <>
               {renderFiles()}
@@ -221,14 +242,19 @@ function DragAndDropUploader({
             </>
           )}
         </When>
-        <SvgIcon className={`${svgIconStyle}`} path={icon} size="xxl" color={colors.primary} />
+        <SvgIcon
+          className={`${svgIconStyle}`}
+          path={icon as string}
+          size="xxl"
+          color={colors.primary}
+        />
         <p className={`${styleComputerLabel}`}>{label}</p>
         <p className={`${styleMobileLabel}`}>{mobileLabel}</p>
         {!!subtitle && <p className={`${styleSubtitle}`}>{subtitle}</p>}
         <button
           type="button"
           className={`${styleButton} primary`}
-          onClick={() => fileInput.current.click()}
+          onClick={() => fileInput?.current?.click()}
         >
           {buttonText}
         </button>
@@ -236,11 +262,11 @@ function DragAndDropUploader({
           {...props}
           ref={fileInput}
           type="file"
-          name={name}
+          name={name as string}
           className={`${fileInputStyle}`}
           onChange={handleFileInputChange}
           multiple={multiple}
-          accept={accept}
+          accept={accept as string}
         />
         <Dimmer active={isLoading} inverted>
           <Loader active>{loaderLabel}</Loader>

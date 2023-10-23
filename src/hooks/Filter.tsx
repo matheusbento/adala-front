@@ -23,12 +23,12 @@ const useFilter = () => {
   return context;
 };
 
-interface FilterProviderProps {
+interface IFilterProviderProps {
   children: ReactNode;
   context: string;
 }
 
-function FilterProvider({ children, context }: FilterProviderProps) {
+function FilterProvider({ children, context }: IFilterProviderProps) {
   // eslint-disable-next-line no-console
   console.log({ context });
   const [isBarVisible, setIsBarVisible] = useState(false);

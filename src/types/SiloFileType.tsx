@@ -10,6 +10,7 @@ export type SiloFileType = {
   status: string;
   created_at: string;
   file: FileType | File;
+  files: FileType[] | File[];
   tags: TagType[];
   attributes: SiloFileAttributeType[];
   owner: UserType;

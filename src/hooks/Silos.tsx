@@ -56,6 +56,10 @@ export type SilosType = {
   setDeletingFolder: (val: boolean) => void;
   fetchSilosHandler: (search: string | null, params?: PaginateParams | null) => void;
   setInitialValues: (obj: any) => void;
+  clearSilo: () => void;
+  fetchSiloSummaryHandler: (params?: any) => void;
+  siloFolderSummary: any;
+  isLoadingSiloFolderSummary: boolean;
 };
 
 export const SilosContext = createContext<SilosType | null>(null);
@@ -82,6 +86,7 @@ function SiloProvider({ children, organizationId }: ISiloProviderProps) {
   const [silosMeta, setSilosMeta] = useState<MetaType | null>(null);
   const [isLoadingSilos, setIsLoadingSilos] = useState(false);
   const [isLoadingSilo, setIsLoadingSilo] = useState(false);
+  const [isLoadingSiloFolderSummary, setIsLoadingSiloFolderSummary] = useState(false);
   const [isLoadingSiloFilesAttributes, setIsLoadingSiloFilesAttributes] = useState(false);
   const [isLoadingSiloFileAttributes, setIsLoadingSiloFileAttributes] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
@@ -101,11 +106,39 @@ function SiloProvider({ children, organizationId }: ISiloProviderProps) {
   const [showSilo, setShowSilo] = useState<SiloType | null>(null);
 
   const [formSuccess, setFormSuccess] = useState<string[] | null>(null);
+  const [siloFolderSummary, setSiloFolderSummary] = useState<any>(undefined)
 
   // silo save handler
   const [isLoadingSave, setIsLoadingSave] = useState(false);
   const [isLoadingSaveSiloFolder, setIsLoadingSaveSiloFolder] = useState(false);
   const [formState, setFormState] = useState('form');
+
+  const clearSilo = useCallback(() => {
+    setShowSilo(null);
+    setFiles([]);
+  }, []);
+
+  const fetchSiloSummaryHandler = useCallback(
+    async (params?: any) => {
+      try {
+        setIsLoadingSiloFolderSummary(true);
+        const response = await api.get(`organizations/${organizationId}/folders/summary`, {
+          params,
+        });
+        setSiloFolderSummary(response?.data);
+      } catch (e) {
+        // [todo]
+        // toaster(
+        //   dispatch,
+        //   'Error while trying to load the departmentSources',
+        //   'error'
+        // );
+      } finally {
+        setIsLoadingSiloFolderSummary(false);
+      }
+    },
+    [organizationId],
+  );
 
   const fetchSiloHandler = useCallback(
     async (sil: SiloType, params?: any) => {
@@ -242,7 +275,6 @@ function SiloProvider({ children, organizationId }: ISiloProviderProps) {
     async (folderId: number, data: SiloFileType) => {
       try {
         setIsLoadingSave(true);
-        console.log({ currentOrganization });
         const method = data?.id ? 'put' : 'post';
         const url = data?.id
           ? `organizations/${currentOrganization?.id}/folders/${folderId}/files/${data?.id}`
@@ -251,7 +283,9 @@ function SiloProvider({ children, organizationId }: ISiloProviderProps) {
         const formData = new FormData();
         formData.append('name', data.name);
         formData.append('description', data.description);
-        formData.append('file', data.file as File);
+        data?.files?.forEach((file, index) => {
+          formData.append(`files[]`, file as File);
+        });
 
         const response = await api({
           method,
@@ -386,7 +420,7 @@ function SiloProvider({ children, organizationId }: ISiloProviderProps) {
       try {
         console.log({ currentOrganization });
         setIsLoadingSaveSiloFolder(true);
-        const url = `organizations/${currentOrganization?.id}/folders/${siloFolderId}`
+        const url = `organizations/${currentOrganization?.id}/folders/${siloFolderId}`;
 
         await api({
           method: 'delete',
@@ -450,8 +484,16 @@ function SiloProvider({ children, organizationId }: ISiloProviderProps) {
       deleteSiloFolderHandler,
       setDeletingFolder,
       isDeletingFolder,
+      clearSilo,
+      isLoadingSiloFolderSummary,
+      fetchSiloSummaryHandler,
+      siloFolderSummary,
     }),
     [
+      siloFolderSummary,
+      fetchSiloSummaryHandler,
+      isLoadingSiloFolderSummary,
+      clearSilo,
       setDeletingFolder,
       isDeletingFolder,
       deleteSiloFolderHandler,

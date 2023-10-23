@@ -94,7 +94,7 @@ function CubeDashboardExploreFilterItemBulkForm({
           key={`${name}[${item.id}].column`}
           arrayOptions={columns ?? []}
           loading={isLoadingColumns}
-          placeholder={t('Column')}
+          placeholder={t('Dimension')}
           disabled={false}
           fluid
           selection

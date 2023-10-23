@@ -109,15 +109,13 @@ function DashboardProvider({ children, organizationId }: IDashboardProviderProps
   );
 
   const deleteDashboardItem = useCallback(
-    (itemId: string) => {
-      setDashboardItems((prev: any) => {
-        const filtered = prev.filter((e: any) => e.id !== +itemId);
-        console.log({ filtered, itemId });
-        Cookies.set(`dashItems-${cube.id}`, JSON.stringify(filtered));
-        return filtered;
-      });
+    async (itemId: string) => {
+      const url = `/organizations/${currentOrganization?.id}/cubes/${cube?.id}/dashboard/items/${itemId}`;
+      const method = 'DELETE';
+      const response = await api({ url, method });
+      fetchCubeItemsHandler();
     },
-    [cube.id],
+    [cube?.id, currentOrganization?.id, fetchCubeItemsHandler],
   );
 
   // const fetchDashboardHandler = useCallback(async (identifier?: string, params: any = {}) => {
